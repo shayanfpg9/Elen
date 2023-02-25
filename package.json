@@ -7,7 +7,7 @@
     "nodemon": "^2.0.20"
   },
   "scripts": {
-    "start": "nodemone server"
+    "start": "nodemon server"
   },
   "name": "chemistry-app",
   "version": "1.0.0",
