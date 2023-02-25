@@ -12,5 +12,8 @@
   "name": "chemistry-app",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "dotenv": "^16.0.3"
+  }
 }
