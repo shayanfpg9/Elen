@@ -12,4 +12,10 @@ app.listen(process.env.PORT, () => {
 //middlewares:
 app.use(morgan("dev"));
 app.use(express.json());
-app.use("/api/atom/:lang/", AtomsRouter);
+app.use("/api/atom/:lang/", (req, res, next) => {
+  if (req.params.lang.match(/fa|en/g)) {
+    return AtomsRouter[req.params.lang](req, res, next);
+  } else {
+    next();
+  }
+});

@@ -1,4 +1,8 @@
 const express = require("express"),
-  Router = express.Router();
+  fa = express.Router(),
+  en = express.Router();
 
-module.exports = Router;
+module.exports = {
+  fa,
+  en,
+};
