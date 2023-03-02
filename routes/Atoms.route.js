@@ -1,42 +1,22 @@
 const express = require("express"),
-  fa = express.Router(),
-  en = express.Router(),
-  Atoms = require("../model/Atoms.model")
+  router = express.Router(),
+  Atoms = require("../model/Atoms.model");
 
 //--------------------------------------------------------> Export
 
-//fa / export -- All
-fa.get("/export", (req, res) => {
+//router / export -- All
+router.get("/export", (req, res) => {
   res.json({
-    lang: "fa",
+    lang: "router",
     method: "GET",
     action: "Export all of the Atoms",
   });
 });
 
-//en / export -- All
-en.get("/export", (req, res) => {
+//router / export -- Single
+router.get("/export/:id", (req, res) => {
   res.json({
-    lang: "en",
-    method: "GET",
-    action: "Export all of the Atoms",
-  });
-});
-
-//fa / export -- Single
-fa.get("/export/:id", (req, res) => {
-  res.json({
-    lang: "fa",
-    method: "GET",
-    action: "Export a single Atom",
-    params: req.params,
-  });
-});
-
-//en / export -- Single
-en.get("/export/:id", (req, res) => {
-  res.json({
-    lang: "en",
+    lang: "router",
     method: "GET",
     action: "Export a single Atom",
     params: req.params,
@@ -45,17 +25,8 @@ en.get("/export/:id", (req, res) => {
 
 //--------------------------------------------------------> Get
 
-//fa / Get -- All
-fa.get("/", (req, res) => {
-  res.json({
-    lang: "fa",
-    method: "GET",
-    action: "Get all of the Atoms",
-  });
-});
-
-//en / Get -- All
-en.get("/", async (req, res) => {
+//router / Get -- All
+router.get("/", async (req, res) => {
   try {
     const AllAtoms = await Atoms.find().sort({ number: 1 });
 
@@ -67,27 +38,14 @@ en.get("/", async (req, res) => {
   }
 });
 
-//fa / GET -- Single
-fa.get("/:id", (req, res) => {
+//router / GET -- Single
+router.get("/:id", (req, res) => {
   res.json({
-    lang: "fa",
+    lang: "router",
     method: "GET",
     action: "GET a single Atom",
     params: req.params,
   });
 });
 
-//en / GET -- Single
-en.get("/:id", (req, res) => {
-  res.json({
-    lang: "en",
-    method: "GET",
-    action: "GET a single Atom",
-    params: req.params,
-  });
-});
-
-module.exports = {
-  fa,
-  en,
-};
+module.exports = router;

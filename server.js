@@ -21,10 +21,4 @@ connect(process.env.MONGOURI)
 //middlewares:
 app.use(morgan("dev"));
 app.use(express.json());
-app.use("/api/atom/:lang/", (req, res, next) => {
-  if (req.params.lang.match(/fa|en/g)) {
-    return AtomsRouter[req.params.lang](req, res, next);
-  } else {
-    next();
-  }
-});
+app.use("/api/atom/", AtomsRouter);
