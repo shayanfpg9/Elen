@@ -1,6 +1,7 @@
 const express = require("express"),
   fa = express.Router(),
-  en = express.Router();
+  en = express.Router(),
+  Atoms = require("../model/Atoms.model")
 
 //--------------------------------------------------------> Export
 
@@ -54,12 +55,16 @@ fa.get("/", (req, res) => {
 });
 
 //en / Get -- All
-en.get("/", (req, res) => {
-  res.json({
-    lang: "en",
-    method: "GET",
-    action: "Get all of the Atoms",
-  });
+en.get("/", async (req, res) => {
+  try {
+    const AllAtoms = await Atoms.find().sort({ number: 1 });
+
+    if (!AllAtoms) throw null;
+
+    res.json(AllAtoms);
+  } catch (e) {
+    console.error(e.errors || e);
+  }
 });
 
 //fa / GET -- Single
