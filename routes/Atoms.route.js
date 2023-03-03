@@ -39,13 +39,12 @@ router.get("/", async (req, res) => {
 });
 
 //router / GET -- Single
-router.get("/:id", (req, res) => {
-  res.json({
-    lang: "router",
-    method: "GET",
-    action: "GET a single Atom",
-    params: req.params,
+router.get("/:name", async (req, res) => {
+  const Atom = await Atoms.find({
+    name: req.params.name[0].toUpperCase() + req.params.name.slice(1),
   });
+
+  res.json(Atom);
 });
 
 module.exports = router;
