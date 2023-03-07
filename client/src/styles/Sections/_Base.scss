@@ -9,3 +9,27 @@
 body {
   background-color: var(--color-bg);
 }
+
+.link--special {
+  $bgc: var(--color-bg);
+
+  text-decoration: none;
+  background-image: linear-gradient(
+    0deg,
+    $bgc,
+    $bgc 0.5rem,
+    transparent 0,
+    transparent
+  );
+  border-radius: 5px;
+
+  &:hover {
+    background-image: linear-gradient(
+      0deg,
+      $bgc,
+      $bgc 0.9rem,
+      transparent 0,
+      transparent
+    );
+  }
+}
