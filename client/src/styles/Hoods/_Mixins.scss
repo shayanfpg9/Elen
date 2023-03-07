@@ -1,0 +1,60 @@
+@mixin flex($jsc: center, $aligni: center, $fflow: row wrap) {
+  display: flex;
+  justify-content: $jsc;
+  align-items: $aligni;
+  flex-flow: $fflow;
+}
+
+@mixin reset() {
+  &,
+  &::after,
+  &::before,
+  &::placeholder {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+
+    @content;
+  }
+}
+
+@mixin media($f: "xs", $t: none, $change: width) {
+  $from: map-get($breakpoints, $f);
+  $to: map-get($breakpoints, $t);
+
+  @if (map-has-key($breakpoints, $f) == false) {
+    $from: $f;
+  }
+
+  @if (map-has-key($breakpoints, $t) == false) {
+    $to: $t;
+  }
+
+  @if ($to == none) {
+    @media only screen and (min-#{$change}: ($from * 1px)) {
+      @content;
+    }
+  } @else {
+    @media only screen and (min-#{$change}: ($from * 1px)) and (max-#{$change}: (($to - 1) * 1px)) {
+      @content;
+    }
+  }
+}
+
+@mixin scroller($size, $bgColor, $sColor) {
+  scrollbar-width: thin;
+  scrollbar-color: $sColor $bgColor;
+
+  &::-webkit-scrollbar {
+    @each $key, $val in $size {
+      #{$key}: $val;
+    }
+    background-color: $bgColor;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $sColor;
+    border-radius: 10px;
+  }
+}
