@@ -1,0 +1,11 @@
+* {
+  @include reset() {
+    direction: rtl;
+    color: var(--color-text);
+    font-family: vazirmatn, helvetica;
+  }
+}
+
+body {
+  background-color: var(--color-bg);
+}
