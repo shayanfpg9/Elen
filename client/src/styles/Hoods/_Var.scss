@@ -1,0 +1,25 @@
+$colors: (
+  light: (
+    "fg": #e5989b,
+    "text": #6d6875,
+    "bg": #ffcdb2,
+  ),
+  dark: (
+    "bg": #264653,
+    "fg": #2a9d8f,
+    "text": #e9c46a,
+  ),
+);
+
+:root {
+  //theme:
+  $theme: light;
+  @media (prefers-color-scheme: dark) {
+    $theme: dark;
+  }
+
+  //make color vars:
+  @each $name, $code in map-get($colors, $theme) {
+    --color-#{$name}: #{$code};
+  }
+}
