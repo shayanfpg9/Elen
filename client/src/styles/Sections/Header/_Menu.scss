@@ -1,45 +1,5 @@
 .header {
-  width: 90vw;
-  min-height: calc(var(--first-fibo) + 2vh);
-  padding: 0 1vh;
-  position: fixed;
-  top: 2vh;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--color-fg);
-  border-radius: 5rem;
-  box-shadow: 0px 5px 15px rgba(map-get($MainColorSassVar, "bg"), 0.8);
-  z-index: 9;
-  overflow: hidden;
-
-  @include flex(flex-start);
-  @include media("xl") {
-    top: calc(1vh * var(--first-fibo));
-    transform: translate(-50%, -50%);
-  }
-
-  &,
-  & > * {
-    transition: width 0.5s var(--animation), height 0.5s var(--animation);
-  }
-
-  &__title {
-    margin-right: 2vh;
-    transition: font-size 0.5s var(--animation);
-
-    @include media("xs", "sm") {
-      font-size: 1rem;
-    }
-
-    @include media("sm", "md") {
-      font-size: 1.5rem;
-    }
-
-    @include media("xl") {
-      font-size: calc(var(--first-fibo) / 3);
-    }
-  }
-
+  //menu
   &__menu-item > {
     button {
       all: unset;
@@ -81,6 +41,7 @@
     }
   }
 
+  //menu Xl -- menu in header toolbar
   @include media("xl") {
     &__menu {
       list-style-type: none;
@@ -108,6 +69,7 @@
     }
   }
 
+  //menu Xs - Xl -- menu like aside
   @include media("xs", "xl") {
     justify-content: space-between;
 
@@ -180,30 +142,6 @@
           color: var(--color-bg);
         }
       }
-    }
-  }
-
-  &--top {
-    width: 100vw;
-    height: var(--first-fibo);
-    background-color: rgba(map-get($MainColorSassVar, "fg"), 0.5);
-    border: {
-      bottom-right-radius: 2rem;
-      bottom-left-radius: 2rem;
-    }
-    transition: opacity 0.5s var(--animation);
-
-    display: block;
-    opacity: 0;
-
-    @include media("xl") {
-      opacity: 1;
-    }
-  }
-
-  &__ {
-    &logo {
-      background-color: var(--color-bg);
     }
   }
 }
