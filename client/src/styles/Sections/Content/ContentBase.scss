@@ -1,0 +1,22 @@
+main {
+  width: calc(100vw - (var(--first-fibo)));
+  min-height: calc(var(--first-fibo) * 6);
+  background-color: var(--color-fg);
+
+  position: absolute;
+  top: calc(1 * var(--first-fibo));
+  left: 50%;
+  transform: translateX(-50%);
+
+  border-radius: calc(var(--first-fibo) / 3);
+
+  margin: {
+    top: 1rem;
+    bottom: calc(var(--first-fibo) / 2);
+  }
+
+  padding: 0 1rem {
+    top: calc(var(--first-fibo) / 2);
+    bottom: calc(var(--first-fibo) / 2);
+  }
+}
