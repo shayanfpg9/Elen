@@ -3,7 +3,21 @@
     direction: rtl;
     color: var(--color-text);
     font-family: vazirmatn, helvetica;
+    overflow: hidden;
+    box-sizing: border-box;
   }
+}
+
+html {
+  overflow-y: visible;
+
+  @include scroller(
+    (
+      width: 0.5rem,
+    ),
+    var(--color-bg),
+    var(--color-text)
+  );
 }
 
 body {
