@@ -1,6 +1,12 @@
 main {
   width: calc(100vw - (var(--first-fibo)));
   min-height: calc(var(--first-fibo) * 6);
+
+  // in phone:
+  @include media("xs", "md") {
+    min-height: calc(var(--first-fibo) * 11);
+  }
+
   background-color: var(--color-fg);
 
   position: absolute;
