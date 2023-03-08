@@ -1,5 +1,5 @@
 main {
-  width: calc(100vw - (var(--first-fibo)));
+  width: calc(100vw - (var(--first-fibo) / 2));
   min-height: calc(var(--first-fibo) * 6);
 
   // in phone:
@@ -22,7 +22,7 @@ main {
   }
 
   padding: 0 1rem {
-    top: calc(var(--first-fibo) / 2);
+    top: calc(var(--first-fibo) / 2 + 1rem);
     bottom: calc(var(--first-fibo) / 2);
   }
 }
