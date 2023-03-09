@@ -78,6 +78,32 @@ const mongoose = require("mongoose"),
           },
         },
       },
+      translate: {
+        type: "object",
+        properties: {
+          name: {
+            type: "string",
+          },
+          appearance: {
+            type: "string",
+          },
+          category: {
+            type: "string",
+          },
+          discovered_by: {
+            type: "string",
+          },
+          phase: {
+            type: "string",
+          },
+          summary: {
+            type: "string",
+          },
+          "image.title": {
+            type: "string",
+          },
+        },
+      },
     },
     {
       timestamps: true,
