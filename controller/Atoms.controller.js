@@ -8,7 +8,7 @@ const GetAll = async (req, res) => {
 
     res.json(AllAtoms);
   } catch (e) {
-    res.statusCode(500).json({
+    res.status(500).json({
       method: "GET",
       action: "Get all of the Atoms",
       params: req.params,
@@ -25,7 +25,7 @@ const GetSingle = async (req, res) => {
 
     res.json(Atom);
   } catch (e) {
-    res.statusCode(404).json({
+    res.status(404).json({
       method: "GET",
       action: "Get a single Atom",
       params: req.params,
