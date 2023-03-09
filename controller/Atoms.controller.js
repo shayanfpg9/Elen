@@ -8,8 +8,9 @@ const GetAll = async (req, res) => {
 
     res.json(AllAtoms);
   } catch (e) {
-    res.status(500).json({
+    ManageErrors(res, {
       method: "GET",
+      status: 500,
       action: "Get all of the Atoms",
       params: req.params,
       error: e.errors || e,
@@ -19,20 +20,27 @@ const GetAll = async (req, res) => {
 
 const GetSingle = async (req, res) => {
   try {
-    const Atom = await Atoms.find({
-      name: req.params.name[0].toUpperCase() + req.params.name.slice(1),
-    });
+    const Atom = (
+      await Atoms.find({
+        name: req.params.name[0].toUpperCase() + req.params.name.slice(1),
+      })
+    )[0];
 
     res.json(Atom);
   } catch (e) {
-    res.status(404).json({
+    ManageErrors(res, {
       method: "GET",
+      status: 404,
       action: "Get a single Atom",
       params: req.params,
       error: e.errors || e,
     });
   }
 };
+
+function ManageErrors(res, arg) {
+  res.status(arg.status).json(arg);
+}
 
 module.exports = {
   GetSingle,
