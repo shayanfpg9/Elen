@@ -1,4 +1,6 @@
 const Atoms = require("../model/Atoms.model");
+const { translate } = require("free-translate");
+const _ = require("lodash");
 
 const GetAll = async (req, res) => {
   try {
@@ -26,7 +28,59 @@ const GetSingle = async (req, res) => {
       })
     )[0];
 
-    res.json(Atom);
+    let TranslateAtom = {};
+
+    [
+      "name",
+      "appearance",
+      "category",
+      "discovered_by",
+      "phase",
+      "summary",
+      "image.title",
+    ].forEach((p) => {
+      if (!_.isNull(_.at(Atom, p)[0])) TranslateAtom[p] = "";
+    });
+
+    if (
+      _.isUndefined(Atom.translate) ||
+      !_.isNull(
+        Object.values(Atom.translate)
+          .join("")
+          .match(/null|object/g)
+      )
+    ) {
+      const Translating = async (callback) => {
+        try {
+          await _.keys(TranslateAtom).forEach(async (prop) => {
+            TranslateAtom[prop] = await translate(_.at(Atom, prop)[0], {
+              to: "fa",
+            });
+
+            if (!_.values(TranslateAtom).includes("")) callback(null);
+          });
+        } catch (e) {
+          callback(e);
+        }
+      };
+
+      Translating((e) => {
+        if (_.isNull(e)) {
+          const Retrun = {
+            ...Atom._doc,
+            translate: TranslateAtom,
+          };
+
+          Atom.updateOne(Retrun).then(() => {
+            console.log("translated added");
+          });
+
+          res.json(Retrun);
+        }
+      });
+    } else {
+      res.json(Atom);
+    }
   } catch (e) {
     ManageErrors(res, {
       method: "GET",
