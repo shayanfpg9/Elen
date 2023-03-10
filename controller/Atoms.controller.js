@@ -4,9 +4,27 @@ const _ = require("lodash");
 
 const GetAll = async (req, res) => {
   try {
-    const AllAtoms = await Atoms.find().sort({ number: 1 });
+    let AllAtoms = await Atoms.find().sort({ number: 1 });
 
     if (!AllAtoms) throw null;
+
+    AllAtoms = AllAtoms.map((prop) => {
+      return {
+        id: prop._id,
+        name: prop.name,
+        category: prop.category,
+        melt: prop.melt,
+        boil: prop.boil,
+        atomic_mass: prop.atomic_mass,
+        number: prop.number,
+        group: prop.group,
+        period: prop.period,
+        phase: prop.phase,
+        symbol: prop.symbol,
+        TranslatedName: prop.translate ? prop.translate.name : false,
+        position: [prop.xpos, prop.ypos],
+      };
+    });
 
     res.json(AllAtoms);
   } catch (e) {
