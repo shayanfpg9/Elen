@@ -33,7 +33,7 @@ const GetAll = async (req, res) => {
       status: 500,
       action: "Get all of the Atoms",
       params: req.params,
-      error: e.errors || e,
+      error: e?.errors || e,
     });
   }
 };
@@ -105,7 +105,7 @@ const GetSingle = async (req, res) => {
       status: 404,
       action: "Get a single Atom",
       params: req.params,
-      error: e.errors || e,
+      error: e?.errors || e,
     });
   }
 };
