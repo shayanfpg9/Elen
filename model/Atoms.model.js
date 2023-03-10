@@ -1,3 +1,4 @@
+//Atoms schema:
 const mongoose = require("mongoose"),
   Schema = mongoose.Schema,
   AtomSchema = new Schema(

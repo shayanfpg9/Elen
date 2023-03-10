@@ -9,6 +9,7 @@ const GetAll = async (req, res) => {
     if (!AllAtoms) throw null;
 
     AllAtoms = AllAtoms.map((prop) => {
+      //filter submissions:
       return {
         id: prop._id,
         name: prop.name,
@@ -46,6 +47,7 @@ const GetSingle = async (req, res) => {
       })
     )[0];
 
+    //Obj for translation properties:
     let TranslateAtom = {};
 
     [
@@ -61,6 +63,7 @@ const GetSingle = async (req, res) => {
     });
 
     if (
+      //checking the existence of translation in database for this atom:
       _.isUndefined(Atom.translate) ||
       !_.isNull(
         Object.values(Atom.translate)
@@ -68,6 +71,7 @@ const GetSingle = async (req, res) => {
           .match(/null|object/g)
       )
     ) {
+      //Translating function:
       const Translating = async (callback) => {
         try {
           await _.keys(TranslateAtom).forEach(async (prop) => {
@@ -89,6 +93,7 @@ const GetSingle = async (req, res) => {
             translate: TranslateAtom,
           };
 
+          //save to the DB:
           Atom.updateOne(Retrun).then(() => {
             console.log("translated added");
           });
@@ -110,6 +115,7 @@ const GetSingle = async (req, res) => {
   }
 };
 
+//manage errors:
 function ManageErrors(res, arg) {
   res.status(arg.status).json(arg);
 }
