@@ -1,5 +1,3 @@
-const { default: mongoose } = require("mongoose");
-
 require("dotenv").config();
 const express = require("express"),
   app = express(),
@@ -8,6 +6,8 @@ const express = require("express"),
   connect = require("./functions/connect");
 
 //listen + connect to DB:
+
+/* eslint-disable */
 connect(process.env.MONGOURI)
   .then(() => {
     app.listen(process.env.PORT, () => {
@@ -17,6 +17,7 @@ connect(process.env.MONGOURI)
   .catch((e) => {
     console.error(e);
   });
+/* eslint-enable */
 
 //middlewares:
 app.use(morgan("dev"));

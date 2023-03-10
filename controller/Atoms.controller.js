@@ -6,7 +6,9 @@ const GetAll = async (req, res) => {
   try {
     let AllAtoms = await Atoms.find().sort({ number: 1 });
 
-    if (!AllAtoms) throw null;
+    if (!AllAtoms) {
+      throw null;
+    }
 
     AllAtoms = AllAtoms.map((prop) => {
       //filter submissions:
@@ -59,7 +61,9 @@ const GetSingle = async (req, res) => {
       "summary",
       "image.title",
     ].forEach((p) => {
-      if (!_.isNull(_.at(Atom, p)[0])) TranslateAtom[p] = "";
+      if (!_.isNull(_.at(Atom, p)[0])) {
+        TranslateAtom[p] = "";
+      }
     });
 
     if (
@@ -79,7 +83,9 @@ const GetSingle = async (req, res) => {
               to: "fa",
             });
 
-            if (!_.values(TranslateAtom).includes("")) callback(null);
+            if (!_.values(TranslateAtom).includes("")) {
+              callback(null);
+            }
           });
         } catch (e) {
           callback(e);
@@ -95,6 +101,7 @@ const GetSingle = async (req, res) => {
 
           //save to the DB:
           Atom.updateOne(Retrun).then(() => {
+            /* eslint no-console: 0 */
             console.log("translated added");
           });
 
