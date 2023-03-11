@@ -8,7 +8,7 @@ export const colors = {
   transition: "#FFF428",
   "post-transition": "#00833F",
   actinide: "#FC2865",
-  unknown: "#262626",
+  unknown: "#262626d6",
   nonmetal: "#3161FF",
   "noble gas": "#3A2151",
 };
@@ -50,50 +50,36 @@ const Item = styled.span`
   height: 100%;
   border-radius: 5px;
   margin: 0 0.1rem;
-  color: ${props=>props.light ? "var(--color-text)":"var(--color-fg)"};
+  color: ${(props) => (props.light ? "var(--color-text)" : "var(--color-fg)")};
 `;
 
 export default function Categories() {
   return (
     <Category>
-      <Case className="metal">
+      <Case name="metal">
         <Name>فلزات</Name>
-        <Item name="alkali metal" className="cat-item s-2">
-          فلزات قلیایی
-        </Item>
-        <Item name="alkaline earth metal" className="cat-item s-2">
-          فلزات قلیایی خاکی
-        </Item>
-        <Item name="transition" className="cat-item s-2" light>
+        <Item name="alkali metal">فلزات قلیایی</Item>
+        <Item name="alkaline earth metal">فلزات قلیایی خاکی</Item>
+        <Item name="transition" light>
           فلزات واسطه
         </Item>
-        <Item name="post-transition" className="cat-item s-2">
-          فلزات پس واسطه
-        </Item>
-        <Item name="lanthanide" className="cat-item s-1" light>
+        <Item name="post-transition">فلزات پس واسطه</Item>
+        <Item name="lanthanide" light>
           لانتانید ها
         </Item>
-        <Item name="actinide" className="cat-item s-1">
-          اکتینید ها
-        </Item>
+        <Item name="actinide">اکتینید ها</Item>
       </Case>
-      <Item
-        as={Case}
-        name="metalloid"
-        className="cat-item s-2 name"
-        style={{ height: "80%" }}
-      >
+      <Item as={Case} name="metalloid" style={{ height: "80%" }}>
         شبه فلزات
       </Item>
-      <Case className="nometal">
+      <Case name="nometal">
         <Name>نا فلزات</Name>
-        <Item name="noble gas" className="cat-item s-2">
-          گاز های نجیب
-        </Item>
-        <Item name="nonmetal" className="cat-item s-2">
-          غیر فلزات
-        </Item>
+        <Item name="noble gas">گاز های نجیب</Item>
+        <Item name="nonmetal">غیر فلزات</Item>
       </Case>
+      <Item as={Case} name="unknown" style={{ height: "80%" }}>
+        ناشناخته ها
+      </Item>
     </Category>
   );
 }
