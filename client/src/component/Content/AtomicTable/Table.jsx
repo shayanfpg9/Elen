@@ -30,6 +30,28 @@ const Col = styled(RowCol)`
   grid-column: ${(props) => +props.col};
 `;
 
+const FreeSpace = styled.div`
+  grid-column: 4;
+  grid-row-start: 7;
+  grid-row-end: 11;
+  background-color: var(--color-text);
+  border-radius: 1rem;
+  position: relative;
+
+  &::after {
+    content: "";
+    width: 0.5rem;
+    min-height: var(--first-fibo);
+    font-size: 3rem;
+    background-color: var(--color-fg);
+    position: absolute;
+    bottom: calc(var(--first-fibo) / 4);
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 1rem;
+  }
+`;
+
 export default class Table extends Component {
   state = {
     atoms: null,
@@ -83,7 +105,9 @@ export default class Table extends Component {
         <Row row="7">6</Row>
         <Row row="8">7</Row>
         <Row row="9">8</Row>
+        <Row row="10">9</Row>
 
+        <FreeSpace />
         <Categories />
         <Phase />
 
