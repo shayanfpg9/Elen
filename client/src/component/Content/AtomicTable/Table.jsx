@@ -37,6 +37,7 @@ const FreeSpace = styled.div`
   background-color: var(--color-text);
   border-radius: 1rem;
   position: relative;
+  margin: 0 0.5rem;
 
   &::after {
     content: "";
