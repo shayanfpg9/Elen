@@ -21,6 +21,7 @@ const Item = styled.span`
   > svg {
     width: 1rem;
     height: 1rem;
+    margin-left: 0.5rem;
   }
 `;
 
