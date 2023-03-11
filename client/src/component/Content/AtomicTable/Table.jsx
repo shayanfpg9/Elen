@@ -3,6 +3,7 @@ import { Component } from "react";
 import styled from "styled-components";
 import Atom from "./Atom";
 import Categories from "./Categories";
+import Phase from "./Phase";
 
 //row and cols same styles
 const RowCol = styled.span`
@@ -84,6 +85,7 @@ export default class Table extends Component {
         <Row row="9">8</Row>
 
         <Categories />
+        <Phase />
 
         {/* import datas */}
         {this.state.atoms !== null ? this.state.atoms : ""}
