@@ -9,7 +9,7 @@
     "yarn": "^1.22.19"
   },
   "scripts": {
-    "start": "nodemon server"
+    "start": "nodemon --ignore client/ server"
   },
   "name": "chemistry-app",
   "version": "1.0.0",
