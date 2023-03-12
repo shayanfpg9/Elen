@@ -85,7 +85,7 @@
         bottom-right-radius: 2rem;
         top-right-radius: 2rem;
       }
-      background-color: rgba(map-get($MainColorSassVar, "fg"), 0.4);
+      background-color: rgba(map-get($MainColorSassVar, "fg"), 0.8);
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
 
