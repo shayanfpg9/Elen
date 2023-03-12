@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { GiSolidLeaf, GiWaterDrop, GiGasPump } from "react-icons/gi";
 
 const Box = styled.section`
+  max-height: calc(var(--first-fibo) / 2);
   grid-column-start: 14;
   grid-column-end: 19;
   margin: 0.5rem 0;
@@ -12,6 +13,7 @@ const Box = styled.section`
   align-items: center;
   flex-flow: row nowrap;
   padding: 0 1rem;
+  margin-right: 0.2rem;
 `;
 
 const Item = styled.span`

@@ -27,8 +27,9 @@ const Name = styled.span`
 `;
 
 const Category = styled.section`
-  grid-column-start: 5;
-  grid-column-end: 13;
+  max-height: calc(var(--first-fibo) * 2);
+  grid-column-start: 4;
+  grid-column-end: 14;
   grid-row-start: 2;
   grid-row-end: 5;
   margin: 0.5rem 0;
@@ -37,6 +38,7 @@ const Category = styled.section`
   ${flex}
   writing-mode: tb-rl;
   position: relative;
+  margin: 0.2rem 0.5rem;
 `;
 
 const Case = styled.div`

@@ -18,8 +18,7 @@ const RowCol = styled.span`
 
 //rows
 const Row = styled(RowCol)`
-  margin: 0.1rem 0;
-  margin-left: 1rem;
+  margin: 0.1rem 0.5rem;
   grid-row: ${(props) => +props.row};
 `;
 
@@ -37,7 +36,7 @@ const FreeSpace = styled.div`
   background-color: var(--color-text);
   border-radius: 1rem;
   position: relative;
-  margin: 0 0.5rem;
+  margin: 0.2rem 0.5rem;
 
   &::after {
     content: "";
