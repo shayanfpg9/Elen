@@ -1,11 +1,25 @@
+import { useEffect, useRef } from "react";
 import * as bs from "react-icons/bs";
 
 export default function Menu(props) {
+  const MenuRef = useRef();
   const left = props.status ? 0 : "calc(-1 * var(--menu-width))";
 
+  useEffect(() => {
+    window.onkeyup = ({ code }) => {
+      if (code === "Escape" && props.status) {
+        window.onkeyup = undefined;
+        props.function();
+      }
+    };
+  });
+
   return (
-    <menu style={{ left }} className={`header__menu`}>
-      <i className="header__menu-icon fibo-1--sq close" onClick={props.function}>
+    <menu ref={MenuRef} style={{ left }} className={`header__menu`}>
+      <i
+        className="header__menu-icon fibo-1--sq close"
+        onClick={props.function}
+      >
         <bs.BsXLg />
       </i>
 
