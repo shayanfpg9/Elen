@@ -54,4 +54,16 @@
     }
     margin-bottom: calc(var(--first-fibo) * 6);
   }
+
+  @include media("xs", 370) {
+    margin-bottom: calc(var(--first-fibo) * 2);
+  }
+
+  @include media("xs", 300) {
+    section {
+      display: none;
+    }
+
+    margin-bottom: calc(var(--first-fibo) * 1);
+  }
 }

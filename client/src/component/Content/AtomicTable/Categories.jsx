@@ -56,6 +56,16 @@ const Category = styled.section`
       }
     `
   )}
+
+  ${media(
+    {
+      "min-width": "xs",
+      "max-width": "370px",
+    },
+    css`
+      display: none;
+    `
+  )}
 `;
 
 const Case = styled.div`
