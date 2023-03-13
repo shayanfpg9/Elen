@@ -12,7 +12,7 @@ const AtomCel = styled.div.attrs((props) => ({
   background-color: ${(props) =>
     props.category[0] === "unknown"
       ? colors[props.category[1].replace("-", "")]
-      : colors[props.category[0]].replace("-", "")};
+      : colors[props.category[0].replace("-", "")]};
   border-radius: 0.3rem;
   margin: 0.1rem;
   ${(props) =>
