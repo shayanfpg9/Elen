@@ -71,16 +71,6 @@ export default class Table extends Component {
     atoms: null,
   };
 
-  ResizeHandler() {
-    if (window.innerWidth <= 720) {
-      this.setState({
-        atoms: this.state.atoms,
-        cols: 0,
-        rows: 0,
-      });
-    }
-  }
-
   async componentDidMount() {
     //get datas with axios
     let data = (await axios.get("/api/atom")).data;
@@ -94,9 +84,6 @@ export default class Table extends Component {
       cols: this.state.cols,
       rows: this.state.rows,
     });
-
-    this.ResizeHandler();
-    window?.addEventListener("resize", this.ResizeHandler);
   }
 
   componentDidUpdate() {
@@ -125,7 +112,9 @@ export default class Table extends Component {
   render() {
     const Cols = [];
     for (let i = 1; i < this.state.cols; i++) {
-      Cols.push(<Col col={i + 1} children={i} key={`col-${i}`} />);
+      Cols.push(
+        <Col className="col" col={i + 1} children={i} key={`col-${i}`} />
+      );
     }
 
     const Rows = [];

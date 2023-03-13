@@ -17,6 +17,11 @@
       font-size: 0.8rem !important;
     }
 
+    .row,
+    .col {
+      display: none;
+    }
+
     sub,
     sup {
       font-size: 0.5rem !important;
