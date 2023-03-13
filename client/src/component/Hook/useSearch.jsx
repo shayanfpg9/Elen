@@ -17,6 +17,7 @@ export default function useSearch(option, single = true) {
   let data = null;
 
   document.querySelectorAll(".Atom").forEach((el) => {
+    el.classList.remove("active");
     el.classList.add("hide");
   });
 
@@ -40,6 +41,7 @@ export default function useSearch(option, single = true) {
 
     data = Array.from(els).map((el) => {
       el.classList.remove("hide");
+      el.classList.add("active");
       return el.dataset.name;
     });
   }
