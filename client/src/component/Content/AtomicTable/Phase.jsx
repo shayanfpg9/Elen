@@ -22,19 +22,6 @@ const Box = styled.section`
       "max-width": "830px",
     },
     css`
-      grid-column-start: 4;
-      grid-column-end: 14;
-      grid-row-start: 2;
-      grid-row-end: 5;
-    `
-  )}
-
-  ${media(
-    {
-      "min-width": "xs",
-      "max-width": "620px",
-    },
-    css`
       position: absolute;
       bottom: calc(var(--first-fibo) + 1rem);
       width: 90%;

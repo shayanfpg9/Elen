@@ -32,18 +32,11 @@ const Category = styled.section`
     },
     css`
       position: absolute;
-      bottom: calc(var(--first-fibo) + 1rem);
-    `
-  )}
-
-  ${media(
-    {
-      "min-width": "xs",
-      "max-width": "620px",
-    },
-    css`
-      width: 90%;
       bottom: calc(var(--first-fibo) * 2 + 1rem);
+      width: 90%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0.2rem 0;
     `
   )}
 `;
