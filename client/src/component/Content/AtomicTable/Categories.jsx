@@ -40,6 +40,7 @@ const Category = styled.section`
   writing-mode: tb-rl;
   position: relative;
   margin: 0.2rem 0.5rem;
+  cursor: default;
 `;
 
 const Case = styled.div`
@@ -55,6 +56,7 @@ const Item = styled.span`
   border-radius: 5px;
   margin: 0 0.1rem;
   color: ${(props) => (props.light ? "var(--color-text)" : "var(--color-fg)")};
+  cursor: pointer;
 `;
 
 export default function Categories() {

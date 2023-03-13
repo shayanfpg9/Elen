@@ -14,11 +14,13 @@ const Box = styled.section`
   flex-flow: row nowrap;
   padding: 0 1rem;
   margin-right: 0.2rem;
+  cursor: default;
 `;
 
 const Item = styled.span`
   color: var(--color-main);
   font-size: 1rem;
+  cursor: pointer;
 
   > svg {
     width: 1rem;
