@@ -81,24 +81,19 @@ export default class Table extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     //get datas with axios
-    axios
-      .get("/api/atom")
-      .then(({ data }) => {
-        data = data.map((prop) => {
-          return <Atom key={prop.name} {...prop} />;
-        });
+    let data = (await axios.get("/api/atom")).data;
 
-        this.setState({
-          atoms: data,
-          cols: this.state.cols,
-          rows: this.state.rows,
-        });
-      })
-      .catch((e) => {
-        console.log(e.title || e);
-      });
+    data = data.map((prop) => {
+      return <Atom key={prop.name} {...prop} />;
+    });
+
+    this.setState({
+      atoms: data,
+      cols: this.state.cols,
+      rows: this.state.rows,
+    });
 
     this.ResizeHandler();
     window?.addEventListener("resize", this.ResizeHandler);
