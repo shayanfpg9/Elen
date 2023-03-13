@@ -30,6 +30,13 @@ const Box = styled.section`
       transform: translateX(-50%);
     `
   )}
+
+  ${media(
+    { "min-width": "830px", "max-width": "860px" },
+    css`
+      grid-row: 2;
+    `
+  )}
 `;
 
 const Item = styled.span`
