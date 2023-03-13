@@ -1,6 +1,6 @@
 import { mix } from "chroma-js";
 import styled, { css } from "styled-components";
-import { colors } from "./Categories";
+import { colors } from '../CssComponents/Util';
 
 //style of AtomCles
 const AtomCel = styled.div.attrs((props) => ({
@@ -36,7 +36,7 @@ const AtomCel = styled.div.attrs((props) => ({
         : "var(--color-fg)"};
   }
 
-  sup {
+  sub {
     font-size: 0.6rem;
     margin-left: 0.1rem;
   }
@@ -79,8 +79,8 @@ export default function Atom(props) {
       color={color}
       className="Atom"
     >
+      <sub>{props.number}</sub>
       {props.symbol}
-      <sup>{props.number}</sup>
     </AtomCel>
   );
 }
