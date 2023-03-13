@@ -22,4 +22,28 @@
       font-size: 0.5rem !important;
     }
   }
+
+  @include media("xl") {
+    font-size: 1.2rem;
+
+    .Atom {
+      font-size: 1.2rem;
+
+      sub {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  @include media("xxl") {
+    font-size: 1.5rem;
+
+    .Atom {
+      font-size: 1.5rem;
+
+      sub {
+        font-size: 1.3rem;
+      }
+    }
+  }
 }
