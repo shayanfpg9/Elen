@@ -1,16 +1,17 @@
+import chroma from "chroma-js";
 import styled, { css } from "styled-components";
 
 export const colors = {
-  "alkali metal": "#FF080C",
-  "alkaline earth metal": "#FF952E",
-  metalloid: "#57C3F8",
-  lanthanide: "#FC9FFF",
-  "posttran": "#00833F",
-  transition: "#FFF428",
-  actinide: "#FC2865",
-  unknown: "#262626d6",
-  nonmetal: "#3161FF",
-  "noble gas": "#3A2151",
+  "alkali metal": chroma("#FF080C"),
+  "alkaline earth metal": chroma("#FF952E"),
+  metalloid: chroma("#57C3F8"),
+  lanthanide: chroma("#FC9FFF"),
+  posttran: chroma("#00833F"),
+  transition: chroma("#FFF428"),
+  actinide: chroma("#FC2865"),
+  unknown: chroma("#232323"),
+  nonmetal: chroma("#3161FF"),
+  "noble gas": chroma("#3A2151"),
 };
 
 const flex = css`
