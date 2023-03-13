@@ -7,7 +7,7 @@ export default function media(options, ContentCss) {
     @media only screen and ${_.keys(options)
         .map((prop, i) => {
           const Size = useSize(options[prop]);
-          return `(${prop}: ${!_.isUndefined(Size) ? Size : options[prop]})`;
+          return `(${prop}: ${!_.isUndefined(Size) ? Size + "px" : options[prop]})`;
         })
         .join(" and ")} {
       ${ContentCss}
