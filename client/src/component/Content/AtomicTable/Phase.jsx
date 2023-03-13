@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { GiSolidLeaf, GiWaterDrop, GiGasPump } from "react-icons/gi";
+import { flex } from "../CssComponents/Util";
 
 const Box = styled.section`
   max-height: calc(var(--first-fibo) / 2);
@@ -8,10 +9,10 @@ const Box = styled.section`
   margin: 0.5rem 0;
   border-radius: 1rem;
   border: var(--color-bg) 3px solid;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-flow: row nowrap;
+  ${flex({
+    Jusc: "space-between",
+    FFlow: "row nowrap",
+  })}
   padding: 0 1rem;
   margin-right: 0.2rem;
   cursor: default;
