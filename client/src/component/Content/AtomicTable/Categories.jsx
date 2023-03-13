@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import flex from "../CssComponents/Flexbox";
-import { colors } from "../CssComponents/Util";
+import { colors, media } from "../CssComponents/Util";
 
 const Name = styled.span`
   writing-mode: horizontal-tb;
@@ -24,6 +24,28 @@ const Category = styled.section`
   position: relative;
   margin: 0.2rem 0.5rem;
   cursor: default;
+
+  ${media(
+    {
+      "min-width": "xs",
+      "max-width": "830px",
+    },
+    css`
+      position: absolute;
+      bottom: calc(var(--first-fibo) + 1rem);
+    `
+  )}
+
+  ${media(
+    {
+      "min-width": "xs",
+      "max-width": "620px",
+    },
+    css`
+      width: 90%;
+      bottom: calc(var(--first-fibo) * 2 + 1rem);
+    `
+  )}
 `;
 
 const Case = styled.div`

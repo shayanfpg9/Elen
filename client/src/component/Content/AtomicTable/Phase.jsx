@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { GiSolidLeaf, GiWaterDrop, GiGasPump } from "react-icons/gi";
-import { flex } from "../CssComponents/Util";
+import { flex, media } from "../CssComponents/Util";
 
 const Box = styled.section`
   max-height: calc(var(--first-fibo) / 2);
@@ -16,6 +16,33 @@ const Box = styled.section`
   padding: 0 1rem;
   margin-right: 0.2rem;
   cursor: default;
+  ${media(
+    {
+      "min-width": "xs",
+      "max-width": "830px",
+    },
+    css`
+      grid-column-start: 4;
+      grid-column-end: 14;
+      grid-row-start: 2;
+      grid-row-end: 5;
+    `
+  )}
+
+  ${media(
+    {
+      "min-width": "xs",
+      "max-width": "620px",
+    },
+    css`
+      position: absolute;
+      bottom: calc(var(--first-fibo) + 1rem);
+      width: 90%;
+      min-height: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+    `
+  )}
 `;
 
 const Item = styled.span`
