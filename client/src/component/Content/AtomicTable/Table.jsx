@@ -55,6 +55,8 @@ const FreeSpace = styled.div`
 
 export default class Table extends Component {
   state = {
+    cols: 19,
+    rows: 9,
     atoms: null,
   };
 
@@ -67,7 +69,11 @@ export default class Table extends Component {
           return <Atom key={prop.name} {...prop} />;
         });
 
-        this.setState({ atoms: data });
+        this.setState({
+          atoms: data,
+          cols: this.state.cols,
+          rows: this.state.rows,
+        });
       })
       .catch((e) => {
         console.log(e.title || e);
@@ -98,38 +104,25 @@ export default class Table extends Component {
   }
 
   render() {
+    const Cols = [];
+    for (let i = 1; i < this.state.cols; i++) {
+      Cols.push(<Col col={i + 1} children={i} key={`col-${i}`} />);
+    }
+
+    const Rows = [];
+    for (let i = 1; i < this.state.rows; i++) {
+      Rows.push(
+        <Row className="row" row={i + 1} children={i} key={`row-${i}`} />
+      );
+    }
+
     return (
       <section className="table">
         {/* columns: */}
-        <Col col="2">1</Col>
-        <Col col="3">2</Col>
-        <Col col="4">3</Col>
-        <Col col="5">4</Col>
-        <Col col="6">5</Col>
-        <Col col="7">6</Col>
-        <Col col="8">7</Col>
-        <Col col="9">8</Col>
-        <Col col="10">9</Col>
-        <Col col="11">10</Col>
-        <Col col="12">11</Col>
-        <Col col="13">12</Col>
-        <Col col="14">13</Col>
-        <Col col="15">14</Col>
-        <Col col="16">15</Col>
-        <Col col="17">16</Col>
-        <Col col="18">17</Col>
-        <Col col="19">18</Col>
+        {Cols}
 
         {/* rows: */}
-        <Row row="2">1</Row>
-        <Row row="3">2</Row>
-        <Row row="4">3</Row>
-        <Row row="5">4</Row>
-        <Row row="6">5</Row>
-        <Row row="7">6</Row>
-        <Row row="8">7</Row>
-        <Row row="9">8</Row>
-        <Row row="10">9</Row>
+        {Rows}
 
         <FreeSpace />
         <Categories />
