@@ -39,6 +39,23 @@ const Category = styled.section`
       margin: 0.2rem 0;
     `
   )}
+
+  ${media(
+    {
+      "min-width": "xs",
+      "max-width": "510px",
+    },
+    css`
+      max-height: 50vh;
+      bottom: calc(var(--first-fibo) * 2.5 + 1rem);
+      width: 90%;
+      height: calc(var(--first-fibo) * 4);
+
+      ${Name} {
+        display: none;
+      }
+    `
+  )}
 `;
 
 const Case = styled.div`
