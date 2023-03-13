@@ -37,7 +37,6 @@ export default function useSearch(option, single = true) {
     el.classList.remove("hide");
   } else {
     const els = document.querySelectorAll(query);
-    console.log(els);
 
     data = Array.from(els).map((el) => {
       el.classList.remove("hide");
