@@ -3,7 +3,7 @@ main {
   min-height: calc(var(--first-fibo) * 6);
 
   // in phone:
-  @include media("xs", "md") {
+  @include media("xs", "lg") {
     min-height: calc(var(--first-fibo) * 11);
   }
 
