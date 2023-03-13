@@ -45,6 +45,10 @@ const AtomCel = styled.div.attrs((props) => ({
     filter: blur(5px);
     background-color: ${(props) => props.color.darken(0.2)};
   }
+
+  &.active {
+    border: 3px solid ${(props) => props.color.darken(0.7)};
+  }
 `;
 
 export default function Atom(props) {
