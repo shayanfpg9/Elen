@@ -55,7 +55,7 @@ const AtomCel = styled.div.attrs((props) => ({
   ${media(
     {
       "min-width": "xs",
-      "max-width": "md",
+      "max-width": "719px",
     },
     css`
       grid-row: ${(props) => props.number};
