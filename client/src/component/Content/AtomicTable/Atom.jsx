@@ -1,6 +1,6 @@
 import { mix } from "chroma-js";
 import styled, { css } from "styled-components";
-import { colors } from '../CssComponents/Util';
+import { colors, flex } from "../CssComponents/Util";
 
 //style of AtomCles
 const AtomCel = styled.div.attrs((props) => ({
@@ -26,6 +26,8 @@ const AtomCel = styled.div.attrs((props) => ({
           grid-column: ${(props) => props.position[0] + 1};
         `};
   transition: all 0.5s var(--animation);
+
+  ${flex}
 
   &,
   & * {
@@ -79,8 +81,10 @@ export default function Atom(props) {
       color={color}
       className="Atom"
     >
-      <sub>{props.number}</sub>
-      {props.symbol}
+      <span>
+        <sub>{props.number}</sub>
+        {props.symbol}
+      </span>
     </AtomCel>
   );
 }
