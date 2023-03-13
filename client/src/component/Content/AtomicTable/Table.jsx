@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Component } from "react";
 import styled from "styled-components";
+import { useSearch } from "../../Hook/hooks";
 import Atom from "./Atom";
 import Categories from "./Categories";
 import Phase from "./Phase";
@@ -71,6 +72,29 @@ export default class Table extends Component {
       .catch((e) => {
         console.log(e.title || e);
       });
+  }
+
+  componentDidUpdate() {
+    //note: useSearch isn't a valid hook and is just a Js function but we use it as a hook
+    document.querySelectorAll(".phase__item, .category__item").forEach((el) => {
+      const Event = () => {
+        const prop = el?.dataset?.phase ? "phase" : "category";
+        useSearch(
+          {
+            [prop]: el.dataset[prop],
+          },
+          false
+        );
+      };
+
+      el.addEventListener("mouseenter", Event);
+      el.addEventListener("mousemove", Event);
+      el.addEventListener("mouseleave", () => {
+        document.querySelectorAll(".Atom").forEach((el) => {
+          el.classList.remove("hide");
+        });
+      });
+    });
   }
 
   render() {
