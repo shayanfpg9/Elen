@@ -91,7 +91,7 @@ export default class Table extends Component {
       el.addEventListener("mousemove", Event);
       el.addEventListener("mouseleave", () => {
         document.querySelectorAll(".Atom").forEach((el) => {
-          el.classList.remove("hide");
+          el.classList.remove("hide", "active");
         });
       });
     });
