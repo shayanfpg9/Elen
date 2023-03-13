@@ -1,10 +1,11 @@
 import axios from "axios";
 import { Component } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useSearch } from "../../Hook/hooks";
 import Atom from "./Atom";
 import Categories from "./Categories";
 import Phase from "./Phase";
+import { media } from "../CssComponents/Util";
 
 //row and cols same styles
 const RowCol = styled.span`
@@ -51,6 +52,16 @@ const FreeSpace = styled.div`
     transform: translateX(-50%);
     border-radius: 1rem;
   }
+
+  ${media(
+    {
+      "min-width": "xs",
+      "max-width": "830px",
+    },
+    css`
+      display: none;
+    `
+  )}
 `;
 
 export default class Table extends Component {
@@ -59,6 +70,16 @@ export default class Table extends Component {
     rows: 9,
     atoms: null,
   };
+
+  ResizeHandler() {
+    if (window.innerWidth <= 720) {
+      this.setState({
+        atoms: this.state.atoms,
+        cols: 0,
+        rows: 0,
+      });
+    }
+  }
 
   componentDidMount() {
     //get datas with axios
@@ -78,6 +99,9 @@ export default class Table extends Component {
       .catch((e) => {
         console.log(e.title || e);
       });
+
+    this.ResizeHandler();
+    window?.addEventListener("resize", this.ResizeHandler);
   }
 
   componentDidUpdate() {
