@@ -25,7 +25,7 @@ const AtomCel = styled.div.attrs((props) => ({
           grid-row: ${(props) => props.position[1] + 1};
           grid-column: ${(props) => props.position[0] + 1};
         `};
-  transition: all 1s var(--animation);
+  transition: all 0.5s var(--animation);
 
   &,
   & * {
