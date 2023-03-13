@@ -1,3 +1,4 @@
+import { mix } from "chroma-js";
 import styled, { css } from "styled-components";
 import { colors } from "./Categories";
 
@@ -9,10 +10,7 @@ const AtomCel = styled.div.attrs((props) => ({
   min-width: calc(var(--first-fibo) / 2);
   min-height: calc(var(--first-fibo) / 2);
   display: block;
-  background-color: ${(props) =>
-    props.category[0] === "unknown"
-      ? colors[props.category[1].replace("-", "")]
-      : colors[props.category[0].replace("-", "")]};
+  background-color: ${(props) => props.color};
   border-radius: 0.3rem;
   margin: 0.1rem;
   ${(props) =>
@@ -27,11 +25,13 @@ const AtomCel = styled.div.attrs((props) => ({
           grid-row: ${(props) => props.position[1] + 1};
           grid-column: ${(props) => props.position[0] + 1};
         `};
+  transition: all 1s var(--animation);
 
   &,
   & * {
     color: ${(props) =>
-      props.category.includes("transition")
+      props.category.includes("transition") &&
+      !props.category.includes("unknown")
         ? "var(--color-text)"
         : "var(--color-fg)"};
   }
@@ -42,7 +42,8 @@ const AtomCel = styled.div.attrs((props) => ({
   }
 
   &.hide {
-    opacity: 0;
+    filter: blur(5px);
+    background-color: ${(props) => props.color.darken(0.2)};
   }
 `;
 
@@ -56,6 +57,14 @@ export default function Atom(props) {
     }
   });
 
+  const color = mix(
+    category[0] === "unknown"
+      ? colors[category[1].replace("-", "")]
+      : colors[category[0].replace("-", "")],
+    colors.unknown,
+    category.includes("unknown") ? 0.75 : 0
+  );
+
   return (
     <AtomCel
       data-name={props.name}
@@ -63,6 +72,7 @@ export default function Atom(props) {
       position={props.position}
       phase={props.phase}
       category={category}
+      color={color}
       className="Atom"
     >
       {props.symbol}
