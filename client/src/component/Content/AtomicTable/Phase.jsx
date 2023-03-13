@@ -29,16 +29,16 @@ const Item = styled.span`
 
 export default function Phase() {
   return (
-    <Box className="box">
-      <Item phase="solid" className="item">
+    <Box>
+      <Item data-phase="solid" className="phase__item">
         <GiSolidLeaf />
         جامد
       </Item>
-      <Item phase="liquid" className="item">
+      <Item data-phase="liquid" className="phase__item">
         <GiWaterDrop />
         مایع
       </Item>
-      <Item phase="gas" className="item">
+      <Item data-phase="gas" className="phase__item">
         <GiGasPump />
         گاز
       </Item>

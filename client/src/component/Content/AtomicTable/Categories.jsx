@@ -5,8 +5,8 @@ export const colors = {
   "alkaline earth metal": "#FF952E",
   metalloid: "#57C3F8",
   lanthanide: "#FC9FFF",
+  "posttran": "#00833F",
   transition: "#FFF428",
-  "post-transition": "#00833F",
   actinide: "#FC2865",
   unknown: "#262626d6",
   nonmetal: "#3161FF",
@@ -48,7 +48,8 @@ const Case = styled.div`
 `;
 
 const Item = styled.span`
-  background-color: ${(props) => colors[props.name]};
+  background-color: ${(props) =>
+    colors[props["data-category"].replace(/-/g, " ")]};
   height: 100%;
   border-radius: 5px;
   margin: 0 0.1rem;
@@ -58,28 +59,50 @@ const Item = styled.span`
 export default function Categories() {
   return (
     <Category>
-      <Case name="metal">
+      <Case>
         <Name>فلزات</Name>
-        <Item name="alkali metal">فلزات قلیایی</Item>
-        <Item name="alkaline earth metal">فلزات قلیایی خاکی</Item>
-        <Item name="transition" light>
+        <Item className="category__item" data-category="alkali-metal">
+          فلزات قلیایی
+        </Item>
+        <Item className="category__item" data-category="alkaline-earth-metal">
+          فلزات قلیایی خاکی
+        </Item>
+        <Item className="category__item" data-category="transition" light>
           فلزات واسطه
         </Item>
-        <Item name="post-transition">فلزات پس واسطه</Item>
-        <Item name="lanthanide" light>
+        <Item className="category__item" data-category="posttran">
+          فلزات پس واسطه
+        </Item>
+        <Item className="category__item" data-category="lanthanide" light>
           لانتانید ها
         </Item>
-        <Item name="actinide">اکتینید ها</Item>
+        <Item className="category__item" data-category="actinide">
+          اکتینید ها
+        </Item>
       </Case>
-      <Item as={Case} name="metalloid" style={{ height: "80%" }}>
+      <Item
+        className="category__item"
+        as={Case}
+        data-category="metalloid"
+        style={{ height: "80%" }}
+      >
         شبه فلزات
       </Item>
-      <Case name="nometal">
+      <Case>
         <Name>نا فلزات</Name>
-        <Item name="noble gas">گاز های نجیب</Item>
-        <Item name="nonmetal">غیر فلزات</Item>
+        <Item className="category__item" data-category="noble-gas">
+          گاز های نجیب
+        </Item>
+        <Item className="category__item" data-category="nonmetal">
+          غیر فلزات
+        </Item>
       </Case>
-      <Item as={Case} name="unknown" style={{ height: "80%" }}>
+      <Item
+        className="category__item"
+        as={Case}
+        data-category="unknown"
+        style={{ height: "80%" }}
+      >
         ناشناخته ها
       </Item>
     </Category>
