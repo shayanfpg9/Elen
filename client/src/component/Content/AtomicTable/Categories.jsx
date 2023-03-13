@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import flex from "../CssComponents/Flexbox";
-import { colors } from '../CssComponents/Util';
+import { colors } from "../CssComponents/Util";
 
 const Name = styled.span`
   writing-mode: horizontal-tb;
@@ -42,6 +42,7 @@ const Item = styled.span`
   margin: 0 0.1rem;
   color: ${(props) => (props.light ? "var(--color-text)" : "var(--color-fg)")};
   cursor: pointer;
+  padding: 0.2rem 0;
 `;
 
 export default function Categories() {

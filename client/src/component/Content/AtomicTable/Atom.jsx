@@ -38,7 +38,7 @@ const AtomCel = styled.div.attrs((props) => ({
 
   sub {
     font-size: 0.6rem;
-    margin-left: 0.1rem;
+    margin-right: 0.1rem;
   }
 
   &.hide {
