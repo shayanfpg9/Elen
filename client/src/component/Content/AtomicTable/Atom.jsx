@@ -1,6 +1,6 @@
 import { mix } from "chroma-js";
 import styled, { css } from "styled-components";
-import { colors, flex } from "../CssComponents/Util";
+import { colors, flex, media } from "../CssComponents/Util";
 
 //style of AtomCles
 const AtomCel = styled.div.attrs((props) => ({
@@ -51,6 +51,18 @@ const AtomCel = styled.div.attrs((props) => ({
   &.active {
     border: 3px solid ${(props) => props.color.darken(0.7)};
   }
+
+  ${media(
+    {
+      "min-width": "xs",
+      "max-width": "md",
+    },
+    css`
+      grid-row: ${(props) => props.number};
+      border: 3px solid ${(props) => props.color.darken(0.5)};
+      grid-column: 1;
+    `
+  )}
 `;
 
 export default function Atom(props) {
