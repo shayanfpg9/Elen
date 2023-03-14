@@ -1,9 +1,49 @@
 import { useEffect, useRef } from "react";
 import * as bs from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 export default function Menu(props) {
+  const search = () => {};
   const MenuRef = useRef();
   const left = props.status ? 0 : "calc(-1 * var(--menu-width))";
+  const items = [
+    {
+      icon: bs.BsHouseFill,
+      link: {
+        element: Link,
+        props: { to: "/" },
+      },
+      text: "خانه",
+    },
+    {
+      icon: bs.BsTable,
+      link: {
+        element: Link,
+        props: { to: "/table" },
+      },
+      text: "جدول",
+    },
+    {
+      icon: bs.BsGithub,
+      link: {
+        element: "a",
+        props: {
+          href: "https://github.com/shayanfpg9/elen",
+          target: "_blank",
+          rel: "noreferrer",
+        },
+      },
+      text: "گیت‌‌هاب",
+    },
+    {
+      icon: bs.BsBinocularsFill,
+      link: {
+        element: "button",
+        props: { onClick: search },
+      },
+      text: "جست‌و‌جو",
+    },
+  ];
 
   useEffect(() => {
     window.onkeyup = ({ code }) => {
@@ -23,28 +63,20 @@ export default function Menu(props) {
         <bs.BsXLg />
       </i>
 
-      <li className="header__menu-item fibo-1--sq" role="menuitem">
-        <a href="/">
-          <bs.BsHouseFill />
-          خانه
-        </a>
-      </li>
-      <li className="header__menu-item fibo-1--sq" role="menuitem">
-        <a
-          href="https://github.com/shayanfpg9"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <bs.BsGithub />
-          درباره ی من
-        </a>
-      </li>
-      <li className="header__menu-item fibo-2--sq" role="menuitem">
-        <a href="/search">
-          <bs.BsBinocularsFill />
-          جست و جو
-        </a>
-      </li>
+      {items.map((item) => {
+        return (
+          <li
+            className="header__menu-item fibo-1--sq"
+            role="menuitem"
+            key={item.text}
+          >
+            <item.link.element {...item.link.props}>
+              <item.icon />
+              {item.text}
+            </item.link.element>
+          </li>
+        );
+      })}
     </menu>
   );
 }
