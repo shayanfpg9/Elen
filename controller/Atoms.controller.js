@@ -89,15 +89,40 @@ const GetSingle = async (req, res) => {
         const Translating = async (callback) => {
           try {
             await _.keys(TranslateAtom).forEach(async (prop) => {
-              if (prop !== "source") {
+              if (
+                !_.includes(["name", "source"], prop) &&
+                _.isEmpty(TranslateAtom[prop])
+              ) {
                 TranslateAtom[prop] = await translate(_.at(Atom, prop)[0], {
                   to: query.translate,
                 });
               } else {
+                const findTraName = (
+                  await wikipedia(
+                    {
+                      action: "query",
+                      titles: Atom.name,
+                      prop: "langlinks",
+                      lllimit: 500,
+                      format: "json",
+                    },
+                    "en"
+                  )
+                ).data.query.pages;
+
+                findTraName[_.keys(findTraName)[0]]?.langlinks?.forEach(
+                  (obj) => {
+                    if (obj.lang === query.translate) {
+                      //the translated name in google translate has some spelling or meaning problems
+                      TranslateAtom.name = obj["*"];
+                    }
+                  }
+                );
+
                 const { data } = await wikipedia(
                   {
                     action: "query",
-                    titles: Atom.name,
+                    titles: TranslateAtom.name,
                     prop: "langlinks",
                     lllimit: 500,
                     format: "json",
@@ -111,7 +136,7 @@ const GetSingle = async (req, res) => {
                   _.keys(_.at(data, "query.pages")[0])[0]
                 }`;
 
-                TranslateAtom[prop] = source;
+                TranslateAtom.source = source;
               }
 
               if (!_.values(TranslateAtom).includes("")) {
@@ -147,19 +172,7 @@ const GetSingle = async (req, res) => {
         res.json(Atom);
       }
     } else {
-      if (!_.isUndefined(Atom?.fa)) {
-        const WithoutTranslate = _.keys(Atom).map((k) => {
-          if (k !== "fa") {
-            return Atom[k];
-          } else {
-            return null;
-          }
-        });
-
-        res.json(WithoutTranslate);
-      } else {
-        res.json(Atom);
-      }
+      res.json(Atom);
     }
   } catch (e) {
     ManageErrors(res, {
