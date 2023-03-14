@@ -24,7 +24,6 @@ const GetAll = async (req, res) => {
         period: prop.period,
         phase: prop.phase,
         symbol: prop.symbol,
-        TranslatedName: prop.translate ? prop.translate.name : false,
         position: [prop.xpos, prop.ypos],
       };
     });
@@ -96,7 +95,7 @@ const GetSingle = async (req, res) => {
         if (_.isNull(e)) {
           const Retrun = {
             ...Atom._doc,
-            translate: TranslateAtom,
+            fa: TranslateAtom,
           };
 
           //save to the DB:
