@@ -103,6 +103,9 @@ const mongoose = require("mongoose"),
           "image.title": {
             type: "string",
           },
+          source: {
+            type: "string",
+          },
         },
       },
     },
