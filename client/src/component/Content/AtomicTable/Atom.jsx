@@ -101,6 +101,8 @@ export default function Atom(props) {
       phase={props.phase}
       category={category}
       color={color}
+      title={props.name}
+      aria-label={props.name}
       className="Atom"
     >
       <span>

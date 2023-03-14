@@ -19,13 +19,17 @@ const RowCol = styled.span`
 `;
 
 //rows
-const Row = styled(RowCol)`
+const Row = styled(RowCol).attrs({
+  role: "rowheader",
+})`
   margin: 0.1rem 0.5rem;
   grid-row: ${(props) => +props.row};
 `;
 
 //cols
-const Col = styled(RowCol)`
+const Col = styled(RowCol).attrs({
+  role: "columnheader",
+})`
   margin: 0 0.1rem;
   margin-bottom: 1rem;
   grid-column: ${(props) => +props.col};

@@ -76,7 +76,10 @@ const Case = styled.div`
   padding-top: 0.5rem;
 `;
 
-const Item = styled.span`
+const Item = styled.span.attrs((props) => ({
+  title: props.children,
+  "aria-label": props.children,
+}))`
   background-color: ${(props) =>
     colors[props["data-category"].replace(/-/g, " ")]};
   height: 100%;

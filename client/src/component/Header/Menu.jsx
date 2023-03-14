@@ -23,19 +23,23 @@ export default function Menu(props) {
         <bs.BsXLg />
       </i>
 
-      <li className="header__menu-item fibo-1--sq">
+      <li className="header__menu-item fibo-1--sq" role="menuitem">
         <a href="/">
           <bs.BsHouseFill />
           خانه
         </a>
       </li>
-      <li className="header__menu-item fibo-1--sq">
-        <a href="https://github.com/shayanfpg9" target="_blank">
+      <li className="header__menu-item fibo-1--sq" role="menuitem">
+        <a
+          href="https://github.com/shayanfpg9"
+          target="_blank"
+          rel="noreferrer"
+        >
           <bs.BsGithub />
           درباره ی من
         </a>
       </li>
-      <li className="header__menu-item fibo-2--sq">
+      <li className="header__menu-item fibo-2--sq" role="menuitem">
         <a href="/search">
           <bs.BsBinocularsFill />
           جست و جو

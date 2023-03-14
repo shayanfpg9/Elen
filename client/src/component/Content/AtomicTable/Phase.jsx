@@ -39,7 +39,10 @@ const Box = styled.section`
   )}
 `;
 
-const Item = styled.span`
+const Item = styled.span.attrs((props) => ({
+  title: props.children[1],
+  "aria-label": props.children[1],
+}))`
   color: var(--color-main);
   font-size: 1rem;
   cursor: pointer;
