@@ -1,9 +1,10 @@
 import { mix } from "chroma-js";
+import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { colors, flex, media } from "../CssComponents/Util";
 
 //style of AtomCles
-const AtomCel = styled.div.attrs((props) => ({
+const AtomCel = styled(Link).attrs((props) => ({
   "data-category": props.category.join(" , "),
   "data-phase": props.phase.toLowerCase(),
 }))`
@@ -13,6 +14,7 @@ const AtomCel = styled.div.attrs((props) => ({
   background-color: ${(props) => props.color};
   border-radius: 0.3rem;
   margin: 0.1rem;
+  text-decoration: none;
   ${(props) =>
     (props.number >= 57 && props.number <= 71) ||
     (props.number >= 89 && props.number <= 103)
@@ -48,7 +50,14 @@ const AtomCel = styled.div.attrs((props) => ({
     background-color: ${(props) => props.color.darken(0.2)};
   }
 
-  &.active {
+  &:hover {
+    transform: translateY(-0.5rem);
+    backdrop-filter: blur(2px);
+    box-shadow: 0px 0px 10px #fff;
+  }
+
+  &.active,
+  &:hover {
     border: 3px solid ${(props) => props.color.darken(0.7)};
   }
 
@@ -85,6 +94,7 @@ export default function Atom(props) {
 
   return (
     <AtomCel
+      to={`/table/${props.name}`}
       data-name={props.name}
       number={props.number}
       position={props.position}
