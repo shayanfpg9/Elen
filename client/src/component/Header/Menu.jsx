@@ -68,6 +68,7 @@ export default function Menu(props) {
           <li
             className="header__menu-item fibo-1--sq"
             role="menuitem"
+            onClick={props.function}
             key={item.text}
           >
             <item.link.element {...item.link.props}>
