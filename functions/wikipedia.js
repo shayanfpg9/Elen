@@ -9,7 +9,11 @@ async function wikipedia(options, lang = "en") {
     query.push(`${i === 0 ? "?" : "&"}${k}=${options[k]}`);
   });
 
-  return await axios.get(url + query.join(""));
+  try {
+    return await axios.get(url + query.join(""));
+  } catch (e) {
+    return undefined;
+  }
 }
 
 module.exports = wikipedia;
