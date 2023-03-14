@@ -85,7 +85,7 @@
         bottom-right-radius: 2rem;
         top-right-radius: 2rem;
       }
-      background-color: rgba(map-get($MainColorSassVar, "fg"), 0.8);
+      background-color: rgba(var(--color-fg-rgb), 0.8);
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
 
@@ -96,7 +96,7 @@
 
       @include media("md", "xl") {
         --menu-width: calc(5 * var(--first-fibo) + 2rem);
-        box-shadow: 5px 0px 20px 9px rgba(map-get($MainColorSassVar, "fg"), 0.4);
+        box-shadow: 5px 0px 20px 9px rgba(var(--color-fg-rgb), 0.4);
       }
 
       @include media("xs", "md") {

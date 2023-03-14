@@ -1,17 +1,39 @@
 $colors: (
   light: (
-    "fg": #f4f1de,
-    "text": #3d405b,
-    "bg": #f2cc8f,
+    "fg": (
+      244,
+      241,
+      222,
+    ),
+    "text": (
+      61,
+      64,
+      91,
+    ),
+    "bg": (
+      242,
+      204,
+      143,
+    ),
   ),
   dark: (
-    "bg": #264653,
-    "fg": #2a9d8f,
-    "text": #e9c46a,
+    "bg": (
+      38,
+      70,
+      83,
+    ),
+    "fg": (
+      42,
+      157,
+      143,
+    ),
+    "text": (
+      233,
+      196,
+      106,
+    ),
   ),
 );
-
-$MainColorSassVar: map-get($colors, "light");
 
 //size variable:
 $breakpoints: (
@@ -27,16 +49,17 @@ $breakpoints: (
   //theme:
   $theme: light;
 
-//   @media (prefers-color-scheme: dark) {
-//     $theme: dark;
-//     $MainColorSassVar: map-get($colors, "dark");
-//   }
+  //   @media (prefers-color-scheme: dark) {
+  //     $theme: dark;
+  //     $MainColorSassVar: map-get($colors, "dark");
+  //   }
 
   //make color vars:
   @each $name, $code in map-get($colors, $theme) {
-    --color-#{$name}: #{$code};
+    --color-#{$name}-rgb: #{$code};
+    --color-#{$name}: rgb(#{$code});
   }
 
   //animation:
-  --animation: cubic-bezier(.78,.13,.12,.81);
+  --animation: cubic-bezier(0.78, 0.13, 0.12, 0.81);
 }

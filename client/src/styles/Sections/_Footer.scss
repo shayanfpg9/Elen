@@ -6,7 +6,7 @@
     top-right-radius: 2rem;
     top-left-radius: 2rem;
   }
-  box-shadow: 0px -5px 15px rgba(map-get($MainColorSassVar, "bg"), 0.8);
+  box-shadow: 0px -5px 15px rgba(var(--color-bg-rgb), 0.8);
   direction: ltr;
   word-spacing: 0.1rem;
   overflow: visible;
@@ -25,7 +25,7 @@
   &__ {
     &icon-- {
       &cup * {
-        color: lighten(complement(map-get($MainColorSassVar, "text")), 10%);
+        color: var(--color-text);
         font-size: 1.2rem;
       }
 
