@@ -79,7 +79,7 @@ const mongoose = require("mongoose"),
           },
         },
       },
-      translate: {
+      Fa: {
         type: "object",
         properties: {
           name: {
