@@ -38,6 +38,17 @@ const AtomCel = styled(Link).attrs((props) => ({
       !props.category.includes("unknown")
         ? "var(--color-text)"
         : "var(--color-fg)"};
+
+    ${media(
+      { "prefers-color-scheme": "dark" },
+      css`
+        color: ${(props) =>
+          props.category.includes("transition") &&
+          !props.category.includes("unknown")
+            ? "var(--color-fg)"
+            : "var(--color-text)"};
+      `
+    )}
   }
 
   sub {
@@ -53,7 +64,7 @@ const AtomCel = styled(Link).attrs((props) => ({
   &:hover {
     transform: translateY(-0.5rem);
     backdrop-filter: blur(2px);
-    box-shadow: 0px 0px 10px #fff;
+    box-shadow: 0px 0px 10px var(--color-bg);
   }
 
   &.active,

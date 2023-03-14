@@ -43,9 +43,13 @@ const Item = styled.span.attrs((props) => ({
   title: props.children[1],
   "aria-label": props.children[1],
 }))`
-  color: var(--color-main);
   font-size: 1rem;
   cursor: pointer;
+
+  &,
+  & * {
+    color: var(--color-text);
+  }
 
   > svg {
     width: 1rem;

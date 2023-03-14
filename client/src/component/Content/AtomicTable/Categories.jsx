@@ -88,6 +88,14 @@ const Item = styled.span.attrs((props) => ({
   color: ${(props) => (props.light ? "var(--color-text)" : "var(--color-fg)")};
   cursor: pointer;
   padding: 0.2rem 0;
+
+  ${media(
+    { "prefers-color-scheme": "dark" },
+    css`
+      color: ${(props) =>
+        !props.light ? "var(--color-text)" : "var(--color-fg)"};
+    `
+  )}
 `;
 
 export default function Categories() {
