@@ -41,6 +41,8 @@ const GetAll = async (req, res) => {
 };
 
 const GetSingle = async (req, res) => {
+  const query = req.query;
+
   try {
     const Atom = (
       await Atoms.find({
@@ -48,67 +50,85 @@ const GetSingle = async (req, res) => {
       })
     )[0];
 
-    //Obj for translation properties:
-    let TranslateAtom = {};
+    if (!_.isUndefined(query?.translate)) {
+      //Obj for translation properties:
+      let TranslateAtom = {};
 
-    [
-      "name",
-      "appearance",
-      "category",
-      "discovered_by",
-      "phase",
-      "summary",
-      "image.title",
-    ].forEach((p) => {
-      if (!_.isNull(_.at(Atom, p)[0])) {
-        TranslateAtom[p] = "";
-      }
-    });
-
-    if (
-      //checking the existence of translation in database for this atom:
-      _.isUndefined(Atom.translate) ||
-      !_.isNull(
-        Object.values(Atom.translate)
-          .join("")
-          .match(/null|object/g)
-      )
-    ) {
-      //Translating function:
-      const Translating = async (callback) => {
-        try {
-          await _.keys(TranslateAtom).forEach(async (prop) => {
-            TranslateAtom[prop] = await translate(_.at(Atom, prop)[0], {
-              to: "fa",
-            });
-
-            if (!_.values(TranslateAtom).includes("")) {
-              callback(null);
-            }
-          });
-        } catch (e) {
-          callback(e);
-        }
-      };
-
-      Translating((e) => {
-        if (_.isNull(e)) {
-          const Retrun = {
-            ...Atom._doc,
-            fa: TranslateAtom,
-          };
-
-          //save to the DB:
-          Atom.updateOne(Retrun).then(() => {
-            /* eslint no-console: 0 */
-            console.log("translated added");
-          });
-
-          res.json(Retrun);
+      [
+        "name",
+        "appearance",
+        "category",
+        "discovered_by",
+        "phase",
+        "summary",
+        "image.title",
+      ].forEach((p) => {
+        if (!_.isNull(_.at(Atom, p)[0])) {
+          TranslateAtom[p] = "";
         }
       });
+
+      if (
+        //checking the existence of translation in database for this atom:
+        _.isUndefined(Atom?.fa) ||
+        !_.isNull(
+          Object.values(Atom.fa)
+            .join("")
+            .match(/null|object/g)
+        )
+      ) {
+        //Translating function:
+        const Translating = async (callback) => {
+          try {
+            await _.keys(TranslateAtom).forEach(async (prop) => {
+              TranslateAtom[prop] = await translate(_.at(Atom, prop)[0], {
+                to: query.translate,
+              });
+
+              if (!_.values(TranslateAtom).includes("")) {
+                callback(null);
+              }
+            });
+          } catch (e) {
+            callback(e);
+          }
+        };
+
+        Translating((e) => {
+          if (_.isNull(e)) {
+            const Retrun = {
+              ...Atom._doc,
+              [query.translate]: TranslateAtom,
+            };
+
+            //save to the DB:
+            if (query.translate === "fa") {
+              Atom.updateOne(Retrun).then(() => {
+                /* eslint no-console: 0 */
+                console.log("translated added");
+              });
+            }
+
+            res.json(Retrun);
+          }
+        });
+      } else {
+        res.json(Atom);
+      }
     } else {
-      res.json(Atom);
+      if (!_.isUndefined(Atom?.fa)) {
+        const WithoutTranslate = _.keys(Atom).map((k) => {
+          if (k !== "fa") {
+            return Atom[k];
+          } else {
+            return null;
+          }
+        });
+
+        res.json(WithoutTranslate);
+      } else {
+        res.json(Atom);
+      }
     }
   } catch (e) {
     ManageErrors(res, {
