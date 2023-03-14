@@ -3,7 +3,7 @@
     display: grid;
     grid-template: {
       columns: auto auto;
-      rows: auto;
+      rows: auto auto;
     }
     padding: 0.5rem;
 
@@ -13,6 +13,10 @@
     }
   }
 
+  @include media("xl") {
+    font-size: 1.5rem;
+  }
+
   &__ {
     &summary {
       min-width: 50vw;
@@ -20,8 +24,8 @@
     }
 
     &image img {
-      height: 100%;
-      width: 100%;
+      height: calc(var(--first-fibo) * 5);
+      width: calc(var(--first-fibo) * 5);
       border-radius: 1rem;
     }
 
@@ -30,8 +34,8 @@
       overflow: visible;
 
       img {
-        height: 75%;
-        width: 75%;
+        height: calc(var(--first-fibo) * 5);
+        width: calc(var(--first-fibo) * 5);
         border-radius: 1rem;
       }
     }
@@ -44,8 +48,8 @@
       background-color: var(--color-text);
       margin: {
         block: {
-          start: 0.5em;
-          end: 0.5em;
+          start: 1.5em;
+          end: 1.5em;
         }
         inline: {
           start: auto;
@@ -71,15 +75,60 @@
     }
 
     &close {
-      width: 3rem;
-      height: 3rem;
+      width: var(--first-fibo);
+      height: var(--first-fibo);
       position: absolute;
       top: 0;
-      right: 0;
-      margin-bottom: 1rem;
+      left: 0;
+      margin: 1rem 1rem;
       z-index: 10;
       background-color: var(--color-bg);
       border-radius: 100%;
+    }
+  }
+
+  @include media("xs", 660) {
+    section {
+      grid-template: {
+        columns: auto;
+        rows: auto auto auto;
+      }
+    }
+
+    &__ {
+      &model,
+      &image,
+      &summary {
+        grid-column: 1;
+      }
+
+      &model {
+        grid-row: 3;
+      }
+
+      &image {
+        grid-row: 2;
+      }
+
+      &summary::after {
+        content: "";
+        display: block;
+        width: 75%;
+        height: 0.25rem;
+        border-bottom: 1px solid #000;
+        margin: {
+          block: {
+            start: 1.5em;
+            end: 1.5em;
+          }
+          inline: {
+            start: auto;
+            end: auto;
+          }
+        }
+        background-color: var(--color-text);
+        border-radius: 1rem;
+      }
     }
   }
 }
