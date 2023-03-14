@@ -1,6 +1,7 @@
 const Atoms = require("../model/Atoms.model");
 const { translate } = require("free-translate");
 const _ = require("lodash");
+const wikipedia = require("../functions/wikipedia");
 
 const GetAll = async (req, res) => {
   try {
@@ -62,28 +63,56 @@ const GetSingle = async (req, res) => {
         "phase",
         "summary",
         "image.title",
+        "source",
       ].forEach((p) => {
         if (!_.isNull(_.at(Atom, p)[0])) {
           TranslateAtom[p] = "";
         }
       });
 
-      if (
+      let ShouldTranslate = true;
+
+      if (query.translate === "fa") {
         //checking the existence of translation in database for this atom:
-        _.isUndefined(Atom?.fa) ||
-        !_.isNull(
-          Object.values(Atom.fa)
-            .join("")
-            .match(/null|object/g)
-        )
-      ) {
+        ShouldTranslate =
+          _.isUndefined(Atom?.fa) ||
+          !_.isNull(
+            Object.values(Atom?.fa)
+              .join("")
+              .match(/null|object/g)
+          ) ||
+          (!_.isUndefined(query.refresh) && query.refresh);
+      }
+
+      if (ShouldTranslate) {
         //Translating function:
         const Translating = async (callback) => {
           try {
             await _.keys(TranslateAtom).forEach(async (prop) => {
-              TranslateAtom[prop] = await translate(_.at(Atom, prop)[0], {
-                to: query.translate,
-              });
+              if (prop !== "source") {
+                TranslateAtom[prop] = await translate(_.at(Atom, prop)[0], {
+                  to: query.translate,
+                });
+              } else {
+                const { data } = await wikipedia(
+                  {
+                    action: "query",
+                    titles: Atom.name,
+                    prop: "langlinks",
+                    lllimit: 500,
+                    format: "json",
+                  },
+                  query.translate
+                );
+
+                const source = `https://${
+                  query.translate
+                }.wikipedia.com/w/index.php?curid=${
+                  _.keys(_.at(data, "query.pages")[0])[0]
+                }`;
+
+                TranslateAtom[prop] = source;
+              }
 
               if (!_.values(TranslateAtom).includes("")) {
                 callback(null);
@@ -108,6 +137,8 @@ const GetSingle = async (req, res) => {
                 console.log("translated added");
               });
             }
+            /* eslint no-console: 0 */
+            console.log(`translated to ${query.translate}`);
 
             res.json(Retrun);
           }
