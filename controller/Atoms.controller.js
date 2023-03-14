@@ -51,7 +51,9 @@ const GetSingle = async (req, res) => {
       })
     )[0];
 
-    if (!_.isUndefined(query?.translate)) {
+    if (!Atom) {
+      throw "Atom name is incorrect";
+    } else if (!_.isUndefined(query?.translate)) {
       //Obj for translation properties:
       let TranslateAtom = {};
 
@@ -87,65 +89,68 @@ const GetSingle = async (req, res) => {
       if (ShouldTranslate) {
         //Translating function:
         const Translating = async (callback) => {
-          try {
-            await _.keys(TranslateAtom).forEach(async (prop) => {
-              if (
-                !_.includes(["name", "source"], prop) &&
-                _.isEmpty(TranslateAtom[prop])
-              ) {
-                TranslateAtom[prop] = await translate(_.at(Atom, prop)[0], {
-                  to: query.translate,
-                });
-              } else {
-                const findTraName = (
-                  await wikipedia(
+          await _.keys(TranslateAtom).forEach(async (prop) => {
+            try {
+              if (_.isEmpty(TranslateAtom[prop])) {
+                if (!_.includes(["name", "source"], prop)) {
+                  TranslateAtom[prop] = await translate(_.at(Atom, prop)[0], {
+                    to: query.translate,
+                  });
+                } else {
+                  const findTraName = (
+                    await wikipedia(
+                      {
+                        action: "query",
+                        titles: Atom.name,
+                        prop: "langlinks",
+                        lllimit: 500,
+                        format: "json",
+                      },
+                      "en"
+                    )
+                  ).data.query.pages;
+
+                  findTraName[_.keys(findTraName)[0]]?.langlinks?.forEach(
+                    (obj) => {
+                      if (obj.lang === query.translate) {
+                        //the translated name in google translate has some spelling or meaning problems
+                        TranslateAtom.name = obj["*"];
+                      }
+                    }
+                  );
+
+                  const res = await wikipedia(
                     {
                       action: "query",
-                      titles: Atom.name,
+                      titles: TranslateAtom.name,
                       prop: "langlinks",
                       lllimit: 500,
                       format: "json",
                     },
-                    "en"
-                  )
-                ).data.query.pages;
+                    query.translate
+                  );
 
-                findTraName[_.keys(findTraName)[0]]?.langlinks?.forEach(
-                  (obj) => {
-                    if (obj.lang === query.translate) {
-                      //the translated name in google translate has some spelling or meaning problems
-                      TranslateAtom.name = obj["*"];
-                    }
+                  if (!res) {
+                    throw "'translate' parameter is incorrect";
                   }
-                );
 
-                const { data } = await wikipedia(
-                  {
-                    action: "query",
-                    titles: TranslateAtom.name,
-                    prop: "langlinks",
-                    lllimit: 500,
-                    format: "json",
-                  },
-                  query.translate
-                );
+                  const source = `https://${
+                    query.translate
+                  }.wikipedia.com/w/index.php?curid=${
+                    _.keys(_.at(res.data, "query.pages")[0])[0]
+                  }`;
 
-                const source = `https://${
-                  query.translate
-                }.wikipedia.com/w/index.php?curid=${
-                  _.keys(_.at(data, "query.pages")[0])[0]
-                }`;
-
-                TranslateAtom.source = source;
+                  TranslateAtom.source = source;
+                }
               }
+            } catch (e) {
+              callback(e);
+            }
 
-              if (!_.values(TranslateAtom).includes("")) {
-                callback(null);
-              }
-            });
-          } catch (e) {
-            callback(e);
-          }
+            if (!_.values(TranslateAtom).includes("")) {
+              callback(null);
+            }
+          });
         };
 
         Translating((e) => {
@@ -166,6 +171,15 @@ const GetSingle = async (req, res) => {
             console.log(`translated to ${query.translate}`);
 
             res.json(Retrun);
+          } else {
+            ManageErrors(res, {
+              method: "GET",
+              status: 400,
+              action: "Get a single Atom",
+              params: req.params,
+              query,
+              error: e?.errors || e,
+            });
           }
         });
       } else {
@@ -180,6 +194,7 @@ const GetSingle = async (req, res) => {
       status: 404,
       action: "Get a single Atom",
       params: req.params,
+      query,
       error: e?.errors || e,
     });
   }
@@ -187,7 +202,10 @@ const GetSingle = async (req, res) => {
 
 //manage errors:
 function ManageErrors(res, arg) {
-  res.status(arg.status).json(arg);
+  if (_.isUndefined(res?.passed)) {
+    res.passed = true;
+    res.status(arg.status).json(arg);
+  }
 }
 
 module.exports = {
