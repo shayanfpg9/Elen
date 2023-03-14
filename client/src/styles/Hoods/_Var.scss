@@ -47,14 +47,15 @@ $breakpoints: (
 
 :root {
   //theme:
-  $theme: light;
-
   @media (prefers-color-scheme: dark) {
-    $theme: dark;
+    @each $name, $code in map-get($colors, "dark") {
+      --color-#{$name}-rgb: #{$code};
+      --color-#{$name}: rgb(#{$code});
+    }
   }
 
   //make color vars:
-  @each $name, $code in map-get($colors, $theme) {
+  @each $name, $code in map-get($colors, "light") {
     --color-#{$name}-rgb: #{$code};
     --color-#{$name}: rgb(#{$code});
   }
