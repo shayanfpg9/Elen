@@ -1,0 +1,85 @@
+.info {
+  section {
+    display: grid;
+    grid-template: {
+      columns: auto auto;
+      rows: auto;
+    }
+    padding: 0.5rem;
+
+    figure {
+      @include flex();
+      margin: 0.5rem 0;
+    }
+  }
+
+  &__ {
+    &summary {
+      min-width: 50vw;
+      padding: 0 0.5rem;
+    }
+
+    &image img {
+      height: 100%;
+      width: 100%;
+      border-radius: 1rem;
+    }
+
+    &model {
+      grid-column: 2;
+      overflow: visible;
+
+      img {
+        height: 75%;
+        width: 75%;
+        border-radius: 1rem;
+      }
+    }
+
+    &hr {
+      all: unset;
+      display: block;
+      width: 75%;
+      height: 0.25rem;
+      background-color: var(--color-text);
+      margin: {
+        block: {
+          start: 0.5em;
+          end: 0.5em;
+        }
+        inline: {
+          start: auto;
+          end: auto;
+        }
+      }
+      border-radius: 1rem;
+    }
+
+    &read,
+    &close {
+      all: unset;
+      display: inline-block;
+      cursor: pointer;
+      width: 1.5rem;
+      height: 1.5rem;
+
+      svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    &close {
+      width: 3rem;
+      height: 3rem;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-bottom: 1rem;
+      z-index: 10;
+      background-color: var(--color-bg);
+      border-radius: 100%;
+    }
+  }
+}
