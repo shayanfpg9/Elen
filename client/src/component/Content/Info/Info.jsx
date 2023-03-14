@@ -107,9 +107,5 @@ function read(text) {
     speech.voice = window.speechSynthesis.getVoices()[0];
   };
 
-  console.log(speechSynthesis.speaking);
-
-  window.speechSynthesis.speak(speech);
-
-  console.log(speechSynthesis.speaking);
+  if (!speechSynthesis.speaking) window.speechSynthesis.speak(speech);
 }
