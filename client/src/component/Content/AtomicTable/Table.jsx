@@ -76,7 +76,7 @@ export default class Table extends Component {
     atoms: null,
   };
 
-  async componentDidMount() {
+  GetDatas = async () => {
     this.props.loaded.show();
 
     //get datas with axios
@@ -97,9 +97,13 @@ export default class Table extends Component {
       cols: this.state.cols,
       rows: this.state.rows,
     });
+  };
+
+  async componentDidMount() {
+    await this.GetDatas();
   }
 
-  componentDidUpdate() {
+  async componentDidUpdate() {
     //note: useSearch isn't a valid hook and is just a Js function but we use it as a hook
     document.querySelectorAll(".phase__item, .category__item").forEach((el) => {
       const Event = () => {
@@ -120,6 +124,11 @@ export default class Table extends Component {
         });
       });
     });
+
+    if (this.context[0]) {
+      this.context[1](false);
+      await this.GetDatas();
+    }
   }
 
   render() {

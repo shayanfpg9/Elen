@@ -1,37 +1,43 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BiX } from "react-icons/bi";
 import _ from "lodash";
 import { GiSpeaker } from "react-icons/gi";
+import { Refresh } from "../../Elen";
 
 export default function Info(props) {
   const { atom } = useParams();
   const [info, setInfo] = useState({});
+  const [refresh, setRefresh] = useContext(Refresh);
 
   let unMount = useRef(true);
   const ReadingBtn = useRef();
 
   useEffect(() => {
-    if (unMount.current) {
+    if (unMount.current || refresh) {
       props.loaded.show();
 
       unMount.current = false;
-      axios.get(`/api/atom/${atom}?translate=fa`).then((res) => {
-        setInfo(res.data);
+      axios
+        .get(`/api/atom/${atom}?translate=fa&refresh=${refresh}`)
+        .then((res) => {
+          setInfo(res.data);
 
-        props.loaded.hide();
+          props.loaded.hide();
 
-        setTimeout(() => {
-          props.loaded.remove();
-        }, 600);
-      });
+          setTimeout(() => {
+            props.loaded.remove();
+          }, 600);
+        });
+
+      setRefresh(false);
     }
 
     ReadingBtn.current?.addEventListener("click", () => {
       read(ReadingBtn.current.dataset.word);
     });
-  });
+  }, [atom, props.loaded, setRefresh, refresh]);
 
   if (_.keys(info).length > 0) {
     return (
