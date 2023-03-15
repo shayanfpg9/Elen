@@ -179,7 +179,6 @@ class Table extends Component {
       await this.GetDatas();
     }
 
-    console.log(this.state.theme.name, this.props.Theme.theme);
     if (this.state.theme.name !== this.props.Theme.theme) {
       this.setTheme();
     }
