@@ -5,7 +5,7 @@ import { BiX } from "react-icons/bi";
 import _ from "lodash";
 import { GiSpeaker } from "react-icons/gi";
 
-export default function Info() {
+export default function Info(props) {
   const { atom } = useParams();
   const [info, setInfo] = useState({});
 
@@ -14,9 +14,17 @@ export default function Info() {
 
   useEffect(() => {
     if (unMount.current) {
+      props.loaded.show();
+
       unMount.current = false;
       axios.get(`/api/atom/${atom}?translate=fa`).then((res) => {
         setInfo(res.data);
+
+        props.loaded.hide();
+
+        setTimeout(() => {
+          props.loaded.remove();
+        }, 600);
       });
     }
 
@@ -90,8 +98,6 @@ export default function Info() {
         </section>
       </section>
     );
-  } else {
-    return "loading...";
   }
 }
 

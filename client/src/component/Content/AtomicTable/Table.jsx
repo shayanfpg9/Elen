@@ -6,6 +6,7 @@ import Atom from "./Atom";
 import Categories from "./Categories";
 import Phase from "./Phase";
 import { media } from "../CssComponents/Util";
+import _ from "lodash";
 
 //row and cols same styles
 const RowCol = styled.span`
@@ -76,12 +77,20 @@ export default class Table extends Component {
   };
 
   async componentDidMount() {
+    this.props.loaded.show();
+
     //get datas with axios
     let data = (await axios.get("/api/atom")).data;
 
     data = data.map((prop) => {
       return <Atom key={prop.name} {...prop} />;
     });
+
+    this.props.loaded.hide();
+
+    setTimeout(() => {
+      this.props.loaded.remove();
+    }, 600);
 
     this.setState({
       atoms: data,
@@ -128,21 +137,23 @@ export default class Table extends Component {
       );
     }
 
-    return (
-      <section className="table">
-        {/* columns: */}
-        {Cols}
+    if (!_.isNull(this.state.atoms)) {
+      return (
+        <section className="table">
+          {/* columns: */}
+          {Cols}
 
-        {/* rows: */}
-        {Rows}
+          {/* rows: */}
+          {Rows}
 
-        <FreeSpace />
-        <Categories />
-        <Phase />
+          <FreeSpace />
+          <Categories />
+          <Phase />
 
-        {/* import datas */}
-        {this.state.atoms !== null ? this.state.atoms : ""}
-      </section>
-    );
+          {/* import datas */}
+          {this.state.atoms}
+        </section>
+      );
+    }
   }
 }
