@@ -13,6 +13,10 @@
     transition: 1s all var(--animation);
   }
 
+  .Atom:first-of-type {
+    margin-bottom: 0.5rem;
+  }
+
   @include media("xs", 860) {
     .Atom {
       font-size: 0.8rem !important;
