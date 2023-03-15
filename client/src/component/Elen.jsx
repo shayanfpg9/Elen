@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, createContext } from "react";
 import "../styles/Main.scss";
 import Table from "./Content/AtomicTable/Table";
 import Content from "./Content/Content";
@@ -7,6 +7,10 @@ import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Loader from "./Loader/Loader";
+
+export const Refresh = createContext(null);
+
+Table.contextType = Refresh;
 
 export default class Elen extends Component {
   state = {
@@ -28,21 +32,30 @@ export default class Elen extends Component {
     },
   };
 
+  setRefresh = (value) => {
+    this.setState({
+      refresh: value,
+    });
+  };
+
   render() {
     return (
       <Router>
         {this.state.stop.remove ? "" : <Loader stop={!this.state.stop.show} />}
-        <Header></Header>
-        <Content>
-          <Routes>
-            <Route path="/table" element={<Table loaded={this.loaded} />} />
-            <Route
-              path="/table/:atom"
-              element={<Info loaded={this.loaded} />}
-            />
-          </Routes>
-        </Content>
-        <Footer></Footer>
+
+        <Refresh.Provider value={[this.state.refresh, this.setRefresh]}>
+          <Header></Header>
+          <Content>
+            <Routes>
+              <Route path="/table" element={<Table loaded={this.loaded} />} />
+              <Route
+                path="/table/:atom"
+                element={<Info loaded={this.loaded} />}
+              />
+            </Routes>
+          </Content>
+          <Footer></Footer>
+        </Refresh.Provider>
       </Router>
     );
   }
