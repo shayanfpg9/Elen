@@ -36,19 +36,21 @@ const AtomCel = styled(Link).attrs((props) => ({
     color: ${(props) =>
       props.category.includes("transition") &&
       !props.category.includes("unknown")
-        ? "var(--color-text)"
-        : "var(--color-fg)"};
+        ? props.theme.UnknownTransitionColor?.true
+        : props.theme.UnknownTransitionColor?.false};
 
-    ${media(
-      { "prefers-color-scheme": "dark" },
-      css`
-        color: ${(props) =>
-          props.category.includes("transition") &&
-          !props.category.includes("unknown")
-            ? "var(--color-fg)"
-            : "var(--color-text)"};
-      `
-    )}
+    ${(props) =>
+      props.theme.name === "system" &&
+      media(
+        { "prefers-color-scheme": "dark" },
+        css`
+          color: ${(props) =>
+            props.category.includes("transition") &&
+            !props.category.includes("unknown")
+              ? "var(--color-fg)"
+              : "var(--color-text)"};
+        `
+      )}
   }
 
   sub {

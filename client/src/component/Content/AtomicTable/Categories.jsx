@@ -85,17 +85,22 @@ const Item = styled.span.attrs((props) => ({
   height: 100%;
   border-radius: 5px;
   margin: 0 0.1rem;
-  color: ${(props) => (props.light ? "var(--color-text)" : "var(--color-fg)")};
+  color: ${(props) =>
+    props.light
+      ? props.theme?.CategortItemColor.true
+      : props.theme?.CategortItemColor.false};
   cursor: pointer;
   padding: 0.2rem 0;
 
-  ${media(
-    { "prefers-color-scheme": "dark" },
-    css`
-      color: ${(props) =>
-        !props.light ? "var(--color-text)" : "var(--color-fg)"};
-    `
-  )}
+  ${(props) =>
+    props.theme.name === "system" &&
+    media(
+      { "prefers-color-scheme": "dark" },
+      css`
+        color: ${(props) =>
+          !props.light ? "var(--color-text)" : "var(--color-fg)"};
+      `
+    )}
 `;
 
 export default function Categories() {

@@ -9,6 +9,8 @@
   border-radius: 1rem;
   padding: 0.5rem;
 
+  background-color: rgba(var(--color-text-rgb), 0.2);
+
   section {
     transition: 1s all var(--animation);
   }
@@ -76,8 +78,14 @@
 
     margin-bottom: calc(var(--first-fibo) * 1);
   }
+}
 
+body.system .table {
   @media (prefers-color-scheme: dark) {
     background-color: rgba(var(--color-text-rgb), 0.2);
   }
+}
+
+body.light .table {
+  background-color: transparent !important;
 }
