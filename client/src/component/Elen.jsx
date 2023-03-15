@@ -8,8 +8,7 @@ import Header from "./Header/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Loader from "./Loader/Loader";
 import { RefreshContext } from "./Context/Refresh";
-
-Table.contextType = RefreshContext;
+import { LoadedContext } from "./Context/Loaded";
 
 export default class Elen extends Component {
   state = {
@@ -22,9 +21,10 @@ export default class Elen extends Component {
   loaded = {
     hide: () => {
       this.setState({ stop: { show: false } });
-    },
-    remove: () => {
-      this.setState({ stop: { remove: true } });
+
+      setTimeout(() => {
+        this.setState({ stop: { remove: true } });
+      }, 600);
     },
     show: () => {
       this.setState({ stop: { show: true, remove: false } });
@@ -42,19 +42,26 @@ export default class Elen extends Component {
       <Router>
         {this.state.stop.remove ? "" : <Loader stop={!this.state.stop.show} />}
 
-        <RefreshContext.Provider value={[this.state.refresh, this.setRefresh]}>
-          <Header></Header>
-          <Content>
-            <Routes>
-              <Route path="/table" element={<Table loaded={this.loaded} />} />
-              <Route
-                path="/table/:atom"
-                element={<Info loaded={this.loaded} />}
-              />
-            </Routes>
-          </Content>
-          <Footer></Footer>
-        </RefreshContext.Provider>
+        <LoadedContext.Provider value={{ ...this.loaded }}>
+          <RefreshContext.Provider
+            value={{
+              refresh: this.state.refresh,
+              setRefresh: this.setRefresh,
+            }}
+          >
+            <Header></Header>
+            <Content>
+              <Routes>
+                <Route path="/table" element={<Table />} />
+                <Route
+                  path="/table/:atom"
+                  element={<Info loaded={this.loaded} />}
+                />
+              </Routes>
+            </Content>
+            <Footer></Footer>
+          </RefreshContext.Provider>
+        </LoadedContext.Provider>
       </Router>
     );
   }
