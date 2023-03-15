@@ -7,6 +7,7 @@ import Categories from "./Categories";
 import Phase from "./Phase";
 import { media } from "../CssComponents/Util";
 import _ from "lodash";
+import { WithMultiContext } from "../../HOC/WithMultiContext";
 
 //row and cols same styles
 const RowCol = styled.span`
@@ -69,7 +70,7 @@ const FreeSpace = styled.div`
   )}
 `;
 
-export default class Table extends Component {
+class Table extends Component {
   state = {
     cols: 19,
     rows: 9,
@@ -77,7 +78,7 @@ export default class Table extends Component {
   };
 
   GetDatas = async () => {
-    this.props.loaded.show();
+    this.props.Loaded.show();
 
     //get datas with axios
     let data = (await axios.get("/api/atom")).data;
@@ -86,11 +87,7 @@ export default class Table extends Component {
       return <Atom key={prop.name} {...prop} />;
     });
 
-    this.props.loaded.hide();
-
-    setTimeout(() => {
-      this.props.loaded.remove();
-    }, 600);
+    this.props.Loaded.hide();
 
     this.setState({
       atoms: data,
@@ -125,8 +122,8 @@ export default class Table extends Component {
       });
     });
 
-    if (this.context[0]) {
-      this.context[1](false);
+    if (this.props.Refresh.refresh) {
+      this.props.Refresh.setRefresh(false);
       await this.GetDatas();
     }
   }
@@ -166,3 +163,5 @@ export default class Table extends Component {
     }
   }
 }
+
+export default WithMultiContext(Table, ["Refresh", "Loaded"]);
