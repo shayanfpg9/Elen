@@ -21,7 +21,7 @@ const LoaderContainer = styled.section`
 `;
 
 export default function Loader({ stop }) {
-  document.documentElement.style.overflow = stop ? "hidden" : "visible";
+  document.documentElement.style.overflowY = !stop ? "hidden" : "visible";
 
   const LoaderProps = {
     color: "var(--color-text)",
