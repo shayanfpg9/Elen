@@ -9,6 +9,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Loader from "./Loader/Loader";
 import { RefreshContext } from "./Context/Refresh";
 import { LoadedContext } from "./Context/Loaded";
+import { ThemeContext } from "./Context/Theme";
+import _ from "lodash";
 
 export default class Elen extends Component {
   state = {
@@ -16,7 +18,25 @@ export default class Elen extends Component {
       show: true,
       remove: false,
     },
+    theme: localStorage.getItem("theme-mode"),
   };
+
+  componentDidMount() {
+    document.body.classList.add(this.state.theme);
+
+    if (_.isNull(this.state.theme)) {
+      localStorage.setItem("theme-mode", "system");
+
+      this.setTheme(localStorage.getItem("theme-mode"));
+    }
+
+    window
+      ?.matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        if (this.theme === "system")
+          this.setTheme(e.matches ? "dark" : "light");
+      });
+  }
 
   loaded = {
     hide: () => {
@@ -37,31 +57,53 @@ export default class Elen extends Component {
     });
   };
 
+  setTheme = (theme) => {
+    document.body.classList.remove("dark", "light", "system");
+    document.body.classList.add(theme);
+
+    localStorage.setItem("theme-mode", theme);
+
+    this.setState({
+      theme,
+    });
+  };
+
   render() {
     return (
       <Router>
-        {this.state.stop.remove ? "" : <Loader stop={!this.state.stop.show} />}
+        <ThemeContext.Provider
+          value={{
+            theme: this.state.theme,
+            setTheme: this.setTheme,
+          }}
+        >
+          {this.state.stop.remove ? (
+            ""
+          ) : (
+            <Loader stop={!this.state.stop.show} />
+          )}
 
-        <LoadedContext.Provider value={{ ...this.loaded }}>
-          <RefreshContext.Provider
-            value={{
-              refresh: this.state.refresh,
-              setRefresh: this.setRefresh,
-            }}
-          >
-            <Header></Header>
-            <Content>
-              <Routes>
-                <Route path="/table" element={<Table />} />
-                <Route
-                  path="/table/:atom"
-                  element={<Info loaded={this.loaded} />}
-                />
-              </Routes>
-            </Content>
-            <Footer></Footer>
-          </RefreshContext.Provider>
-        </LoadedContext.Provider>
+          <LoadedContext.Provider value={{ ...this.loaded }}>
+            <RefreshContext.Provider
+              value={{
+                refresh: this.state.refresh,
+                setRefresh: this.setRefresh,
+              }}
+            >
+              <Header></Header>
+              <Content>
+                <Routes>
+                  <Route path="/table" element={<Table />} />
+                  <Route
+                    path="/table/:atom"
+                    element={<Info loaded={this.loaded} />}
+                  />
+                </Routes>
+              </Content>
+              <Footer></Footer>
+            </RefreshContext.Provider>
+          </LoadedContext.Provider>
+        </ThemeContext.Provider>
       </Router>
     );
   }
