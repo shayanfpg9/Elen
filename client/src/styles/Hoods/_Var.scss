@@ -17,9 +17,21 @@ $colors: (
     ),
   ),
   dark: (
-    "fg": (68, 60, 104),
-    "bg": (57, 48, 83),
-    "text": (229, 229, 203),
+    "fg": (
+      68,
+      60,
+      104,
+    ),
+    "bg": (
+      57,
+      48,
+      83,
+    ),
+    "text": (
+      229,
+      229,
+      203,
+    ),
   ),
 );
 
@@ -34,20 +46,47 @@ $breakpoints: (
 );
 
 :root {
-  //theme:
-  @media (prefers-color-scheme: dark) {
+  //animation:
+  --animation: cubic-bezier(0.78, 0.13, 0.12, 0.81);
+}
+
+body {
+  //system theme:
+  &.system {
+    @media (prefers-color-scheme: dark) {
+      @each $name, $code in map-get($colors, "dark") {
+        --color-#{$name}-rgb: #{$code};
+        --color-#{$name}: rgb(#{$code});
+      }
+    }
+
+    @each $name, $code in map-get($colors, "light") {
+      --color-#{$name}-rgb: #{$code};
+      --color-#{$name}: rgb(#{$code});
+    }
+  }
+
+  //light theme:
+  &.light {
+    @each $name, $code in map-get($colors, "light") {
+      --color-#{$name}-rgb: #{$code};
+      --color-#{$name}: rgb(#{$code});
+    }
+  }
+
+  //dark theme:
+  &.dark {
     @each $name, $code in map-get($colors, "dark") {
       --color-#{$name}-rgb: #{$code};
       --color-#{$name}: rgb(#{$code});
     }
   }
 
-  //make color vars:
-  @each $name, $code in map-get($colors, "light") {
-    --color-#{$name}-rgb: #{$code};
-    --color-#{$name}: rgb(#{$code});
+  html,
+  &,
+  & * {
+    transition: 1s ease-in-out {
+      property: color, border-color;
+    }
   }
-
-  //animation:
-  --animation: cubic-bezier(0.78, 0.13, 0.12, 0.81);
 }
