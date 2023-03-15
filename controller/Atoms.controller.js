@@ -83,7 +83,7 @@ const GetSingle = async (req, res) => {
               .join("")
               .match(/null|object/g)
           ) ||
-          (!_.isUndefined(query.refresh) && query.refresh);
+          (!_.isUndefined(query.refresh) && query.refresh == "true");
       }
 
       if (ShouldTranslate) {
