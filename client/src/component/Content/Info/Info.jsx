@@ -5,18 +5,20 @@ import { BiX } from "react-icons/bi";
 import _ from "lodash";
 import { GiSpeaker } from "react-icons/gi";
 import { RefreshContext } from "../../Context/Refresh";
+import { LoadedContext } from "../../Context/Loaded";
 
 export default function Info(props) {
   const { atom } = useParams();
   const [info, setInfo] = useState({});
-  const [refresh, setRefresh] = useContext(RefreshContext);
+  const { refresh, setRefresh } = useContext(RefreshContext);
+  const loaded = useContext(LoadedContext);
 
   let unMount = useRef(true);
   const ReadingBtn = useRef();
 
   useEffect(() => {
     if (unMount.current || refresh) {
-      props.loaded.show();
+      loaded.show();
 
       unMount.current = false;
       axios
@@ -24,11 +26,7 @@ export default function Info(props) {
         .then((res) => {
           setInfo(res.data);
 
-          props.loaded.hide();
-
-          setTimeout(() => {
-            props.loaded.remove();
-          }, 600);
+          loaded.hide();
         });
 
       setRefresh(false);
@@ -37,7 +35,7 @@ export default function Info(props) {
     ReadingBtn.current?.addEventListener("click", () => {
       read(ReadingBtn.current.dataset.word);
     });
-  }, [atom, props.loaded, setRefresh, refresh]);
+  }, [atom, loaded, setRefresh, refresh]);
 
   if (_.keys(info).length > 0) {
     return (
