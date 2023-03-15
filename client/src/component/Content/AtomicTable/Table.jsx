@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Component } from "react";
-import styled, { css } from "styled-components";
+import styled, { css, ThemeProvider } from "styled-components";
 import { useSearch } from "../../Hook/hooks";
 import Atom from "./Atom";
 import Categories from "./Categories";
@@ -75,6 +75,9 @@ class Table extends Component {
     cols: 19,
     rows: 9,
     atoms: null,
+    theme: {
+      name: this.props.Theme.theme,
+    },
   };
 
   GetDatas = async () => {
@@ -96,8 +99,57 @@ class Table extends Component {
     });
   };
 
+  setTheme = () => {
+    const { theme } = this.props.Theme;
+
+    if (theme === "system") {
+      this.setState({
+        theme: {
+          name: this.props.Theme.theme,
+          UnknownTransitionColor: {
+            false: "var(--color-fg)",
+            true: "var(--color-text)",
+          },
+          CategortItemColor: {
+            true: "var(--color-text)",
+            false: "var(--color-fg)",
+          },
+        },
+      });
+    } else if (theme === "dark") {
+      this.setState({
+        theme: {
+          name: this.props.Theme.theme,
+          UnknownTransitionColor: {
+            true: "var(--color-fg)",
+            false: "var(--color-text)",
+          },
+          CategortItemColor: {
+            false: "var(--color-text)",
+            true: "var(--color-fg)",
+          },
+        },
+      });
+    } else if (theme === "light") {
+      this.setState({
+        theme: {
+          name: this.props.Theme.theme,
+          UnknownTransitionColor: {
+            false: "var(--color-fg)",
+            true: "var(--color-text)",
+          },
+          CategortItemColor: {
+            true: "var(--color-text)",
+            false: "var(--color-fg)",
+          },
+        },
+      });
+    }
+  };
+
   async componentDidMount() {
     await this.GetDatas();
+    this.setTheme();
   }
 
   async componentDidUpdate() {
@@ -126,6 +178,11 @@ class Table extends Component {
       this.props.Refresh.setRefresh(false);
       await this.GetDatas();
     }
+
+    console.log(this.state.theme.name, this.props.Theme.theme);
+    if (this.state.theme.name !== this.props.Theme.theme) {
+      this.setTheme();
+    }
   }
 
   render() {
@@ -145,23 +202,25 @@ class Table extends Component {
 
     if (!_.isNull(this.state.atoms)) {
       return (
-        <section className="table">
-          {/* columns: */}
-          {Cols}
+        <ThemeProvider theme={this.state.theme}>
+          <section className="table">
+            {/* columns: */}
+            {Cols}
 
-          {/* rows: */}
-          {Rows}
+            {/* rows: */}
+            {Rows}
 
-          <FreeSpace />
-          <Categories />
-          <Phase />
+            <FreeSpace />
+            <Categories />
+            <Phase />
 
-          {/* import datas */}
-          {this.state.atoms}
-        </section>
+            {/* import datas */}
+            {this.state.atoms}
+          </section>
+        </ThemeProvider>
       );
     }
   }
 }
 
-export default WithMultiContext(Table, ["Refresh", "Loaded"]);
+export default WithMultiContext(Table, ["Refresh", "Theme", "Loaded"]);
