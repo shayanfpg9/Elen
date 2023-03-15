@@ -4,12 +4,12 @@ import { Link, useParams } from "react-router-dom";
 import { BiX } from "react-icons/bi";
 import _ from "lodash";
 import { GiSpeaker } from "react-icons/gi";
-import { Refresh } from "../../Elen";
+import { RefreshContext } from "../../Context/Refresh";
 
 export default function Info(props) {
   const { atom } = useParams();
   const [info, setInfo] = useState({});
-  const [refresh, setRefresh] = useContext(Refresh);
+  const [refresh, setRefresh] = useContext(RefreshContext);
 
   let unMount = useRef(true);
   const ReadingBtn = useRef();

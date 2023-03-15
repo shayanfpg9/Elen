@@ -1,4 +1,4 @@
-import { Component, createContext } from "react";
+import { Component } from "react";
 import "../styles/Main.scss";
 import Table from "./Content/AtomicTable/Table";
 import Content from "./Content/Content";
@@ -7,10 +7,9 @@ import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Loader from "./Loader/Loader";
+import { RefreshContext } from "./Context/Refresh";
 
-export const Refresh = createContext(null);
-
-Table.contextType = Refresh;
+Table.contextType = RefreshContext;
 
 export default class Elen extends Component {
   state = {
@@ -43,7 +42,7 @@ export default class Elen extends Component {
       <Router>
         {this.state.stop.remove ? "" : <Loader stop={!this.state.stop.show} />}
 
-        <Refresh.Provider value={[this.state.refresh, this.setRefresh]}>
+        <RefreshContext.Provider value={[this.state.refresh, this.setRefresh]}>
           <Header></Header>
           <Content>
             <Routes>
@@ -55,7 +54,7 @@ export default class Elen extends Component {
             </Routes>
           </Content>
           <Footer></Footer>
-        </Refresh.Provider>
+        </RefreshContext.Provider>
       </Router>
     );
   }

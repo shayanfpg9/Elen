@@ -1,14 +1,14 @@
 import { useContext, useEffect, useRef } from "react";
 import * as bs from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
-import { Refresh } from "../Elen";
+import { RefreshContext } from "../Context/Refresh";
 
 export default function Menu(props) {
   const search = () => {};
   const MenuRef = useRef();
   const left = props.status ? 0 : "calc(-1 * var(--menu-width))";
   // eslint-disable-next-line
-  const [refresh, setRefresh] = useContext(Refresh);
+  const [refresh, setRefresh] = useContext(RefreshContext);
   const items = [
     {
       icon: bs.BsHouseFill,
