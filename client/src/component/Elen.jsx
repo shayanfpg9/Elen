@@ -61,11 +61,11 @@ export default class Elen extends Component {
     document.body.classList.remove("dark", "light", "system");
     document.body.classList.add(theme);
 
-    localStorage.setItem("theme-mode", theme);
-
     this.setState({
       theme,
     });
+
+    localStorage.setItem("theme-mode", theme);
   };
 
   render() {
