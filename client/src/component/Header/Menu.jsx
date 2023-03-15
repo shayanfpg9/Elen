@@ -7,8 +7,7 @@ export default function Menu(props) {
   const search = () => {};
   const MenuRef = useRef();
   const left = props.status ? 0 : "calc(-1 * var(--menu-width))";
-  // eslint-disable-next-line
-  const [refresh, setRefresh] = useContext(RefreshContext);
+  const { setRefresh } = useContext(RefreshContext);
   const items = [
     {
       icon: bs.BsHouseFill,
