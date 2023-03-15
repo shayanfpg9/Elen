@@ -1,13 +1,16 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import * as bs from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { RefreshContext } from "../Context/Refresh";
+import { ThemeContext } from "../Context/Theme";
 
 export default function Menu(props) {
   const search = () => {};
   const MenuRef = useRef();
   const left = props.status ? 0 : "calc(-1 * var(--menu-width))";
   const { setRefresh } = useContext(RefreshContext);
+  const { theme, setTheme } = useContext(ThemeContext);
+  const [ThemeIcon, setThemeIcon] = useState(<bs.BsFillDropletFill />);
   const items = [
     {
       icon: bs.BsHouseFill,
@@ -43,7 +46,15 @@ export default function Menu(props) {
         props.function();
       }
     };
-  });
+
+    if (theme === "system") {
+      setThemeIcon(<bs.BsFillDropletFill />);
+    } else if (theme === "dark") {
+      setThemeIcon(<bs.BsFillMoonStarsFill />);
+    } else if (theme === "light") {
+      setThemeIcon(<bs.BsFillSunFill />);
+    }
+  }, [setThemeIcon, props, theme]);
 
   const { pathname } = useLocation();
 
@@ -72,15 +83,13 @@ export default function Menu(props) {
         );
       })}
 
-      <li
-        className="header__menu-item fibo-1--sq icons"
-        onClick={props.function}
-      >
+      <li className="header__menu-item fibo-1--sq icons">
         <a
           href="https://github.com/shayanfpg9/elen"
           target="_blank"
           title="گیت‌هاب پروژه"
           rel="noreferrer"
+          onClick={props.function}
         >
           <bs.BsGithub />
         </a>
@@ -90,6 +99,7 @@ export default function Menu(props) {
             type="button"
             title="رفرش اطلاعات"
             onClick={() => {
+              props.function();
               setRefresh(true);
             }}
           >
@@ -98,6 +108,18 @@ export default function Menu(props) {
         ) : (
           ""
         )}
+
+        <button
+          type="button"
+          title="تغییر تم رنگی"
+          onClick={() => {
+            if (theme === "system") setTheme("dark");
+            else if (theme === "dark") setTheme("light");
+            else if (theme === "light") setTheme("system");
+          }}
+        >
+          {ThemeIcon}
+        </button>
       </li>
     </menu>
   );
