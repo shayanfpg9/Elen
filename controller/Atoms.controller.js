@@ -245,6 +245,24 @@ const PostSearch = async (req, res) => {
         AllAtoms = AllAtoms.slice(0, +limit);
       }
 
+      AllAtoms = AllAtoms.map((prop) => {
+        //filter submissions:
+        return {
+          id: prop._id,
+          name: prop.name,
+          category: prop.category,
+          melt: prop.melt,
+          boil: prop.boil,
+          atomic_mass: prop.atomic_mass,
+          number: prop.number,
+          group: prop.group,
+          period: prop.period,
+          phase: prop.phase,
+          symbol: prop.symbol,
+          position: [prop.xpos, prop.ypos],
+        };
+      });
+
       res.json({
         length: OrgLength,
         limit: !isNaN(limit) ? +limit : undefined,
