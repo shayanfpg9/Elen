@@ -253,7 +253,7 @@ const PostSearch = async (req, res) => {
       }
 
       res.json({
-        lenght: OrgLength,
+        length: OrgLength,
         limit: !isNaN(limit) ? +limit : undefined,
         results: [...AllAtoms],
       });
