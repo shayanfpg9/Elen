@@ -203,10 +203,12 @@ const GetSingle = async (req, res) => {
 const PostSearch = async (req, res) => {
   try {
     const { q } = req.body;
-    let Atom;
+    const { limit } = req.query;
+    let AllAtoms;
 
     if (!isNaN(q)) {
-      Atom = await Atoms.find({
+      //q is number **it can be string in the future
+      AllAtoms = await Atoms.find({
         $or: [
           { name: new RegExp(q, "gi") },
           { category: new RegExp(q, "gi") },
@@ -218,13 +220,12 @@ const PostSearch = async (req, res) => {
           { atomic_mass: q },
           { density: q },
           { discovered_by: new RegExp(q, "gi") },
-          {
-            fa: { name: new RegExp(q, "gi") },
-          },
+          { "fa.name": new RegExp(q, "gi") },
+          { "fa.discovered_by": new RegExp(q, "gi") },
         ],
-      });
+      }).sort({ number: 1 });
     } else {
-      Atom = await Atoms.find({
+      AllAtoms = await Atoms.find({
         $or: [
           { name: new RegExp(q, "gi") },
           { category: new RegExp(q, "gi") },
@@ -234,15 +235,20 @@ const PostSearch = async (req, res) => {
           { "fa.name": new RegExp(q, "gi") },
           { "fa.discovered_by": new RegExp(q, "gi") },
         ],
-      });
+      }).sort({ number: 1 });
     }
 
-    if (!Atom.length) {
+    if (!AllAtoms.length) {
       throw "Atom is undefined or not translated to this language";
     } else {
+      if (!_.isUndefined(limit) && !isNaN(limit) && limit < AllAtoms.length) {
+        AllAtoms = AllAtoms.slice(0, +limit);
+      }
+
       res.json({
-        lenght: Atom.length,
-        results: [...Atom],
+        lenght: AllAtoms.length,
+        limit: !isNaN(limit) ? +limit : undefined,
+        results: [...AllAtoms],
       });
     }
   } catch (e) {
@@ -251,6 +257,8 @@ const PostSearch = async (req, res) => {
       status: 404,
       action: "Search to find atom",
       body: req.body,
+      query: req.query,
+      params: req.params,
       error: e?.errors || e,
     });
   }
