@@ -43,8 +43,10 @@
 }
 
 @mixin scroller($size, $bgColor, $sColor) {
-  scrollbar-width: thin;
-  scrollbar-color: $sColor $bgColor;
+  @supports (scrollbar-width: thin) {
+    scrollbar-width: thin;
+    scrollbar-color: $sColor $bgColor;
+  }
 
   &::-webkit-scrollbar {
     @each $key, $val in $size {
