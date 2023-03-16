@@ -1,9 +1,28 @@
 import * as hooks from "../Hook/hooks";
 
-const HTP = (ActionCmponent, Hook) => (props) => {
-  const RunHook = { [Hook]: hooks[Hook]() };
+function GetHook(Hook) {
+  let res;
 
-  return <ActionCmponent {...RunHook} {...props} />;
+  if (typeof Hook === "string") {
+    res = hooks[Hook]();
+  } else {
+    if (Hook?.HookFunc) {
+      res = Hook.HookFunc();
+    }
+
+    if (Hook?.callback) {
+      res = hooks[Hook](Hook.clallback);
+    }
+
+    Hook = Hook.name;
+  }
+
+  return { name: Hook, Hook: res };
+}
+
+const HTP = (ActionCmponent, Hook) => (props) => {
+  const res = GetHook(Hook);
+  return <ActionCmponent {...{ ...{ [res.name]: res.Hook }, ...props }} />;
 };
 
 export function WithHook(ActionCmponent, Hook) {
@@ -12,19 +31,20 @@ export function WithHook(ActionCmponent, Hook) {
   } else if (Hook.length === 1) {
     return HTP(ActionCmponent, Hook[0]);
   } else if (Array.isArray(Hook)) {
-    let result;
+    let Result;
 
     for (let i = 0; i < Hook.length; i++) {
       if (i === 0) {
-        result = HTP(ActionCmponent, Hook[i]);
+        Result = HTP(ActionCmponent, Hook[i]);
       } else {
-        result = (props) => {
-          const RunHook = { [Hook]: hooks[Hook[i]]() };
-          return <result {...{ ...RunHook, ...props }} />;
+        let Returned = HTP(Result, Hook[i]);
+
+        Result = (props) => {
+          return <Returned {...props} />;
         };
       }
     }
 
-    return result;
+    return Result;
   }
 }
