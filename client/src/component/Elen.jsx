@@ -34,7 +34,7 @@ export default class Elen extends Component {
       ?.matchMedia("(prefers-color-scheme: dark)")
       .addEventListener("change", (e) => {
         if (this.theme === "system")
-          this.setTheme(e.matches ? "dark" : "light");
+          this.setTheme("system");
       });
   }
 
