@@ -1,13 +1,13 @@
 import axios from "axios";
 import { Component } from "react";
 import styled, { css, ThemeProvider } from "styled-components";
-import { useSearch } from "../../Hook/hooks";
 import Atom from "./Atom";
 import Categories from "./Categories";
 import Phase from "./Phase";
 import { media } from "../CssComponents/Util";
 import _ from "lodash";
 import { WithMultiContext } from "../../HOC/WithMultiContext";
+import { WithHook } from "../../HOC/WithHooks";
 
 //row and cols same styles
 const RowCol = styled.span`
@@ -150,14 +150,11 @@ class Table extends Component {
   async componentDidMount() {
     await this.GetDatas();
     this.setTheme();
-  }
 
-  async componentDidUpdate() {
-    //note: useSearch isn't a valid hook and is just a Js function but we use it as a hook
     document.querySelectorAll(".phase__item, .category__item").forEach((el) => {
       const Event = () => {
         const prop = el?.dataset?.phase ? "phase" : "category";
-        useSearch(
+        this.props.useSearch[1](
           {
             [prop]: el.dataset[prop],
           },
@@ -173,7 +170,9 @@ class Table extends Component {
         });
       });
     });
+  }
 
+  async componentDidUpdate() {
     if (this.props.Refresh.refresh) {
       this.props.Refresh.setRefresh(false);
       await this.GetDatas();
@@ -222,4 +221,7 @@ class Table extends Component {
   }
 }
 
-export default WithMultiContext(Table, ["Refresh", "Theme", "Loaded"]);
+export default WithHook(
+  WithMultiContext(Table, ["Refresh", "Theme", "Loaded"]),
+  "useSearch"
+);
