@@ -202,26 +202,18 @@ const GetSingle = async (req, res) => {
 
 const PostSearch = async (req, res) => {
   try {
-    const { q } = req.body;
+    let { q } = req.body;
     const { limit } = req.query;
     let AllAtoms;
 
     if (!isNaN(q)) {
-      //q is number **it can be string in the future
       AllAtoms = await Atoms.find({
         $or: [
-          { name: new RegExp(q, "gi") },
-          { category: new RegExp(q, "gi") },
           { number: q },
-          { phase: new RegExp(q, "gi") },
-          { symbol: new RegExp(q, "gi") },
           { boil: q },
           { melt: q },
           { atomic_mass: q },
           { density: q },
-          { discovered_by: new RegExp(q, "gi") },
-          { "fa.name": new RegExp(q, "gi") },
-          { "fa.discovered_by": new RegExp(q, "gi") },
         ],
       }).sort({ number: 1 });
     } else {
@@ -239,6 +231,7 @@ const PostSearch = async (req, res) => {
           { discovered_by: new RegExp(q, "gi") },
           { "fa.name": new RegExp(q, "gi") },
           { "fa.discovered_by": new RegExp(q, "gi") },
+          { "fa.phase": new RegExp(q, "gi") },
         ],
       }).sort({ number: 1 });
     }
