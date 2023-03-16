@@ -2,11 +2,9 @@ import _ from "lodash";
 
 // without any useState because it use in callback and class components
 export default function useSearch(option, single = true) {
-  // search props: Phase, Category, Name
+  // search props: Phase, Category
   if (
-    (_.isUndefined(option?.phase) &&
-      _.isUndefined(option?.category) &&
-      _.isUndefined(option?.name)) ||
+    (_.isUndefined(option?.phase) && _.isUndefined(option?.category)) ||
     _.isUndefined(single)
   ) {
     const error = new Error("you should pass a value");
