@@ -200,6 +200,62 @@ const GetSingle = async (req, res) => {
   }
 };
 
+const PostSearch = async (req, res) => {
+  try {
+    const { q } = req.body;
+    let Atom;
+
+    if (!isNaN(q)) {
+      Atom = await Atoms.find({
+        $or: [
+          { name: new RegExp(q, "gi") },
+          { category: new RegExp(q, "gi") },
+          { number: q },
+          { phase: new RegExp(q, "gi") },
+          { symbol: new RegExp(q, "gi") },
+          { boil: q },
+          { melt: q },
+          { atomic_mass: q },
+          { density: q },
+          { discovered_by: new RegExp(q, "gi") },
+          {
+            fa: { name: new RegExp(q, "gi") },
+          },
+        ],
+      });
+    } else {
+      Atom = await Atoms.find({
+        $or: [
+          { name: new RegExp(q, "gi") },
+          { category: new RegExp(q, "gi") },
+          { phase: new RegExp(q, "gi") },
+          { symbol: new RegExp(q, "gi") },
+          { discovered_by: new RegExp(q, "gi") },
+          { "fa.name": new RegExp(q, "gi") },
+          { "fa.discovered_by": new RegExp(q, "gi") },
+        ],
+      });
+    }
+
+    if (!Atom.length) {
+      throw "Atom is undefined or not translated to this language";
+    } else {
+      res.json({
+        lenght: Atom.length,
+        results: [...Atom],
+      });
+    }
+  } catch (e) {
+    ManageErrors(res, {
+      method: "POST",
+      status: 404,
+      action: "Search to find atom",
+      body: req.body,
+      error: e?.errors || e,
+    });
+  }
+};
+
 //manage errors:
 function ManageErrors(res, arg) {
   if (_.isUndefined(res?.passed)) {
@@ -211,4 +267,5 @@ function ManageErrors(res, arg) {
 module.exports = {
   GetSingle,
   GetAll,
+  PostSearch,
 };
