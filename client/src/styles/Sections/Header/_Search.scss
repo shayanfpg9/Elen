@@ -16,6 +16,8 @@ $rad: 5rem;
 
   box-shadow: 0px 0px 15px rgba(var(--color-fg-rgb), 0.8);
 
+  border: 2px solid var(--color-text);
+
   &:not(.hide) {
     opacity: 1;
   }
