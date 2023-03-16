@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSize } from "../Hook/hooks.jsx";
+import { getSize } from "../funcs/funcs";
 import Menu from "./Menu.jsx";
 import Search from "./Search.jsx";
 import { BsList } from "react-icons/bs";
@@ -36,7 +36,7 @@ export default function Header() {
         />
         <h1 className="header__title">شیمی کده مجازی الن</h1>
 
-        {width >= useSize("xl") ? (
+        {width >= getSize("xl") ? (
           <Menu SearchBoxClick={SearchBoxClick}></Menu>
         ) : (
           <i onClick={MenuBtnClick} className="header__menu-icon">
@@ -52,7 +52,7 @@ export default function Header() {
         />
       )}
 
-      {width < useSize("xl") && (
+      {width < getSize("xl") && (
         <Menu
           status={status && !searchBox}
           function={MenuBtnClick}

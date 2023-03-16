@@ -1,5 +1,4 @@
 import useBreakPoint from "./useBreakPoint";
-import useSearch from "./useSearch"
-import useSize from "./useSize";
+import useSearch from "./useSearch";
 
-export { useSize, useBreakPoint, useSearch };
+export { useBreakPoint, useSearch };

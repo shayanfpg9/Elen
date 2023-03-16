@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { useSize } from "./hooks";
+import { getSize } from "../funcs/funcs";
 
 export default function useBreakPoint(init = "now") {
   const [breakpoint, setBreackpoint] = useState(""),
     [size, setSize] = useState(init),
     sizes = {
-      xxl: useSize("xxl"),
-      xl: useSize("xl"),
-      md: useSize("md"),
-      sm: useSize("sm"),
-      xs: useSize("xs"),
+      xxl: getSize("xxl"),
+      xl: getSize("xl"),
+      md: getSize("md"),
+      sm: getSize("sm"),
+      xs: getSize("xs"),
     };
 
   if (typeof init == "string") {
