@@ -241,12 +241,14 @@ const PostSearch = async (req, res) => {
     if (!AllAtoms.length) {
       throw "Atom is undefined or not translated to this language";
     } else {
+      const OrgLength = AllAtoms.length;
+
       if (!_.isUndefined(limit) && !isNaN(limit) && limit < AllAtoms.length) {
         AllAtoms = AllAtoms.slice(0, +limit);
       }
 
       res.json({
-        lenght: AllAtoms.length,
+        lenght: OrgLength,
         limit: !isNaN(limit) ? +limit : undefined,
         results: [...AllAtoms],
       });
