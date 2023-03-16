@@ -5,7 +5,7 @@ import { RefreshContext } from "../Context/Refresh";
 import { ThemeContext } from "../Context/Theme";
 
 export default function Menu(props) {
-  const search = () => {};
+  const search = props.SearchBoxClick;
   const MenuRef = useRef();
   const left = props.status ? 0 : "calc(-1 * var(--menu-width))";
   const { setRefresh } = useContext(RefreshContext);
