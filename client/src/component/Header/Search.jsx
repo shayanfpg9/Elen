@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { BsXLg } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { isNull } from "lodash";
 import Swal from "sweetalert2";
 
 export default function Search(props) {
@@ -13,35 +14,35 @@ export default function Search(props) {
     props.close();
   };
 
-  const PassSearchRes = () => {
-    const replaced = input.current.value
-      .replace(/[A-Z]|[a-z]|[0-9]|[-_\n\t\s()|/!@#$%^&*+=`~'"]/gi, "")
-      .trim();
-
-    if (replaced.length) {
-      Swal.fire({
-        title: "لطفا از کارکتر های انگلیسی استفاده کنید",
-        text: "احتمال دارد نتیجه ی دلخواه را بدست نیاورید",
-        icon: "warning",
-        cancelButtonText: "ادامه",
-        confirmButtonText: "اصلاح",
-        background: "var(--color-fg)",
-        color: "var(--color-text)",
-        showCancelButton: true,
-        showCloseButton: true,
-      }).then((res) => {
-        if (res.isDismissed && res.dismiss === "cancel") {
-          navigate(`/table?find=${encodeURI(input.current.value)}`);
-          close();
-        }
-      });
-    } else {
-      navigate(`/table?find=${encodeURI(input.current.value)}`);
-      close();
-    }
-  };
-
   useEffect(() => {
+    const PassSearchRes = (value) => {
+      const replaced = value
+        .replace(/[A-Z]|[a-z]|[0-9]|[-_\n\t\s()|/!@#$%^&*+=`~'"]/gi, "")
+        .trim();
+
+      if (replaced.length) {
+        Swal.fire({
+          title: "لطفا از کارکتر های انگلیسی استفاده کنید",
+          text: "احتمال دارد نتیجه ی دلخواه را بدست نیاورید",
+          icon: "warning",
+          cancelButtonText: "ادامه",
+          confirmButtonText: "اصلاح",
+          background: "var(--color-fg)",
+          color: "var(--color-text)",
+          showCancelButton: true,
+          showCloseButton: true,
+        }).then((res) => {
+          if (res.isDismissed && res.dismiss === "cancel") {
+            close();
+            navigate(`/table/find/${encodeURI(value)}`);
+          }
+        });
+      } else {
+        close();
+        navigate(`/table/find/${encodeURI(value)}`);
+      }
+    };
+
     document.documentElement.style.overflowY = "hidden";
 
     searchbox.current.addEventListener("keyup", ({ code }) => {
@@ -52,7 +53,7 @@ export default function Search(props) {
 
     searchbox.current.addEventListener("submit", (e) => {
       e.preventDefault();
-      PassSearchRes();
+      if (!isNull(input.current)) PassSearchRes(input.current.value);
     });
   });
 
@@ -75,7 +76,6 @@ export default function Search(props) {
           role="search"
           className="searchbox__input"
           type="text"
-          name="team"
           placeholder="مشخصات اتم مورد نظر را جست‌وجو کنید"
         />
 

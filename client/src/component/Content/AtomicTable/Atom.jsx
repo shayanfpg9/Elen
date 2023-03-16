@@ -107,7 +107,7 @@ export default function Atom(props) {
 
   return (
     <AtomCel
-      to={`/table/${props.name}`}
+      to={`/atom/${props.name}`}
       data-name={props.name}
       number={props.number}
       position={props.position}
