@@ -47,3 +47,21 @@ body {
     );
   }
 }
+
+.blur {
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(var(---color-text-rgb), 0.3);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  z-index: 12;
+
+  @supports (backdrop-filter: blur(20px)) {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
