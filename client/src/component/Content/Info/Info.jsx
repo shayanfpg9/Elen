@@ -65,7 +65,7 @@ export default function Info(props) {
         <section>
           <div className="info__summary">
             <h4>عدد اتمی: {info.number}</h4>
-            <h4>جرم: {info.atomic_mass}</h4>
+            <h4>جرم / جرم پایدار ترین ایزوتوپ: {info.atomic_mass}</h4>
             <h4>چگالی: {info.density}</h4>
             <br />
             <h4>ظاهر: {info.fa.appearance || "ظاهر خاصی ندارد"}</h4>
