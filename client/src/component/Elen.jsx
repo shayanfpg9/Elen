@@ -33,8 +33,7 @@ export default class Elen extends Component {
     window
       ?.matchMedia("(prefers-color-scheme: dark)")
       .addEventListener("change", (e) => {
-        if (this.theme === "system")
-          this.setTheme("system");
+        if (this.theme === "system") this.setTheme("system");
       });
   }
 
@@ -94,8 +93,9 @@ export default class Elen extends Component {
               <Content>
                 <Routes>
                   <Route path="/table" element={<Table />} />
+                  <Route path="/table/find/:query" element={<Table />} />
                   <Route
-                    path="/table/:atom"
+                    path="/atom/:atom"
                     element={<Info loaded={this.loaded} />}
                   />
                 </Routes>
