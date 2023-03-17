@@ -11,6 +11,7 @@ import { RefreshContext } from "./Context/Refresh";
 import { LoadedContext } from "./Context/Loaded";
 import { ThemeContext } from "./Context/Theme";
 import _ from "lodash";
+import Error from "./Error/Error";
 
 export default class Elen extends Component {
   state = {
@@ -97,6 +98,10 @@ export default class Elen extends Component {
                   <Route
                     path="/atom/:atom"
                     element={<Info loaded={this.loaded} />}
+                  />
+                  <Route
+                    path="*"
+                    element={<Error code="404" msg="صفحه یافت نشد" />}
                   />
                 </Routes>
               </Content>
