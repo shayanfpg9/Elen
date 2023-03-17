@@ -9,7 +9,7 @@ export default class DB {
     OpenReq.onupgradeneeded = () => {
       const db = OpenReq.result;
 
-      db.createObjectStore(dbname, { keyPath: "number" });
+      db.createObjectStore(dbname, { keyPath: "name" });
     };
 
     OpenReq.onsuccess = () => {
@@ -36,7 +36,7 @@ export default class DB {
       const all = Atoms.getAll();
 
       all.onsuccess = () => {
-        callback(all.result);
+        callback(all.result.sort((a, b) => a.number - b.number));
       };
     };
   }
