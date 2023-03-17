@@ -24,7 +24,7 @@ export default class DB {
     };
   }
 
-  get(callback) {
+  getAll(callback) {
     const OpenReq = indexedDB.open("Elen", 3);
 
     OpenReq.onsuccess = () => {

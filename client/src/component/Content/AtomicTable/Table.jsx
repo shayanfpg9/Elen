@@ -85,7 +85,7 @@ class Table extends Component {
 
     const db = new DB("Atoms");
 
-    await db.get(async (res) => {
+    await db.getAll(async (res) => {
       if (
         equal(res, []) ||
         Boolean(refresh) ||
