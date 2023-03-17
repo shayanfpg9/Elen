@@ -9,6 +9,7 @@ import _ from "lodash";
 import { WithMultiContext } from "../../HOC/WithMultiContext";
 import { WithHook } from "../../HOC/WithHooks";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import Error from "../../Error/Error";
 
 //row and cols same styles
 const RowCol = styled.span`
@@ -254,13 +255,7 @@ class Table extends Component {
         </ThemeProvider>
       );
     } else {
-      return (
-        <>
-          <h2>عنصر مورد نظر یافت نشد</h2>
-          <h3>سعی کنید انگلیسی جست‌وجو کنید</h3>
-          <Link to="/table">برگشت به جدول</Link>
-        </>
-      );
+      return <Error code="404" msg="عنصر مورد نظر یافت نشد" />;
     }
   }
 }

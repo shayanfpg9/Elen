@@ -6,6 +6,7 @@ import _ from "lodash";
 import { GiSpeaker } from "react-icons/gi";
 import { RefreshContext } from "../../Context/Refresh";
 import { LoadedContext } from "../../Context/Loaded";
+import Error from "../../Error/Error";
 
 export default function Info(props) {
   const { atom } = useParams();
@@ -25,7 +26,8 @@ export default function Info(props) {
         .get(`/api/atom/${atom}?translate=fa&refresh=${refresh}`)
         .then((res) => {
           setInfo(res.data);
-
+        })
+        .finally(() => {
           loaded.hide();
         });
 
@@ -102,6 +104,8 @@ export default function Info(props) {
         </section>
       </section>
     );
+  } else {
+    return <Error code="404" msg="عنصر مورد نظر یافت نشد" />;
   }
 }
 
