@@ -27,7 +27,7 @@ export default class Elen extends Component {
   componentDidMount() {
     document.body.classList.add(this.state.theme);
 
-    new DB().init("Atoms","Single")
+    new DB().init("Atoms", "Single");
 
     if (_.isNull(this.state.theme)) {
       localStorage.setItem("theme-mode", "system");
@@ -81,11 +81,7 @@ export default class Elen extends Component {
             setTheme: this.setTheme,
           }}
         >
-          {this.state.stop.remove ? (
-            ""
-          ) : (
-            <Loader stop={!this.state.stop.show} />
-          )}
+          {!this.state.stop.remove && <Loader stop={!this.state.stop.show} />}
 
           <LoadedContext.Provider value={{ ...this.loaded }}>
             <RefreshContext.Provider
