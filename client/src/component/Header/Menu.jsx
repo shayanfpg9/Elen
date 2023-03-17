@@ -94,7 +94,7 @@ export default function Menu(props) {
           <bs.BsGithub />
         </a>
 
-        {pathname.includes("table") ? (
+        {pathname.match(/(table|atom)/gi) ? (
           <button
             type="button"
             title="رفرش اطلاعات"
