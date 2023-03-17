@@ -17,7 +17,7 @@ export default function Search(props) {
   useEffect(() => {
     const PassSearchRes = (value) => {
       const replaced = value
-        .replace(/[A-Z]|[a-z]|[0-9]|[-_\n\t\s()|/!@#$%^&*+=`~'"]/gi, "")
+        .replace(/[A-Z]|[a-z]|[0-9]|[-_\n\t\s()|/!@#$%^&*+=`~'".?<>,]/gi, "")
         .trim();
 
       if (replaced.length) {
