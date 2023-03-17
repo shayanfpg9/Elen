@@ -13,6 +13,7 @@ import { ThemeContext } from "./Context/Theme";
 import _ from "lodash";
 import Error from "./Error/Error";
 import Search from "./Header/Search";
+import DB from "./funcs/DB";
 
 export default class Elen extends Component {
   state = {
@@ -25,6 +26,8 @@ export default class Elen extends Component {
 
   componentDidMount() {
     document.body.classList.add(this.state.theme);
+
+    new DB().init("Atoms","Single")
 
     if (_.isNull(this.state.theme)) {
       localStorage.setItem("theme-mode", "system");
