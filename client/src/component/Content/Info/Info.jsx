@@ -7,6 +7,7 @@ import { GiSpeaker } from "react-icons/gi";
 import { RefreshContext } from "../../Context/Refresh";
 import { LoadedContext } from "../../Context/Loaded";
 import Error from "../../Error/Error";
+import { DB, equal } from "../../funcs/funcs";
 
 export default function Info(props) {
   const { atom } = useParams();
@@ -19,19 +20,32 @@ export default function Info(props) {
 
   useEffect(() => {
     if (unMount.current || refresh) {
+      const db = new DB("Single");
+
       loaded.show();
 
       unMount.current = false;
-      axios
-        .get(`/api/atom/${atom}?translate=fa&refresh=${refresh}`)
-        .then((res) => {
-          setInfo(res.data);
-        })
-        .finally(() => {
-          loaded.hide();
-        });
 
-      setRefresh(false);
+      db.getSingle(atom, (res) => {
+        if (!equal(res, []) || refresh) {
+          console.log(res);
+
+          axios
+            .get(`/api/atom/${atom}?translate=fa&refresh=${refresh}`)
+            .then(({ data }) => {
+              db.set([data], false);
+
+              setInfo(data);
+            })
+            .finally(() => {
+              loaded.hide();
+            });
+
+          setRefresh(false);
+        } else {
+          setInfo(res);
+        }
+      });
     }
 
     ReadingBtn.current?.addEventListener("click", () => {
