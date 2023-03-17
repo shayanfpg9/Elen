@@ -28,8 +28,6 @@ export default function Info(props) {
 
       db.getSingle(atom, (res) => {
         if (!equal(res, []) || refresh) {
-          console.log(res);
-
           axios
             .get(`/api/atom/${atom}?translate=fa&refresh=${refresh}`)
             .then(({ data }) => {
