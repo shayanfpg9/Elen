@@ -24,7 +24,7 @@ connect(process.env.MONGOURI)
 app.use(morgan("dev"));
 app.use(express.json());
 app.use("/api/atom/", AtomsRouter);
-app.use("/lang/", LangRouter);
+app.use("/api/lang/", LangRouter);
 
 //404 error
 app.all("*", (req, res) => {
