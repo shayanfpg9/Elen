@@ -47,7 +47,7 @@ const FreeSpace = styled.div`
   &::after {
     content: "";
     width: 0.5rem;
-    min-height: var(--first-fibo);
+    min-height: calc(var(--first-fibo) / 2);
     font-size: 3rem;
     background-color: var(--color-fg);
     position: absolute;
