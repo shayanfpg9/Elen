@@ -12,6 +12,7 @@ import { LoadedContext } from "./Context/Loaded";
 import { ThemeContext } from "./Context/Theme";
 import _ from "lodash";
 import Error from "./Error/Error";
+import Search from "./Header/Search";
 
 export default class Elen extends Component {
   state = {
@@ -95,6 +96,7 @@ export default class Elen extends Component {
                 <Routes>
                   <Route path="/table" element={<Table />} />
                   <Route path="/table/find/:query" element={<Table />} />
+                  <Route path="/table/find/" element={<Search single />} />
                   <Route
                     path="/atom/:atom"
                     element={<Info loaded={this.loaded} />}

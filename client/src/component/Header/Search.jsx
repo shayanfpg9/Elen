@@ -1,20 +1,29 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { BsXLg } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { isNull } from "lodash";
 import Swal from "sweetalert2";
+import { LoadedContext } from "../Context/Loaded";
 
 export default function Search(props) {
   const searchbox = useRef(),
     input = useRef(),
-    navigate = useNavigate();
+    navigate = useNavigate(),
+    { hide } = useContext(LoadedContext);
 
   const close = () => {
     input.current.value = "";
     props.close();
   };
 
+  const Mount = useRef(false);
+
   useEffect(() => {
+    if (!Mount.current) {
+      hide();
+      Mount.current = true;
+    }
+
     const PassSearchRes = (value) => {
       const replaced = value
         .replace(/[A-Z]|[a-z]|[0-9]|[-_\n\t\s()|/!@#$%^&*+=`~'".?<>,]/gi, "")
@@ -33,12 +42,12 @@ export default function Search(props) {
           showCloseButton: true,
         }).then((res) => {
           if (res.isDismissed && res.dismiss === "cancel") {
-            close();
+            if (!props.single) close();
             navigate(`/table/find/${encodeURI(value)}`);
           }
         });
       } else {
-        close();
+        if (!props.single) close();
         navigate(`/table/find/${encodeURI(value)}`);
       }
     };
@@ -59,11 +68,13 @@ export default function Search(props) {
 
   return (
     <>
-      <div onClick={close} className="blur">
-        <button onClick={close} type="button" className="searchbox__close">
-          <BsXLg />
-        </button>
-      </div>
+      {!props.single && (
+        <div onClick={close} className="blur">
+          <button onClick={close} type="button" className="searchbox__close">
+            <BsXLg />
+          </button>
+        </div>
+      )}
 
       <form
         ref={searchbox}
@@ -83,6 +94,8 @@ export default function Search(props) {
           پیدا کن
         </button>
       </form>
+
+      {props.single && <Link to="/">بازگشت به خانه</Link>}
     </>
   );
 }
