@@ -2,6 +2,7 @@ const Atoms = require("../model/Atoms.model");
 const { translate } = require("free-translate");
 const _ = require("lodash");
 const wikipedia = require("../functions/wikipedia");
+const ManageErrors = require("../functions/errors");
 
 const GetAll = async (req, res) => {
   try {
@@ -281,14 +282,6 @@ const PostSearch = async (req, res) => {
     });
   }
 };
-
-//manage errors:
-function ManageErrors(res, arg) {
-  if (_.isUndefined(res?.passed)) {
-    res.passed = true;
-    res.status(arg.status).json(arg);
-  }
-}
 
 module.exports = {
   GetSingle,
