@@ -3,6 +3,7 @@ const express = require("express"),
   app = express(),
   morgan = require("morgan"),
   AtomsRouter = require("./routes/Atoms.route"),
+  LangRouter = require("./routes/Lang.route"),
   connect = require("./functions/connect");
 
 //listen + connect to DB:
@@ -23,6 +24,7 @@ connect(process.env.MONGOURI)
 app.use(morgan("dev"));
 app.use(express.json());
 app.use("/api/atom/", AtomsRouter);
+app.use("/lang/", LangRouter);
 
 //404 error
 app.all("*", (req, res) => {
