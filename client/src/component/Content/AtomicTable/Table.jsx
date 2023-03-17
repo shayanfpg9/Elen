@@ -10,6 +10,7 @@ import { WithMultiContext } from "../../HOC/WithMultiContext";
 import { WithHook } from "../../HOC/WithHooks";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Error from "../../Error/Error";
+import { DB, equal, message } from "../../funcs/funcs";
 
 //row and cols same styles
 const RowCol = styled.span`
@@ -79,46 +80,76 @@ class Table extends Component {
     location: window?.location.href,
   };
 
-  GetDatas = async () => {
+  GetDatas = async (refresh) => {
     this.props.Loaded.show();
 
-    try {
-      let data;
+    const db = new DB("Atoms");
 
-      if (this.props?.params?.query) {
-        //search all of the atoms with "this.props.params.atom" property
-        data = (
-          await axios.post("/api/atom/search", {
-            q: this.props.params.query,
-          })
-        ).data.results;
+    await db.get(async (res) => {
+      if (
+        equal(res, []) ||
+        Boolean(refresh) ||
+        Boolean(this.props?.params?.query)
+      ) {
+        let data;
+
+        try {
+          if (this.props?.params?.query) {
+            //search all of the atoms with "this.props.params.atom" property
+            data = (
+              await axios.post("/api/atom/search", {
+                q: this.props.params.query,
+              })
+            ).data.results;
+          } else {
+            //get datas with axios
+            data = (await axios.get("/api/atom")).data;
+          }
+        } catch (e) {
+          this.props.Loaded.hide();
+
+          this.setState({
+            atoms: null,
+          });
+        }
+
+        if (!Array.isArray(data) || data.length === 1) {
+          if (Array.isArray(data)) data = data[0];
+
+          this.props.navigate(`/atom/${data.name}`);
+        } else {
+          if (!this.props?.params?.query) {
+            db.set(data);
+          }
+
+          data = data?.map((prop) => <Atom key={prop.name} {...prop} />);
+
+          this.props.Loaded.hide();
+
+          if (refresh) {
+            message("اطلاعات با موفقیت بروز شدند");
+          } else if (!Boolean(this.props?.params?.query)) {
+            message("اطلاعات ذخیره شدند", "سرعت فراخوانی اطلاعات بالا رفت");
+          }
+
+          this.setState({
+            atoms: data,
+            cols: this.state.cols,
+            rows: this.state.rows,
+          });
+        }
       } else {
-        //get datas with axios
-        data = (await axios.get("/api/atom")).data;
-      }
-
-      if (!Array.isArray(data) || data.length === 1) {
-        if (Array.isArray(data)) data = data[0];
-
-        this.props.navigate(`/atom/${data.name}`);
-      } else {
-        data = data?.map((prop) => <Atom key={prop.name} {...prop} />);
-
         this.props.Loaded.hide();
 
+        res = res?.map((prop) => <Atom key={prop.name} {...prop} />);
+
         this.setState({
-          atoms: data,
+          atoms: res,
           cols: this.state.cols,
           rows: this.state.rows,
         });
       }
-    } catch (e) {
-      this.props.Loaded.hide();
-
-      this.setState({
-        atoms: null,
-      });
-    }
+    });
   };
 
   setTheme = () => {
@@ -198,7 +229,7 @@ class Table extends Component {
   async componentDidUpdate() {
     if (this.props.Refresh.refresh) {
       this.props.Refresh.setRefresh(false);
-      await this.GetDatas();
+      await this.GetDatas(true);
     }
 
     if (this.state.location !== window?.location.href) {
