@@ -1,6 +1,6 @@
 {
   "translation": {
-    "name": "Ellen Chemistry School"
+    "name": "Elen Atomin World"
   },
   "menu": {
     "home": "home",
@@ -46,7 +46,7 @@
     "btn": "find it",
     "hover": "search",
     "character": {
-      "title": "Please use English characters"      ,
+      "title": "Please use English characters",
       "msg": "Maybe you didn't get the desired result",
       "true": "change informations",
       "false": "continue"
