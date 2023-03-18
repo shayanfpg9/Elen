@@ -35,11 +35,6 @@ export default function Info() {
       setRefresh(false);
 
       db.getSingle(atom, async (res) => {
-        console.log(
-          _.isUndefined(res),
-          LastRefresh,
-          !res?.fa && i18n.language === "fa"
-        );
         if (
           _.isUndefined(res) ||
           LastRefresh ||
