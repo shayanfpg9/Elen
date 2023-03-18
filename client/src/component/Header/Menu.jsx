@@ -48,7 +48,7 @@ export default function Menu(props) {
     window.onkeyup = ({ code }) => {
       if (code === "Escape" && props.status) {
         window.onkeyup = undefined;
-        props.function();
+        if (typeof props.function === "function") props.function();
       }
     };
 
@@ -108,7 +108,7 @@ export default function Menu(props) {
             type="button"
             title={t("icons.refresh")}
             onClick={() => {
-              props.function();
+              if (typeof props.function === "function") props.function();
               setRefresh(true);
             }}
           >
