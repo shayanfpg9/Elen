@@ -28,6 +28,10 @@
     margin-right: 2vh;
     transition: font-size 0.5s var(--animation);
 
+    & > a {
+      text-decoration: none;
+    }
+
     //font sizes:
     @include media("xs", "sm") {
       font-size: 1rem;
