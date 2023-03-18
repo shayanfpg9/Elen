@@ -1,8 +1,6 @@
 * {
   @include reset() {
-    direction: rtl;
     color: var(--color-text);
-    font-family: vazirmatn, helvetica;
     overflow: hidden;
     box-sizing: border-box;
   }
@@ -18,6 +16,16 @@ html {
     transparent,
     #fffa
   );
+
+  &.rtl * {
+    direction: rtl;
+    font-family: vazirmatn, helvetica;
+  }
+
+  &.ltr * {
+    direction: ltr;
+    font-family: helvetica;
+  }
 }
 
 body {

@@ -1,5 +1,5 @@
 .table {
-  direction: ltr;
+  direction: ltr !important;
   display: grid;
   grid-template: {
     rows: repeat(10, auto);

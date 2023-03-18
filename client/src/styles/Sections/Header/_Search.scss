@@ -70,9 +70,14 @@ $rad: 5rem;
 
     &submit {
       cursor: pointer;
-      border: {
-        right: 2px solid var(--color-text);
-        radius: 1rem;
+      border-radius: 1rem;
+
+      html.rtl & {
+        border-right: 2px solid var(--color-text);
+      }
+
+      html.ltr & {
+        border-left: 2px solid var(--color-text);
       }
 
       &:active {

@@ -23,9 +23,9 @@
           content: "";
           position: absolute;
           bottom: 0;
-          left: 50%;
           transform: translateX(-50%) scaleX(0);
           display: block;
+          left: 50%;
 
           width: 100%;
           height: 3px;
@@ -37,7 +37,13 @@
         }
 
         & > svg {
-          margin-left: 0.5rem;
+          html.rtl & {
+            margin-left: 0.5rem;
+          }
+
+          html.ltr & {
+            margin-right: 0.5rem;
+          }
         }
 
         @include media(1700) {
@@ -63,12 +69,9 @@
   @include media("xl") {
     &__menu {
       list-style-type: none;
-      padding-right: 2vh;
       width: 50%;
 
       position: absolute;
-      left: 50%;
-      transform: translateX(-75%);
 
       @include flex(space-between);
 
@@ -76,8 +79,31 @@
         display: none;
       }
 
+      html.rtl & {
+        padding-right: 2vh;
+        left: 50%;
+        transform: translateX(-75%);
+
+        & > * {
+          float: left;
+        }
+      }
+
+      html.ltr & {
+        padding-left: 6vh;
+        right: 50%;
+        transform: translateX(75%);
+
+        & > * {
+          float: right;
+        }
+      }
+
+      .icons {
+        width: 5rem;
+      }
+
       & > * {
-        float: left;
         height: auto;
 
         a {
@@ -99,16 +125,43 @@
       list-style-type: none;
       height: 99vh;
       z-index: 10;
-      border: {
-        bottom-right-radius: 2rem;
-        top-right-radius: 2rem;
-      }
       background-color: rgba(var(--color-fg-rgb), 0.8);
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
 
-      transition: left 0.5s ease-in-out, width 0.5s ease-in-out;
-      left: 0;
+      html.rtl & {
+        border: {
+          bottom-right-radius: 2rem;
+          top-right-radius: 2rem;
+        }
+      }
+
+      html.ltr & {
+        border: {
+          bottom-left-radius: 2rem;
+          top-left-radius: 2rem;
+        }
+      }
+
+      transition: 0.5s ease-in-out {
+        property: width, left, right;
+      }
+
+      html.rtl & {
+        left: 0;
+
+        &-icon {
+          left: 0;
+        }
+      }
+
+      html.ltr & {
+        right: 0;
+
+        &-icon {
+          right: 0;
+        }
+      }
 
       @include flex();
 
@@ -139,8 +192,9 @@
         position: relative;
         cursor: pointer;
         z-index: 11;
-        transition: left 0.5s ease-in-out;
-        left: 0;
+        transition: 0.5s ease-in-out {
+          property: left, right;
+        }
 
         &,
         & > svg {
@@ -156,8 +210,15 @@
         &.close {
           position: fixed;
           top: 3vh;
-          left: calc(5vw + 1vh);
           color: var(--color-bg);
+
+          html.rtl & {
+            left: calc(5vw + 1vh);
+          }
+
+          html.ltr & {
+            right: calc(5vw + 1vh);
+          }
         }
       }
     }
