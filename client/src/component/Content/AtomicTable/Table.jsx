@@ -62,7 +62,7 @@ const FreeSpace = styled.div`
   ${media(
     {
       "min-width": "xs",
-      "max-width": "830px",
+      "max-width": "840px",
     },
     css`
       display: none;

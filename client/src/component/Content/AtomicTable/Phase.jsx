@@ -20,7 +20,7 @@ const Box = styled.section`
   ${media(
     {
       "min-width": "xs",
-      "max-width": "830px",
+      "max-width": "840px",
     },
     css`
       position: absolute;
@@ -33,7 +33,7 @@ const Box = styled.section`
   )}
 
   ${media(
-    { "min-width": "830px", "max-width": "860px" },
+    { "min-width": "840px", "max-width": "860px" },
     css`
       grid-row: 2;
     `

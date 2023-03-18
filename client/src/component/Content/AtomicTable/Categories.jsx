@@ -29,7 +29,7 @@ const Category = styled.section`
   ${media(
     {
       "min-width": "xs",
-      "max-width": "830px",
+      "max-width": "840px",
     },
     css`
       position: absolute;
