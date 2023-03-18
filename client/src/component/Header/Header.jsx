@@ -29,6 +29,8 @@ export default function Header() {
     MenuBtnClick();
   };
 
+  document.title = t("name");
+
   return (
     <>
       <span className="header--top"></span>
