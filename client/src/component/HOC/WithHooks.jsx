@@ -7,11 +7,13 @@ function GetHook(Hook) {
     res = hooks[Hook]();
   } else {
     if (Hook?.HookFunc) {
-      res = Hook.HookFunc();
-    }
-
-    if (Hook?.callback) {
-      res = hooks[Hook](...Hook.param);
+      if (Hook?.param) {
+        res = Hook.HookFunc(Hook.param);
+      } else {
+        res = Hook.HookFunc();
+      }
+    } else if (Hook?.param) {
+      res = hooks[Hook](Hook.param);
     }
 
     Hook = Hook.name;
