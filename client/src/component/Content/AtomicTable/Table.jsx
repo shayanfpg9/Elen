@@ -208,26 +208,6 @@ class Table extends Component {
     await this.GetDatas();
 
     this.setTheme();
-
-    document.querySelectorAll(".phase__item, .category__item").forEach((el) => {
-      const Event = () => {
-        const prop = el?.dataset?.phase ? "phase" : "category";
-        this.props.useSearch[1](
-          {
-            [prop]: el.dataset[prop],
-          },
-          false
-        );
-      };
-
-      el.addEventListener("mouseenter", Event);
-      el.addEventListener("mousemove", Event);
-      el.addEventListener("mouseleave", () => {
-        document.querySelectorAll(".Atom").forEach((el) => {
-          el.classList.remove("hide", "active");
-        });
-      });
-    });
   }
 
   async componentDidUpdate() {
@@ -245,6 +225,37 @@ class Table extends Component {
 
     if (this.state.theme.name !== this.props.Theme.theme) {
       this.setTheme();
+    }
+
+    //run event in Update for line:293
+    const CatPhase = document.querySelectorAll(".phase__item, .category__item");
+
+    if (CatPhase.length > 0 && !this.state.CatPhaseEvent) {
+      this.setState({ CatPhaseEvent: true });
+
+      CatPhase.forEach((el) => {
+        const Event = () => {
+          const prop = el?.dataset?.phase ? "phase" : "category";
+          this.props.useSearch[1](
+            {
+              [prop]: el.dataset[prop],
+            },
+            false
+          );
+        };
+
+        el.addEventListener("mouseenter", () => {
+          Event();
+        });
+        el.addEventListener("mousemove", () => {
+          Event();
+        });
+        el.addEventListener("mouseleave", () => {
+          document.querySelectorAll(".Atom").forEach((el) => {
+            el.classList.remove("hide", "active");
+          });
+        });
+      });
     }
   }
 
