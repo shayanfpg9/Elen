@@ -11,7 +11,7 @@ function GetHook(Hook) {
     }
 
     if (Hook?.callback) {
-      res = hooks[Hook](Hook.clallback);
+      res = hooks[Hook](...Hook.param);
     }
 
     Hook = Hook.name;
