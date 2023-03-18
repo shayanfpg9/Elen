@@ -13,8 +13,12 @@
     }
   }
 
-  @include media("xl") {
+  @include media("xl", "xxl") {
     font-size: 1.5rem;
+  }
+
+  @include media("xxl") {
+    font-size: 2rem;
   }
 
   *::first-letter {
