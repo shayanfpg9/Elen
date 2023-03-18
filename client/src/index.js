@@ -1,8 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import Elen from './component/Elen';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Elen from "./component/Elen";
+import "./translate/i18n";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Elen />
