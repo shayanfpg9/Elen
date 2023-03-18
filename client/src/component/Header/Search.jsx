@@ -4,12 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { isNull } from "lodash";
 import Swal from "sweetalert2";
 import { LoadedContext } from "../Context/Loaded";
+import { useTranslation } from "react-i18next";
 
 export default function Search(props) {
   const searchbox = useRef(),
     input = useRef(),
     navigate = useNavigate(),
     { hide } = useContext(LoadedContext);
+
+  const { t } = useTranslation("search");
+  const back = useTranslation("error").t("back");
 
   const close = () => {
     input.current.value = "";
@@ -31,11 +35,11 @@ export default function Search(props) {
 
       if (replaced.length) {
         Swal.fire({
-          title: "لطفا از کارکتر های انگلیسی استفاده کنید",
-          text: "احتمال دارد نتیجه ی دلخواه را بدست نیاورید",
+          title: t("character.title"),
+          text: t("character.msg"),
           icon: "warning",
-          cancelButtonText: "ادامه",
-          confirmButtonText: "اصلاح",
+          cancelButtonText: t("character.false"),
+          confirmButtonText: t("character.true"),
           background: "var(--color-fg)",
           color: "var(--color-text)",
           showCancelButton: true,
@@ -80,22 +84,22 @@ export default function Search(props) {
         ref={searchbox}
         method="get"
         className="searchbox"
-        title="جست‌وجو کنید"
+        title={t("hover")}
       >
         <input
           ref={input}
           role="search"
           className="searchbox__input"
           type="text"
-          placeholder="مشخصات اتم مورد نظر را جست‌وجو کنید"
+          placeholder={t("placeholder")}
         />
 
         <button className="searchbox__submit" type="submit">
-          پیدا کن
+          {t("btn")}{" "}
         </button>
       </form>
 
-      {props.single && <Link to="/">بازگشت به خانه</Link>}
+      {props.single && <Link to="/">{back}</Link>}
     </>
   );
 }
