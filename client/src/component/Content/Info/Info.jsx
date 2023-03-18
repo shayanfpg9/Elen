@@ -7,10 +7,10 @@ import { GiSpeaker } from "react-icons/gi";
 import { RefreshContext } from "../../Context/Refresh";
 import { LoadedContext } from "../../Context/Loaded";
 import Error from "../../Error/Error";
-import { DB, equal, message } from "../../funcs/funcs";
+import { DB, message } from "../../funcs/funcs";
 import { useTranslation } from "react-i18next";
 
-export default function Info(props) {
+export default function Info() {
   const { atom } = useParams();
   const [info, setInfo] = useState({});
   const { refresh, setRefresh } = useContext(RefreshContext);
@@ -18,6 +18,7 @@ export default function Info(props) {
   const { t, i18n } = useTranslation("info");
   const tableTranslate = useTranslation("table").t;
   const [translate, setTranslate] = useState({ ...info });
+  const error = useTranslation("error").t;
 
   let unMount = useRef(true);
   const ReadingBtn = useRef();
@@ -30,42 +31,49 @@ export default function Info(props) {
 
       unMount.current = false;
 
-      db.getSingle(atom, (res) => {
-        if (!equal(res, []) || refresh || _.isUndefined(res.fa)) {
-          if (!refresh && i18n.language === "fa") {
+      let LastRefresh = refresh; //for set it to false
+      setRefresh(false);
+
+      db.getSingle(atom, async (res) => {
+        console.log(
+          _.isUndefined(res),
+          LastRefresh,
+          !res?.fa && i18n.language === "fa"
+        );
+        if (
+          _.isUndefined(res) ||
+          LastRefresh ||
+          (!res?.fa && i18n.language === "fa")
+        ) {
+          if (!LastRefresh && !res?.fa && i18n.language === "fa") {
             message(
               tableTranslate("messages.load.title"),
               tableTranslate("messages.load.msg"),
-              "warning"
+              "info"
             );
           }
 
-          axios
-            .get(
-              `/api/atom/${atom}?translate=${i18n.language}&refresh=${refresh}`
-            )
-            .then(({ data }) => {
-              db.set([data], false);
+          const { data } = await axios.get(
+            `/api/atom/${atom}?translate=${i18n.language}&refresh=true`
+          );
 
-              if (refresh) {
-                message(tableTranslate("messages.refresh"));
-              } else {
-                message(
-                  tableTranslate("messages.save.title"),
-                  tableTranslate("messages.save.msg")
-                );
-              }
+          db.set([data], false);
 
-              setInfo(data);
-            })
-            .finally(() => {
-              loaded.hide();
-            });
+          if (LastRefresh) {
+            message(tableTranslate("messages.refresh"));
+          } else {
+            message(
+              tableTranslate("messages.save.title"),
+              tableTranslate("messages.save.msg")
+            );
+          }
 
-          setRefresh(false);
+          setInfo(data);
         } else {
           setInfo(res);
         }
+
+        loaded.hide();
       });
     }
 
@@ -174,7 +182,7 @@ export default function Info(props) {
       </section>
     );
   } else {
-    return <Error code="404" msg="عنصر مورد نظر یافت نشد" />;
+    return <Error code="404" msg={error("find")} />;
   }
 }
 
