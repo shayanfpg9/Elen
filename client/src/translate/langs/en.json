@@ -1,0 +1,81 @@
+{
+  "translation": {
+    "name": "Ellen Chemistry School"
+  },
+  "menu": {
+    "home": "home",
+    "table": "table",
+    "search": "search",
+    "icons": {
+      "github": "github",
+      "refresh": "refresh the datas",
+      "theme": "change color theme",
+      "lang": "change the language"
+    }
+  },
+  "table": {
+    "result": "search result",
+    "messages": {
+      "refresh": "datas updated successfully",
+      "save": {
+        "title": "datas saved",
+        "msg": "The speed of information retrieval increased"
+      }
+    },
+    "categories": {
+      "metal": "metal",
+      "nometal": "no metal",
+      "metalloid": "metalloid",
+      "lanthanide": "lanthanides",
+      "posttran": "post-transition metals",
+      "transition": "transition metals",
+      "actinide": "actinides",
+      "unknown": "unknown",
+      "noble-gas": "noble gas",
+      "alkali-metal": "alkali metal",
+      "alkaline-earth-metal": "alkaline earth metal"
+    },
+    "phase": {
+      "solid": "solid",
+      "gas": "gas",
+      "liquid": "liquid"
+    }
+  },
+  "search": {
+    "placeholder": "Search for the specifics of the desired atom",
+    "btn": "find it",
+    "hover": "search",
+    "character": {
+      "title": "Please use English characters"      ,
+      "msg": "Maybe you didn't get the desired result",
+      "true": "change informations",
+      "false": "continue"
+    }
+  },
+  "error": {
+    "error": "error",
+    "find": "We couldn't find an element with these properties",
+    "back": "back to home",
+    "back-table": "back to table",
+    "page": "page not found",
+    "or": "or",
+    "search": "search it"
+  },
+  "info": {
+    "wikipedia": "in wikipedia",
+    "discovered-by": "discovered by",
+    "number": "atomic number",
+    "atomic-mass": "atomic mass / atomic mass of the most stable isotope",
+    "density": "density",
+    "appearance": "appearance",
+    "no-appearance": "Without specific appearance",
+    "category": "category",
+    "phase": "phase in STP",
+    "no-phase": "without specific phase",
+    "melt": "melting temperature",
+    "boil": "boiling temperature",
+    "period": "period",
+    "group": "group",
+    "electron-configuration": "electron configuration"
+  }
+}
