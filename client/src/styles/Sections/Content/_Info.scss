@@ -17,6 +17,11 @@
     font-size: 1.5rem;
   }
 
+  *::first-letter {
+    //not for all of the words just first word in first letter
+    text-transform: uppercase;
+  }
+
   &__ {
     &summary {
       min-width: 50vw;
@@ -79,11 +84,18 @@
       height: var(--first-fibo);
       position: absolute;
       top: 0;
-      left: 0;
       margin: 1rem 1rem;
       z-index: 10;
       background-color: var(--color-bg);
       border-radius: 100%;
+
+      html.rtl & {
+        left: 0;
+      }
+
+      html.ltr & {
+        right: 0;
+      }
     }
   }
 
