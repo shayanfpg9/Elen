@@ -17,6 +17,7 @@ import Search from "./Header/Search";
 import DB from "./funcs/DB";
 import { WithHook } from "./HOC/WithHooks";
 import { useTranslation } from "react-i18next";
+import Home from "./Home/Home";
 
 class Elen extends Component {
   state = {
@@ -131,10 +132,8 @@ class Elen extends Component {
                   <Route path="/table" element={<Table />} />
                   <Route path="/table/find/:query" element={<Table />} />
                   <Route path="/table/find/" element={<Search single />} />
-                  <Route
-                    path="/atom/:atom"
-                    element={<Info loaded={this.loaded} />}
-                  />
+                  <Route path="/atom/:atom" element={<Info />} />
+                  <Route path="/" element={<Home />} />
                   <Route
                     path="*"
                     element={
