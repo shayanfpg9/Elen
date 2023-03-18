@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { css } from "styled-components";
-import { getSize } from "../../funcs/funcs";
+import { getSize } from "../funcs/funcs";
 
 export default function media(options, ContentCss) {
   return css`
