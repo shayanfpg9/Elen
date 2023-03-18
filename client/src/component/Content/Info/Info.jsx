@@ -40,30 +40,36 @@ export default function Info() {
           LastRefresh ||
           (!res?.fa && i18n.language === "fa")
         ) {
-          if (!LastRefresh && !res?.fa && i18n.language === "fa") {
-            message(
-              tableTranslate("messages.load.title"),
-              tableTranslate("messages.load.msg"),
-              "info"
+          try {
+            if (!LastRefresh && !res?.fa && i18n.language === "fa") {
+              message(
+                tableTranslate("messages.load.title"),
+                tableTranslate("messages.load.msg"),
+                "info"
+              );
+            }
+
+            const { data } = await axios.get(
+              `/api/atom/${atom}?translate=${i18n.language}&refresh=true`
             );
+
+            db.set([data], false);
+
+            if (LastRefresh) {
+              message(tableTranslate("messages.refresh"));
+            } else {
+              message(
+                tableTranslate("messages.save.title"),
+                tableTranslate("messages.save.msg")
+              );
+            }
+
+            setInfo(data);
+          } catch (e) {
+            setInfo({});
+
+            loaded.hide();
           }
-
-          const { data } = await axios.get(
-            `/api/atom/${atom}?translate=${i18n.language}&refresh=true`
-          );
-
-          db.set([data], false);
-
-          if (LastRefresh) {
-            message(tableTranslate("messages.refresh"));
-          } else {
-            message(
-              tableTranslate("messages.save.title"),
-              tableTranslate("messages.save.msg")
-            );
-          }
-
-          setInfo(data);
         } else {
           setInfo(res);
         }
