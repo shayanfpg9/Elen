@@ -16,7 +16,7 @@ export default function Info(props) {
   const { refresh, setRefresh } = useContext(RefreshContext);
   const loaded = useContext(LoadedContext);
   const { t, i18n } = useTranslation("info");
-  const [translate, setTranslate] = useState(info);
+  const [translate, setTranslate] = useState({ ...info });
 
   let unMount = useRef(true);
   const ReadingBtn = useRef();
@@ -50,9 +50,9 @@ export default function Info(props) {
     }
 
     if (i18n.language === "fa") {
-      setTranslate(info.fa);
+      setTranslate({ ...info.fa });
     } else {
-      setTranslate(info);
+      setTranslate({ ...info });
     }
 
     ReadingBtn.current?.addEventListener("click", () => {
