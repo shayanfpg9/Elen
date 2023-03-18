@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import styled, { css } from "styled-components";
-import flex from "../CssComponents/Flexbox";
-import { colors, media } from "../CssComponents/Util";
+import flex from "../../CssComponents/Flexbox";
+import { colors, media } from "../../CssComponents/Util";
 
 const Name = styled.span`
   writing-mode: horizontal-tb;

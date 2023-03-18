@@ -1,7 +1,7 @@
 import { mix } from "chroma-js";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { colors, flex, media } from "../CssComponents/Util";
+import { colors, flex, media } from "../../CssComponents/Util";
 
 //style of AtomCles
 const AtomCel = styled(Link).attrs((props) => ({

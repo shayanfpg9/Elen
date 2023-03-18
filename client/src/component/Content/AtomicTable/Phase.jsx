@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { GiSolidLeaf, GiWaterDrop, GiGasPump } from "react-icons/gi";
-import { flex, media } from "../CssComponents/Util";
+import { flex, media } from "../../CssComponents/Util";
 import { useTranslation } from "react-i18next";
 
 const Box = styled.section`

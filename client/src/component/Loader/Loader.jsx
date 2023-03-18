@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { RingLoader } from "react-spinners";
-import flex from "../Content/CssComponents/Flexbox";
+import flex from "../CssComponents/Flexbox";
 
 const LoaderContainer = styled.section`
   position: fixed;

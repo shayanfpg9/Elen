@@ -4,7 +4,7 @@ import styled, { css, ThemeProvider } from "styled-components";
 import Atom from "./Atom";
 import Categories from "./Categories";
 import Phase from "./Phase";
-import { media } from "../CssComponents/Util";
+import { media } from "../../CssComponents/Util";
 import _ from "lodash";
 import { WithMultiContext } from "../../HOC/WithMultiContext";
 import { WithHook } from "../../HOC/WithHooks";
