@@ -11,6 +11,7 @@ import { WithHook } from "../../HOC/WithHooks";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Error from "../../Error/Error";
 import { DB, equal, message } from "../../funcs/funcs";
+import { useTranslation } from "react-i18next";
 
 //row and cols same styles
 const RowCol = styled.span`
@@ -127,9 +128,12 @@ class Table extends Component {
           this.props.Loaded.hide();
 
           if (refresh) {
-            message("اطلاعات با موفقیت بروز شدند");
+            message(this.props.table.t("messages.refresh"));
           } else if (!Boolean(this.props?.params?.query)) {
-            message("اطلاعات ذخیره شدند", "سرعت فراخوانی اطلاعات بالا رفت");
+            message(
+              this.props.table.t("messages.save.title"),
+              this.props.table.t("messages.save.msg")
+            );
           }
 
           this.setState({
@@ -262,7 +266,9 @@ class Table extends Component {
     if (!_.isNull(this.state.atoms)) {
       return (
         <ThemeProvider theme={this.state.theme}>
-          {this.props?.params?.query && <h2>جواب جست ‌وجو:</h2>}
+          {this.props?.params?.query && (
+            <h2>{this.props.table.t("result")}:</h2>
+          )}
 
           <section className="table">
             {/* columns: */}
@@ -282,11 +288,13 @@ class Table extends Component {
             {this.state.atoms}
           </section>
 
-          {this.props?.params?.query && <Link to="/table">برگشت به جدول</Link>}
+          {this.props?.params?.query && (
+            <Link to="/table">{this.props.error.t("back-table")}</Link>
+          )}
         </ThemeProvider>
       );
     } else {
-      return <Error code="404" msg="عنصر مورد نظر یافت نشد" />;
+      return <Error code="404" msg={this.props.error.t("find")} />;
     }
   }
 }
@@ -302,6 +310,16 @@ export default WithHook(
     {
       name: "navigate",
       HookFunc: useNavigate,
+    },
+    {
+      name: "error",
+      HookFunc: useTranslation,
+      param: "error",
+    },
+    {
+      name: "table",
+      HookFunc: useTranslation,
+      param: "table",
     },
   ]
 );

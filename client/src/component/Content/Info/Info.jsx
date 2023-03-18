@@ -8,12 +8,15 @@ import { RefreshContext } from "../../Context/Refresh";
 import { LoadedContext } from "../../Context/Loaded";
 import Error from "../../Error/Error";
 import { DB, equal } from "../../funcs/funcs";
+import { useTranslation } from "react-i18next";
 
 export default function Info(props) {
   const { atom } = useParams();
   const [info, setInfo] = useState({});
   const { refresh, setRefresh } = useContext(RefreshContext);
   const loaded = useContext(LoadedContext);
+  const { t, i18n } = useTranslation("info");
+  const [translate, setTranslate] = useState(info);
 
   let unMount = useRef(true);
   const ReadingBtn = useRef();
@@ -46,10 +49,16 @@ export default function Info(props) {
       });
     }
 
+    if (i18n.language === "fa") {
+      setTranslate(info.fa);
+    } else {
+      setTranslate(info);
+    }
+
     ReadingBtn.current?.addEventListener("click", () => {
       read(ReadingBtn.current.dataset.word);
     });
-  }, [atom, loaded, setRefresh, refresh]);
+  }, [atom, loaded, setRefresh, refresh, i18n.language, setTranslate, info]);
 
   if (_.keys(info).length > 0) {
     return (
@@ -62,44 +71,63 @@ export default function Info(props) {
           <button ref={ReadingBtn} data-word={info.name} className="info__read">
             <GiSpeaker />
           </button>
-          {info.fa.name}:
+          {translate.name}:
           <span>
             (<sub>{info.number}</sub>
             {info.symbol})
           </span>
         </h2>
-        <a rel="noreferrer" target="_blank" href={info.fa.source}>
-          در ویکی پدیا
+        <a rel="noreferrer" target="_blank" href={translate.source}>
+          {t("wikipedia")}
         </a>
-        <h3>کاشف / زمان کشف: {info.fa.discovered_by}</h3>
-        <p>{info.fa.summary}</p>
+        <h3>
+          {t("discovered-by")}: {translate.discovered_by}
+        </h3>
+        <p>{translate.summary}</p>
 
         <hr className="info__hr" />
 
         <section>
           <div className="info__summary">
-            <h4>عدد اتمی: {info.number}</h4>
-            <h4>جرم / جرم پایدار ترین ایزوتوپ: {info.atomic_mass}</h4>
-            <h4>چگالی: {info.density}</h4>
-            <br />
-            <h4>ظاهر: {info.fa.appearance || "ظاهر خاصی ندارد"}</h4>
-            <h4>دسته: {info.fa.category}</h4>
             <h4>
-              فاز در دما و فشار استاندارد (STP):{" "}
-              {info.fa.phase || "بدون حالت پایدار"}
+              {t("number")}: {info.number}
+            </h4>
+            <h4>
+              {t("atomic-mass")} {info.atomic_mass}
+            </h4>
+            <h4>
+              {t("density")}: {info.density}
             </h4>
             <br />
-            <h4>دمای ذوب: {info.melt ? info.melt + "K" : "?"}</h4>
-            <h4>دمای جوش: {info.boil ? info.boil + "K" : "?"}</h4>
+            <h4>
+              {t("appearance")}: {translate.appearance || t("no-appearance")}
+            </h4>
+            <h4>
+              {t("category")}: {translate.category}
+            </h4>
+            <h4>
+              {t("phase")}:{translate.phase || t("no-phase")}
+            </h4>
             <br />
-            <h4>دوره: دوره {info.period}</h4>
-            <h4>گروه: گروه {info.group}</h4>
+            <h4>
+              {t("melt")}: {info.melt ? info.melt + "K" : "?"}
+            </h4>
+            <h4>
+              {t("boil")}: {info.boil ? info.boil + "K" : "?"}
+            </h4>
+            <br />
+            <h4>
+              {t("period")}: {t("period")} {info.period}
+            </h4>
+            <h4>
+              {t("group")}: {t("group")} {info.group}
+            </h4>
           </div>
 
           <figure className="info__image">
-            <img src={info.image.url} alt={info.fa["image.title"]} />
+            <img src={info.image.url} alt={translate["image.title"]} />
             <figcaption>
-              <em>{info.fa["image.title"]}</em>
+              <em>{translate["image.title"]}</em>
             </figcaption>
           </figure>
 
@@ -109,7 +137,7 @@ export default function Info(props) {
               alt={`bohr model of ${info.name}`}
             />
             <figcaption>
-              طرز قرار گیری الکترون ها: <br />
+              {t("electron-configuration")} : <br />
               {info.electron_configuration}
             </figcaption>
           </figure>

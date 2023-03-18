@@ -137,7 +137,13 @@ class Elen extends Component {
                   />
                   <Route
                     path="*"
-                    element={<Error code="404" msg="صفحه یافت نشد" />}
+                    element={
+                      <Error
+                        code="404"
+                        msg={this.props.translate.t("page")}
+                        loaded
+                      />
+                    }
                   />
                 </Routes>
               </Content>

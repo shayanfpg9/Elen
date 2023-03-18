@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import styled, { css } from "styled-components";
 import flex from "../CssComponents/Flexbox";
 import { colors, media } from "../CssComponents/Util";
@@ -104,27 +105,29 @@ const Item = styled.span.attrs((props) => ({
 `;
 
 export default function Categories() {
+  const { t } = useTranslation("table");
+
   return (
     <Category>
       <Case>
-        <Name>فلزات</Name>
+        <Name>{t("categories.metal")}</Name>
         <Item className="category__item" data-category="alkali-metal">
-          فلزات قلیایی
+          {t("categories.alkali-metal")}
         </Item>
         <Item className="category__item" data-category="alkaline-earth-metal">
-          فلزات قلیایی خاکی
+          {t("categories.alkaline-earth-metal")}
         </Item>
         <Item className="category__item" data-category="transition" light>
-          فلزات واسطه
+          {t("categories.transition")}
         </Item>
         <Item className="category__item" data-category="posttran">
-          فلزات پس واسطه
+          {t("categories.posttran")}
         </Item>
         <Item className="category__item" data-category="lanthanide" light>
-          لانتانید ها
+          {t("categories.lanthanide")}
         </Item>
         <Item className="category__item" data-category="actinide">
-          اکتینید ها
+          {t("categories.actinide")}
         </Item>
       </Case>
       <Item
@@ -133,15 +136,15 @@ export default function Categories() {
         data-category="metalloid"
         style={{ height: "80%" }}
       >
-        شبه فلزات
+        {t("categories.metalloid")}
       </Item>
       <Case>
-        <Name>نا فلزات</Name>
+        <Name>{t("categories.nometal")}</Name>
         <Item className="category__item" data-category="noble-gas">
-          گاز های نجیب
+        {t("categories.noble-gas")}
         </Item>
         <Item className="category__item" data-category="nonmetal">
-          غیر فلزات
+        {t("categories.nometal")}
         </Item>
       </Case>
       <Item
@@ -150,7 +153,7 @@ export default function Categories() {
         data-category="unknown"
         style={{ height: "80%" }}
       >
-        ناشناخته ها
+        {t("categories.unknown")}
       </Item>
     </Category>
   );

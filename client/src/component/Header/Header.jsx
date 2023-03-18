@@ -3,12 +3,15 @@ import { getSize } from "../funcs/funcs";
 import Menu from "./Menu.jsx";
 import Search from "./Search.jsx";
 import { BsList } from "react-icons/bs";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
   const [width, setWidth] = useState(window?.innerWidth);
   window?.addEventListener("resize", () => {
     setWidth(window?.innerWidth);
   });
+
+  const { t } = useTranslation();
 
   const [status, setStatus] = useState(false);
 
@@ -29,12 +32,10 @@ export default function Header() {
     <>
       <span className="header--top"></span>
       <header className="header">
-        <img
-          src=""
-          alt="شیمی کده مجازی الن"
-          className="header__logo fibo-1--ci"
-        />
-        <h1 className="header__title">شیمی کده مجازی الن</h1>
+        <img src="" alt={t("name")} className="header__logo fibo-1--ci" />
+        <h1 title={t("name")} className="header__title">
+          {t("name")}
+        </h1>
 
         {width >= getSize("xl") ? (
           <Menu SearchBoxClick={SearchBoxClick}></Menu>

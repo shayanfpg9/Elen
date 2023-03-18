@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { GiSolidLeaf, GiWaterDrop, GiGasPump } from "react-icons/gi";
 import { flex, media } from "../CssComponents/Util";
+import { useTranslation } from "react-i18next";
 
 const Box = styled.section`
   max-height: calc(var(--first-fibo) / 2);
@@ -59,19 +60,21 @@ const Item = styled.span.attrs((props) => ({
 `;
 
 export default function Phase() {
+  const { t } = useTranslation("table");
+
   return (
     <Box>
       <Item data-phase="solid" className="phase__item">
         <GiSolidLeaf />
-        جامد
+        {t("phase.solid")}
       </Item>
       <Item data-phase="liquid" className="phase__item">
         <GiWaterDrop />
-        مایع
+        {t("phase.liquid")}
       </Item>
       <Item data-phase="gas" className="phase__item">
         <GiGasPump />
-        گاز
+        {t("phase.gas")}
       </Item>
     </Box>
   );

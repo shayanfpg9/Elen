@@ -1,16 +1,21 @@
 import { useContext, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import * as bs from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
+import { LangContext } from "../Context/Lang";
 import { RefreshContext } from "../Context/Refresh";
 import { ThemeContext } from "../Context/Theme";
 
 export default function Menu(props) {
   const search = props.SearchBoxClick;
   const MenuRef = useRef();
-  const left = props.status ? 0 : "calc(-1 * var(--menu-width))";
+  const dis = props.status ? 0 : "calc(-1 * var(--menu-width))";
   const { setRefresh } = useContext(RefreshContext);
   const { theme, setTheme } = useContext(ThemeContext);
   const [ThemeIcon, setThemeIcon] = useState(<bs.BsFillDropletFill />);
+  const handleLang = useContext(LangContext);
+  const { t, i18n } = useTranslation("menu");
+  const { language } = i18n;
   const items = [
     {
       icon: bs.BsHouseFill,
@@ -18,7 +23,7 @@ export default function Menu(props) {
         element: Link,
         props: { to: "/" },
       },
-      text: "خانه",
+      text: t("home"),
     },
     {
       icon: bs.BsTable,
@@ -26,7 +31,7 @@ export default function Menu(props) {
         element: Link,
         props: { to: "/table" },
       },
-      text: "جدول",
+      text: t("table"),
     },
 
     {
@@ -35,7 +40,7 @@ export default function Menu(props) {
         element: "button",
         props: { onClick: search, type: "button" },
       },
-      text: "جست‌و‌جو",
+      text: t("search"),
     },
   ];
 
@@ -59,7 +64,11 @@ export default function Menu(props) {
   const { pathname } = useLocation();
 
   return (
-    <menu ref={MenuRef} style={{ left }} className={`header__menu`}>
+    <menu
+      ref={MenuRef}
+      style={{ [language === "en" ? "right" : "left"]: dis }}
+      className={`header__menu`}
+    >
       <i
         className="header__menu-icon fibo-1--sq close"
         onClick={props.function}
@@ -87,17 +96,17 @@ export default function Menu(props) {
         <a
           href="https://github.com/shayanfpg9/elen"
           target="_blank"
-          title="گیت‌هاب پروژه"
+          title={t("icons.github")}
           rel="noreferrer"
           onClick={props.function}
         >
           <bs.BsGithub />
         </a>
 
-        {pathname.match(/(table|atom)/gi) ? (
+        {pathname.match(/(table|atom)/gi) && (
           <button
             type="button"
-            title="رفرش اطلاعات"
+            title={t("icons.refresh")}
             onClick={() => {
               props.function();
               setRefresh(true);
@@ -105,13 +114,11 @@ export default function Menu(props) {
           >
             <bs.BsCapslockFill />
           </button>
-        ) : (
-          ""
         )}
 
         <button
           type="button"
-          title="تغییر تم رنگی"
+          title={`${t("icons.theme")} (${theme})`}
           onClick={() => {
             if (theme === "system") setTheme("dark");
             else if (theme === "dark") setTheme("light");
@@ -119,6 +126,17 @@ export default function Menu(props) {
           }}
         >
           {ThemeIcon}
+        </button>
+
+        <button
+          type="button"
+          title={`${t("icons.lang")} (${language})`}
+          onClick={() => {
+            if (language === "en") handleLang("fa");
+            else if (language === "fa") handleLang("en");
+          }}
+        >
+          {language === "en" ? "fa" : "en"}
         </button>
       </li>
     </menu>
