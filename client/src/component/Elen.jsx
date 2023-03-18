@@ -10,12 +10,15 @@ import Loader from "./Loader/Loader";
 import { RefreshContext } from "./Context/Refresh";
 import { LoadedContext } from "./Context/Loaded";
 import { ThemeContext } from "./Context/Theme";
+import { LangContext } from "./Context/Lang";
 import _ from "lodash";
 import Error from "./Error/Error";
 import Search from "./Header/Search";
 import DB from "./funcs/DB";
+import { WithHook } from "./HOC/WithHooks";
+import { useTranslation } from "react-i18next";
 
-export default class Elen extends Component {
+class Elen extends Component {
   state = {
     stop: {
       show: true,
@@ -40,6 +43,18 @@ export default class Elen extends Component {
       .addEventListener("change", (e) => {
         if (this.theme === "system") this.setTheme("system");
       });
+
+    if (!localStorage.getItem("language")) {
+      const langs = window.navigator.languages;
+
+      if (langs.includes("fa")) {
+        this.setLang("fa");
+      } else if (langs.includes("en")) {
+        this.setLang("en");
+      }
+    } else {
+      this.setLang(localStorage.getItem("language"));
+    }
   }
 
   loaded = {
@@ -72,6 +87,24 @@ export default class Elen extends Component {
     localStorage.setItem("theme-mode", theme);
   };
 
+  setLang = (lang) => {
+    if (["en", "fa"].includes(lang)) {
+      document.documentElement.classList.remove("ltr", "rtl");
+
+      const { i18n } = this.props.translate;
+
+      i18n.changeLanguage(lang);
+
+      if (lang === "en") {
+        document.documentElement.classList.add("ltr");
+      } else {
+        document.documentElement.classList.add("rtl");
+      }
+
+      localStorage.setItem("language", lang);
+    }
+  };
+
   render() {
     return (
       <Router>
@@ -90,7 +123,9 @@ export default class Elen extends Component {
                 setRefresh: this.setRefresh,
               }}
             >
-              <Header></Header>
+              <LangContext.Provider value={this.setLang}>
+                <Header></Header>
+              </LangContext.Provider>
               <Content>
                 <Routes>
                   <Route path="/table" element={<Table />} />
@@ -114,3 +149,11 @@ export default class Elen extends Component {
     );
   }
 }
+
+export default WithHook(Elen, [
+  {
+    name: "translate",
+    HookFunc: useTranslation,
+    param: "error",
+  },
+]);
