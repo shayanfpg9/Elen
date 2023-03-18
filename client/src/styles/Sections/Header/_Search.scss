@@ -2,7 +2,7 @@ $rad: 5rem;
 
 .searchbox {
   width: 90vw;
-  height: 15vh;
+  height: min(10vh, 10rem);
 
   position: fixed;
   top: 50%;
@@ -20,6 +20,14 @@ $rad: 5rem;
 
   &:not(.hide) {
     opacity: 1;
+  }
+
+  @include media("xl") {
+    &,
+    *,
+    *::placeholder {
+      font-size: 2rem;
+    }
   }
 
   @include flex(space-between);

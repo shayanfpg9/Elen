@@ -53,6 +53,8 @@
     }
 
     @include media("xl") {
+      font-size: 1.5rem;
+
       &.icons * {
         font-size: 1.5rem !important;
       }
