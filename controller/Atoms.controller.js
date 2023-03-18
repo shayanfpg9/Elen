@@ -73,7 +73,7 @@ const GetSingle = async (req, res) => {
         }
       });
 
-      let ShouldTranslate = true;
+      let ShouldTranslate = query.translate !== "en";
 
       if (query.translate === "fa") {
         //checking the existence of translation in database for this atom:
