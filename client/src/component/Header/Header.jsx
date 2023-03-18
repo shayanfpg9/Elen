@@ -5,6 +5,7 @@ import Search from "./Search.jsx";
 import { BsList } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import logo from "../../asset/logo.svg";
 
 export default function Header() {
   const [width, setWidth] = useState(window?.innerWidth);
@@ -35,7 +36,7 @@ export default function Header() {
     <>
       <span className="header--top"></span>
       <header className="header">
-        <img src="" alt={t("name")} className="header__logo fibo-1--ci" />
+        <img src={logo} alt={t("name")} className="header__logo fibo-1--ci" />
         <h1 title={t("name")} className="header__title">
           <Link to="/"> {t("name")} </Link>
         </h1>
