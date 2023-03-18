@@ -7,7 +7,7 @@ import { GiSpeaker } from "react-icons/gi";
 import { RefreshContext } from "../../Context/Refresh";
 import { LoadedContext } from "../../Context/Loaded";
 import Error from "../../Error/Error";
-import { DB, equal } from "../../funcs/funcs";
+import { DB, equal, message } from "../../funcs/funcs";
 import { useTranslation } from "react-i18next";
 
 export default function Info(props) {
@@ -16,6 +16,7 @@ export default function Info(props) {
   const { refresh, setRefresh } = useContext(RefreshContext);
   const loaded = useContext(LoadedContext);
   const { t, i18n } = useTranslation("info");
+  const tableTranslate = useTranslation("table").t;
   const [translate, setTranslate] = useState({ ...info });
 
   let unMount = useRef(true);
@@ -30,11 +31,30 @@ export default function Info(props) {
       unMount.current = false;
 
       db.getSingle(atom, (res) => {
-        if (!equal(res, []) || refresh) {
+        if (!equal(res, []) || refresh || _.isUndefined(res.fa)) {
+          if (!refresh && i18n.language === "fa") {
+            message(
+              tableTranslate("messages.load.title"),
+              tableTranslate("messages.load.msg"),
+              "warning"
+            );
+          }
+
           axios
-            .get(`/api/atom/${atom}?translate=fa&refresh=${refresh}`)
+            .get(
+              `/api/atom/${atom}?translate=${i18n.language}&refresh=${refresh}`
+            )
             .then(({ data }) => {
               db.set([data], false);
+
+              if (refresh) {
+                message(tableTranslate("messages.refresh"));
+              } else {
+                message(
+                  tableTranslate("messages.save.title"),
+                  tableTranslate("messages.save.msg")
+                );
+              }
 
               setInfo(data);
             })
@@ -58,7 +78,16 @@ export default function Info(props) {
     ReadingBtn.current?.addEventListener("click", () => {
       read(ReadingBtn.current.dataset.word);
     });
-  }, [atom, loaded, setRefresh, refresh, i18n.language, setTranslate, info]);
+  }, [
+    atom,
+    loaded,
+    setRefresh,
+    refresh,
+    i18n.language,
+    setTranslate,
+    info,
+    tableTranslate,
+  ]);
 
   if (_.keys(info).length > 0) {
     return (
