@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Elen Atomic World",
+  "name": "periodic table website",
   "icons": [
     {
       "src": "logo.svg",
@@ -10,6 +10,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#f2cc8f",
+  "background_color": "#f4f1de"
 }
