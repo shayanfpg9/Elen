@@ -78,7 +78,7 @@ $rad: 5rem;
 
     &submit {
       cursor: pointer;
-      border-radius: 1rem;
+      border-radius: 100%;
 
       html.rtl & {
         border-right: 2px solid var(--color-text);
@@ -86,10 +86,6 @@ $rad: 5rem;
 
       html.ltr & {
         border-left: 2px solid var(--color-text);
-      }
-
-      &:active {
-        border-width: 3px;
       }
 
       > * {
