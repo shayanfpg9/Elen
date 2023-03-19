@@ -1,10 +1,10 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { LoadedContext } from "../Context/Loaded";
 import styled, { css } from "styled-components";
 import flex from "../CssComponents/Flexbox";
 import media from "../CssComponents/Media";
-import { useWriteEffect } from "../Hook/hooks";
+import { writeEffect } from "../funcs/funcs";
 import banner from "../../asset/banner.jpg";
 import {
   BsFillPhoneFill,
@@ -14,6 +14,8 @@ import {
 } from "react-icons/bs";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { RiOpenSourceFill } from "react-icons/ri";
+import { useTranslation } from "react-i18next";
+import _ from "lodash";
 
 const Section = styled.section`
   width: 100%;
@@ -29,7 +31,7 @@ const Section = styled.section`
   })};
 `;
 
-const Title = styled.h2`
+const Title = styled.h2.attrs((props) => ({ title: props.children }))`
   font-size: ${(props) => props.fs || "2rem"};
   position: relative;
   padding-left: 5px;
@@ -97,7 +99,7 @@ const Icon = styled.i`
   font-size: 2rem;
 `;
 
-const A = styled(Link)`
+const A = styled(Link).attrs((props) => ({ title: props.children }))`
   width: 90%;
   text-align: center;
   text-decoration: none;
@@ -113,96 +115,101 @@ const A = styled(Link)`
   }
 `;
 
-const P = styled.p`
+const P = styled.p.attrs((props) => ({
+  title: props.children.slice(0, 50).trim() + "...",
+}))`
   font-size: 1.5rem;
 `;
 
 export default function Home() {
+  const { t, i18n } = useTranslation("home");
   const loaded = useContext(LoadedContext);
   const Mount = useRef(false);
-  const WritingEffect = useWriteEffect("با الن دنیای اتم ها رو بهتر بشناس:");
+  const [lang, setLang] = useState(null);
+  const TextEffect = useRef();
+  const WriteEffect = new writeEffect().effect;
 
   useEffect(() => {
+    if (_.isNull(lang)) {
+      setLang(i18n.language);
+    }
+
     if (!Mount.current) {
       Mount.current = true;
+
       loaded.hide();
+
+      TextEffect.current.innerHTML = "";
+
+      WriteEffect(TextEffect.current, t("effect"));
+      setLang(i18n.language);
+    } else if (i18n.language !== lang && !_.isNull(lang)) {
+      TextEffect.current.setAttribute("changed", true);
+      TextEffect.current.innerHTML = t("effect");
+      setLang(i18n.language);
     }
-  });
+  }, [t, loaded, WriteEffect, i18n.language, lang]);
 
   return (
     <>
       <Section>
-        <Title>{WritingEffect.text}</Title>
+        <Title ref={TextEffect}></Title>
         <Img src={banner} />
       </Section>
 
       <Section>
-        <Title>چرا فقط الن ؟</Title>
+        <Title>{t("why")}</Title>
 
         <List>
           <Item>
             <Icon as={BsTranslate} />
-            <h3>کاملا فارسی</h3>
-            <span>اطلاعات دقیق اما فارسی چیزی که کم پیدا میشه</span>
+            <h3>{t("list.translate.title")}</h3>
+            <span>{t("list.translate.msg")}</span>
           </Item>
           <Item>
             <Icon as={BsSpeedometer2} />
-            <h3>خیلی سریع</h3>
-            <span>فقط لازمه یک باز برای لود شدنش صبر کنی</span>
+            <h3>{t("list.fast.title")}</h3>
+            <span>{t("list.fast.msg")}</span>
           </Item>
           <Item>
             <Icon as={BsSunglasses} />
-            <h3>جذاب</h3>
-            <span>ظاهر فوق العاده برای یادگیری با انگیزه ی بیشتر</span>
+            <h3>{t("list.cute.title")}</h3>
+            <span>{t("list.cute.msg")}</span>
           </Item>
           <Item>
             <Icon as={BsFillPhoneFill} />
-            <h3>واکنش گرا</h3>
-            <span>همه جا میتونی ازش استفاده کنی</span>
+            <h3>{t("list.responsive.title")}</h3>
+            <span>{t("list.responsive.msg")}</span>
           </Item>
           <Item>
             <Icon as={FaMoneyBillWave} />
-            <h3>رایگان</h3>
-            <span>چرا داری به دشمنات پول میدی؟</span>
+            <h3>{t("list.free.title")}</h3>
+            <span>{t("list.free.msg")}</span>
           </Item>
           <Item>
             <Icon as={RiOpenSourceFill} />
-            <h3>اپن سورس</h3>
-            <span>از api الن تو اپلیکیشن بعدیت استفاده کن</span>
+            <h3>{t("list.opensource.title")}</h3>
+            <span>{t("list.opensource.msg")}</span>
           </Item>
         </List>
       </Section>
 
       <Section>
-        <Title>همین حالا شروع کن و دنیای اتم ها رو بشناس</Title>
-        <A to="/table">بزن بریم</A>
+        <Title>{t("join")}</Title>
+        <A to="/table">{t("btn-join")}</A>
       </Section>
 
       <Section>
-        <Title>برنامه نویسی؟</Title>
+        <Title>{t("develope")}</Title>
         <Title as="h4" fs="1.2rem" fsXl="1.5rem">
-          اینجا برای تو هم جا هست، می‌تونی اپلیکیشنتو توسعه بدی
+          {t("span-develope")}{" "}
         </Title>
-        <A to="/document">یه سری به دایکیومنت api بزن</A>
+        <A to="/document">{t("document")}</A>
       </Section>
 
       <Section>
-        <Title>اینجا کجاست؟</Title>
-        <P>
-          الن یک پروژه ی اپن-سورس کاملا ایرانی، پویا و واکنش گراست که برای مردم
-          همه جای دنیا طراحی شده و تمام آدما میتونن باهاش دنیای اتم های رو یاد
-          بگیرن این سایت دارای یک api خوب هستش که باهاش میتونین اطلاعات رو به
-          تمام زبان ها به کمک گوگل ترنسلیت ترجمه کنید و توی کار هاتون ازش
-          استفاده کنین.
-          <br />
-          این پروژه با expressJS و react و چند تا کتابخونه ی دیگه طراحی شده و از
-          یک دیتابیس NoSQL خیلی خوب برای ذخیره ی اطلاعات استفاده میکنه، همچنین
-          با بارگذاری اولیه اطلاعات کش میشن و شما دیگه نیاز نیست برای ترجمه
-          شدنشون صبر کنین.
-          <br />
-          همین حالا وقتتون رو با سایت های خارجی هدر ندین و به وسیله ی لینک بالا
-          از اطلاعات این سایت استفاده کنین.
-        </P>
+        <Title>{t("whereis")}</Title>
+        <P>{t("about")}</P>
       </Section>
     </>
   );
