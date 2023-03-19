@@ -2,16 +2,18 @@ import { useContext, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { LoadedContext } from "../Context/Loaded";
+import useConfig from "../Hook/useConfig";
 
 export default function Error(props) {
   const { t } = useTranslation("error");
   const { hide } = useContext(LoadedContext);
-  const  unMount = useRef(true)
+  const unMount = useRef(true);
+  useConfig(true);
 
   useEffect(() => {
     if (props.loaded && unMount.current) {
       hide();
-      unMount.current = false
+      unMount.current = false;
     }
   });
 

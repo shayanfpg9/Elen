@@ -314,6 +314,7 @@ export default WithHook(
   WithMultiContext(Table, ["Refresh", "Theme", "Loaded"]),
   [
     "useSearch",
+    "useConfig",
     {
       name: "params",
       HookFunc: useParams,

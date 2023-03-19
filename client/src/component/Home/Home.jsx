@@ -16,6 +16,7 @@ import { FaMoneyBillWave } from "react-icons/fa";
 import { RiOpenSourceFill } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
 import _ from "lodash";
+import { useConfig } from "../Hook/hooks";
 
 const Section = styled.section`
   width: 100%;
@@ -128,6 +129,7 @@ export default function Home() {
   const [lang, setLang] = useState(null);
   const TextEffect = useRef();
   const WriteEffect = new writeEffect().effect;
+  useConfig();
 
   useEffect(() => {
     if (_.isNull(lang)) {

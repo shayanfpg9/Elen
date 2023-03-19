@@ -9,6 +9,7 @@ import { LoadedContext } from "../../Context/Loaded";
 import Error from "../../Error/Error";
 import { DB, message } from "../../funcs/funcs";
 import { useTranslation } from "react-i18next";
+import { useConfig } from "../../Hook/hooks";
 
 export default function Info() {
   const { atom } = useParams();
@@ -19,6 +20,7 @@ export default function Info() {
   const tableTranslate = useTranslation("table").t;
   const [translate, setTranslate] = useState({ ...info });
   const error = useTranslation("error").t;
+  useConfig();
 
   let unMount = useRef(true);
   const ReadingBtn = useRef();

@@ -5,6 +5,7 @@ import { isNull } from "lodash";
 import Swal from "sweetalert2";
 import { LoadedContext } from "../Context/Loaded";
 import { useTranslation } from "react-i18next";
+import { useConfig } from "../Hook/hooks";
 
 export default function Search(props) {
   const searchbox = useRef(),
@@ -14,6 +15,8 @@ export default function Search(props) {
 
   const { t } = useTranslation("search");
   const back = useTranslation("error").t("back");
+
+  useConfig();
 
   const close = () => {
     input.current.value = "";
