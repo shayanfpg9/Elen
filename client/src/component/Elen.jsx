@@ -133,6 +133,10 @@ class Elen extends Component {
                   <Route path="/table/find/:query" element={<Table />} />
                   <Route path="/table/find/" element={<Search single />} />
                   <Route path="/atom/:atom" element={<Info />} />
+                  <Route
+                    path="/document"
+                    element={<Error code="406" loaded />}
+                  />
                   <Route path="/" element={<Home />} />
                   <Route
                     path="*"
