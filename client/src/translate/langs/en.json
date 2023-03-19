@@ -77,5 +77,42 @@
     "period": "period",
     "group": "group",
     "electron-configuration": "electron configuration"
+  },
+  "home": {
+    "effect": "Get to know the world of atoms better with Elen:",
+    "why": "why just Elen?",
+    "list": {
+      "translate": {
+        "title": "Completely Persian",
+        "msg": "Accurate information, but in Persian like something that is rare."
+      },
+      "fast": {
+        "title": "very fast",
+        "msg": "You only have to wait for loading once"
+      },
+      "cute": {
+        "title": "Attractive",
+        "msg": "Great look for more motivated in learning"
+      },
+      "responsive": {
+        "title": "Responsive",
+        "msg": "You can use it anywhere"
+      },
+      "free": {
+        "title": "free",
+        "msg": "Why are you paying your enemies?"
+      },
+      "opensource": {
+        "title": "open source",
+        "msg": "Use Elen's api in your next application"
+      }
+    },
+    "join": "Start now and know the world of atoms",
+    "btn-join": "Let's go",
+    "develope": "Are you a developer?",
+    "span-develope": "There is room for you too, you can develop your application with our API",
+    "document": "Take a look at the api document",
+    "whereis": "Where is here?!",
+    "about": "Elen is a completely Iranian, dynamic and responsive open-source project that is designed for people all over the world and all people can learn the world of atoms with it. This site has a good api with which you can access information in all languages by Google Translate it and use it in your work.\nThis project is designed with expressJS, react and several other libraries and uses a very good NoSQL database to store information, also the information is cached with the initial loading and you no longer need to wait for them to be translated. Don't waste your time with foreign sites right now and use the information on this site through the link above."
   }
 }
