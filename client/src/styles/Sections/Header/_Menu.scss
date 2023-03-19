@@ -126,10 +126,9 @@
 
       list-style-type: none;
       height: 99vh;
-      z-index: 10;
+      z-index: 1000;
       background-color: rgba(var(--color-fg-rgb), 0.8);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
+      box-shadow: 5px 0px 20px 9px var(--color-bg);
 
       html.rtl & {
         border: {
@@ -169,7 +168,6 @@
 
       @include media("md", "xl") {
         --menu-width: calc(5 * var(--first-fibo) + 2rem);
-        box-shadow: 5px 0px 20px 9px rgba(var(--color-fg-rgb), 0.4);
       }
 
       @include media("xs", "md") {

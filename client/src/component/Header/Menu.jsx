@@ -16,6 +16,7 @@ export default function Menu(props) {
   const handleLang = useContext(LangContext);
   const { t, i18n } = useTranslation("menu");
   const { language } = i18n;
+  const blur = useRef();
   const items = [
     {
       icon: bs.BsHouseFill,
@@ -48,7 +49,7 @@ export default function Menu(props) {
     window.onkeyup = ({ code }) => {
       if (code === "Escape" && props.status) {
         window.onkeyup = undefined;
-        if (typeof props.function === "function") props.function();
+        props.function();
       }
     };
 
@@ -59,86 +60,95 @@ export default function Menu(props) {
     } else if (theme === "light") {
       setThemeIcon(<bs.BsFillSunFill />);
     }
+
+    blur.current.onclick = () => {
+      window.onkeyup = undefined;
+      blur.current.onclick = undefined;
+      props.function();
+    };
   }, [setThemeIcon, props, theme]);
 
   const { pathname } = useLocation();
 
   return (
-    <menu
-      ref={MenuRef}
-      style={{ [language === "en" ? "right" : "left"]: dis }}
-      className={`header__menu`}
-    >
-      <i
-        className="header__menu-icon fibo-1--sq close"
-        onClick={props.function}
+    <>
+      <div ref={blur} className={props.status ? "blur" : "hide"}></div>
+      <menu
+        ref={MenuRef}
+        style={{ [language === "en" ? "right" : "left"]: dis }}
+        className={`header__menu`}
       >
-        <bs.BsXLg />
-      </i>
-
-      {items.map((item) => {
-        return (
-          <li
-            className="header__menu-item fibo-1--sq"
-            onClick={props.function}
-            title={item.text}
-            key={item.text}
-          >
-            <item.link.element {...item.link.props}>
-              <item.icon />
-              {item.text}
-            </item.link.element>
-          </li>
-        );
-      })}
-
-      <li className="header__menu-item fibo-1--sq icons">
-        <a
-          href="https://github.com/shayanfpg9/elen"
-          target="_blank"
-          title={t("icons.github")}
-          rel="noreferrer"
+        <i
+          className="header__menu-icon fibo-1--sq close"
           onClick={props.function}
         >
-          <bs.BsGithub />
-        </a>
+          <bs.BsXLg />
+        </i>
 
-        {pathname.match(/(table|atom)/gi) && (
+        {items.map((item) => {
+          return (
+            <li
+              className="header__menu-item fibo-1--sq"
+              onClick={props.function}
+              title={item.text}
+              key={item.text}
+            >
+              <item.link.element {...item.link.props}>
+                <item.icon />
+                {item.text}
+              </item.link.element>
+            </li>
+          );
+        })}
+
+        <li className="header__menu-item fibo-1--sq icons">
+          <a
+            href="https://github.com/shayanfpg9/elen"
+            target="_blank"
+            title={t("icons.github")}
+            rel="noreferrer"
+            onClick={props.function}
+          >
+            <bs.BsGithub />
+          </a>
+
+          {pathname.match(/(table|atom)/gi) && (
+            <button
+              type="button"
+              title={t("icons.refresh")}
+              onClick={() => {
+                if (typeof props.function === "function") props.function();
+                setRefresh(true);
+              }}
+            >
+              <bs.BsCapslockFill />
+            </button>
+          )}
+
           <button
             type="button"
-            title={t("icons.refresh")}
+            title={`${t("icons.theme")} (${theme})`}
             onClick={() => {
-              if (typeof props.function === "function") props.function();
-              setRefresh(true);
+              if (theme === "system") setTheme("dark");
+              else if (theme === "dark") setTheme("light");
+              else if (theme === "light") setTheme("system");
             }}
           >
-            <bs.BsCapslockFill />
+            {ThemeIcon}
           </button>
-        )}
 
-        <button
-          type="button"
-          title={`${t("icons.theme")} (${theme})`}
-          onClick={() => {
-            if (theme === "system") setTheme("dark");
-            else if (theme === "dark") setTheme("light");
-            else if (theme === "light") setTheme("system");
-          }}
-        >
-          {ThemeIcon}
-        </button>
-
-        <button
-          type="button"
-          title={`${t("icons.lang")} (${language})`}
-          onClick={() => {
-            if (language === "en") handleLang("fa");
-            else if (language === "fa") handleLang("en");
-          }}
-        >
-          {language === "en" ? "fa" : "en"}
-        </button>
-      </li>
-    </menu>
+          <button
+            type="button"
+            title={`${t("icons.lang")} (${language})`}
+            onClick={() => {
+              if (language === "en") handleLang("fa");
+              else if (language === "fa") handleLang("en");
+            }}
+          >
+            {language === "en" ? "fa" : "en"}
+          </button>
+        </li>
+      </menu>
+    </>
   );
 }
