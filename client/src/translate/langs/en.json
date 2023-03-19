@@ -114,5 +114,21 @@
     "document": "Take a look at the api document",
     "whereis": "Where is here?!",
     "about": "Elen is a completely Iranian, dynamic and responsive open-source project that is designed for people all over the world and all people can learn the world of atoms with it. This site has a good api with which you can access information in all languages by Google Translate it and use it in your work.\nThis project is designed with expressJS, react and several other libraries and uses a very good NoSQL database to store information, also the information is cached with the initial loading and you no longer need to wait for them to be translated. Don't waste your time with foreign sites right now and use the information on this site through the link above."
+  },
+  "config": {
+    "home": "Home",
+    "info": "Info",
+    "search": "Search",
+    "table": "Table",
+    "error": "Error",
+    "TableResult": "Search result",
+    "descriptions": {
+      "home": "Do know anything about atoms?\ncheck Elen Atomic World to learn more",
+      "search": "You can search with any property you want: link atomic mass, atomic number, name, category, phase and ...",
+      "table": "This is a fantastic periodic table you see atoms with colorful style and you can click to see the details",
+      "TableResult": "You look for a special atom? you can find it here",
+      "info": "Information about %NAME% atom is visible in here:",
+      "error": "oh no, i get an error, we can't get anything"
+    }
   }
 }
