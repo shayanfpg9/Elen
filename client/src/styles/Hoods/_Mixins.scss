@@ -23,6 +23,7 @@
   $from: map-get($breakpoints, $f);
   $to: map-get($breakpoints, $t);
 
+  //to know is it number?:
   @if (map-has-key($breakpoints, $f) == false) {
     $from: $f;
   }
@@ -37,13 +38,14 @@
     }
   } @else {
     @media only screen and (min-#{$change}: ($from * 1px)) and (max-#{$change}: (($to - 1) * 1px)) {
+      // time to 1px to add px suffix
       @content;
     }
   }
 }
 
 @mixin scroller($size, $bgColor, $sColor) {
-  @supports (scrollbar-width: thin) {
+  @supports (scrollbar-width: thin) { //firefox familly
     scrollbar-width: thin;
     scrollbar-color: $sColor $bgColor;
   }

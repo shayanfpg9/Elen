@@ -1,7 +1,10 @@
+//deps
+import { useEffect } from "react";
+
+//libs & utils
 import { useTranslation } from "react-i18next";
 import { useLocation, useParams } from "react-router-dom";
 import chroma from "chroma-js";
-import { useEffect } from "react";
 
 export default function useConfig(error = false) {
   const { pathname } = useLocation();
@@ -21,7 +24,9 @@ export default function useConfig(error = false) {
   const setTitle = () => {
     document.title = name + " - " + t(location);
 
-    switch (location) {
+    switch (
+      location //with special params
+    ) {
       case "info":
         document.title += ` (${params.atom})`;
         break;
@@ -69,6 +74,7 @@ export default function useConfig(error = false) {
   }
 
   useEffect(() => {
+    //theme maybe change in updates
     const ThemeMeta = document.querySelector("meta[name~='theme-color']");
     const bgc = getComputedStyle(document.body)
       .getPropertyValue("--color-bg-rgb")

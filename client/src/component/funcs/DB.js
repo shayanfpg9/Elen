@@ -12,7 +12,7 @@ export default class DB {
       const db = OpenReq.result;
 
       ObjStores.forEach((store) => {
-        db.createObjectStore(store, { keyPath: "name" });
+        db.createObjectStore(store, { keyPath: "name" }); // search and find easy by name
       });
     };
 
@@ -21,8 +21,8 @@ export default class DB {
 
       db.onversionchange = function () {
         db.close();
-        message("خطا", "ما صفحه را رفرش می کنیم...", "error").then(() => {
-          window?.location.reload();
+        message("error", "refresh...", "error").then(() => {
+          window?.location.reload(); //fix Line:22
         });
       };
     };
@@ -33,7 +33,7 @@ export default class DB {
 
     OpenReq.onsuccess = () => {
       const db = OpenReq.result;
-      const transaction = db.transaction(this.dbname, "readwrite");
+      const transaction = db.transaction(this.dbname, "readonly");
 
       const Atoms = transaction.objectStore(this.dbname);
 
@@ -51,7 +51,7 @@ export default class DB {
     OpenReq.onsuccess = () => {
       try {
         const db = OpenReq.result;
-        const transaction = db.transaction(this.dbname, "readwrite");
+        const transaction = db.transaction(this.dbname, "readonly");
 
         const Atoms = transaction.objectStore(this.dbname);
 
@@ -75,7 +75,7 @@ export default class DB {
 
       const Atoms = transaction.objectStore(this.dbname);
 
-      if (clear) Atoms.clear();
+      if (clear) Atoms.clear(); //set a dbl datas
 
       items.forEach((obj) => Atoms.add(obj));
     };

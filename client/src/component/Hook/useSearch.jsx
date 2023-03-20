@@ -2,6 +2,7 @@ import _ from "lodash";
 import { useState } from "react";
 
 export default function useSearch() {
+  //this hook just search with the attr of the elements on the page
   const [data, setData] = useState(null);
 
   const ChangeStatus = (option, single = true) => {
@@ -14,7 +15,7 @@ export default function useSearch() {
       ".Atom" +
       _.keys(option).map(
         (prop) =>
-          `[data-${prop}*="${option[prop].replace(
+          `[data-${prop}*="${option[prop].replace( // match in any where
             /-/g,
             " "
           )}"]:not(.${prop}__item)`
@@ -26,7 +27,7 @@ export default function useSearch() {
       setData(el["name"]);
       el.classList.remove("hide");
     } else {
-      const els = document.querySelectorAll(query);
+      const els = document.querySelectorAll(query); // all of the elements with this query
 
       setData(
         Array.from(els).map((el) => {

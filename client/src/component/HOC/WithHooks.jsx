@@ -8,12 +8,12 @@ function GetHook(Hook) {
   } else {
     if (Hook?.HookFunc) {
       if (Hook?.param) {
-        res = Hook.HookFunc(Hook.param);
+        res = Hook.HookFunc(Hook.param); //with params
       } else {
-        res = Hook.HookFunc();
+        res = Hook.HookFunc(); //not in hooks list -> made by libs
       }
     } else if (Hook?.param) {
-      res = hooks[Hook](Hook.param);
+      res = hooks[Hook](Hook.param); //both of options
     }
 
     Hook = Hook.name;
@@ -32,7 +32,7 @@ export function WithHook(ActionCmponent, Hook) {
     return HTP(ActionCmponent, Hook);
   } else if (Hook.length === 1) {
     return HTP(ActionCmponent, Hook[0]);
-  } else if (Array.isArray(Hook)) {
+  } else if (Array.isArray(Hook)) { //multi
     let Result;
 
     for (let i = 0; i < Hook.length; i++) {

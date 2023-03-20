@@ -1,11 +1,18 @@
+//deps
 import { useState } from "react";
-import { getSize } from "../funcs/funcs";
+import { Link } from "react-router-dom";
+
+//componets
 import Menu from "./Menu.jsx";
 import Search from "./Search.jsx";
+
+//assets
+import logo from "../../asset/logo.svg";
+
+//libs & utils
+import { getSize } from "../funcs/funcs";
 import { BsList } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import logo from "../../asset/logo.svg";
 
 export default function Header() {
   const [width, setWidth] = useState(window?.innerWidth);
@@ -27,7 +34,7 @@ export default function Header() {
     if (searchBox) setSearchBox(false);
     else setSearchBox(true);
 
-    MenuBtnClick();
+    MenuBtnClick(); //close menu by search box status -> handle bugs
   };
 
   return (

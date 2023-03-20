@@ -1,8 +1,13 @@
+//deps
 import { useContext, useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+
+//libs & utils
 import { useTranslation } from "react-i18next";
 import * as bs from "react-icons/bs";
-import { Link, useLocation } from "react-router-dom";
 import { LangContext } from "../Context/Lang";
+
+//contexts
 import { RefreshContext } from "../Context/Refresh";
 import { ThemeContext } from "../Context/Theme";
 

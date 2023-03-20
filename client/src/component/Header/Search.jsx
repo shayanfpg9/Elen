@@ -1,11 +1,16 @@
+//deps
 import { useContext, useEffect, useRef } from "react";
-import { BsXLg } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
+
+//utils
+import { BsXLg } from "react-icons/bs";
 import { isNull } from "lodash";
 import Swal from "sweetalert2";
+import { useConfig } from "../Hook/hooks";
+
+//contexts
 import { LoadedContext } from "../Context/Loaded";
 import { useTranslation } from "react-i18next";
-import { useConfig } from "../Hook/hooks";
 
 export default function Search(props) {
   const searchbox = useRef(),

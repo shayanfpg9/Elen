@@ -65,8 +65,13 @@ const AtomCel = styled(Link).attrs((props) => ({
 
   &:hover {
     transform: translateY(-0.5rem);
-    backdrop-filter: blur(2px);
     box-shadow: 0px 0px 10px var(--color-bg);
+
+    @supports (backdrop-filter: blur(2px);
+    ) {
+      //firefox familly bug
+      backdrop-filter: blur(2px);
+    }
   }
 
   &.active,

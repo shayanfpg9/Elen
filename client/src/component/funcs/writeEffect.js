@@ -1,7 +1,6 @@
 export default class writeEffect {
+  //use class to remove dbls
   effect(el, text, time = 100) {
-    text = text.trim();
-
     let letter = 0;
 
     el.innerHTML = "";

@@ -1,23 +1,32 @@
+//deps
 import { Component } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+//styles
 import "../styles/Main.scss";
+
+//components
 import Table from "./Content/AtomicTable/Table";
 import Content from "./Content/Content";
 import Info from "./Content/Info/Info";
 import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./Home/Home";
+
+//contexts
 import Loader from "./Loader/Loader";
 import { RefreshContext } from "./Context/Refresh";
 import { LoadedContext } from "./Context/Loaded";
 import { ThemeContext } from "./Context/Theme";
 import { LangContext } from "./Context/Lang";
-import _ from "lodash";
 import Error from "./Error/Error";
 import Search from "./Header/Search";
+
+//libs & utils
+import _ from "lodash";
 import DB from "./funcs/DB";
 import { WithHook } from "./HOC/WithHooks";
 import { useTranslation } from "react-i18next";
-import Home from "./Home/Home";
 
 class Elen extends Component {
   state = {
@@ -133,7 +142,7 @@ class Elen extends Component {
                   <Route path="/table/find/:query" element={<Table />} />
                   <Route path="/table/find/" element={<Search single />} />
                   <Route path="/atom/:atom" element={<Info />} />
-                  <Route
+                  <Route //TODO: make document
                     path="/document"
                     element={
                       <Error

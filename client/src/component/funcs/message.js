@@ -15,5 +15,5 @@ const Toast = Swal.mixin({
 });
 
 export default function message(title = "", text = "", icon = "success") {
-  return Toast.fire({ ...{ title, icon }, html: text });
+  return Toast.fire({ ...{ title, icon }, html: text }); //send message faster...
 }

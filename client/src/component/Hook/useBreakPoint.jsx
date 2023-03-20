@@ -23,6 +23,7 @@ export default function useBreakPoint(init = "now") {
     }
   }
 
+  //don't find the exact value -> find a range
   if (size >= sizes.xxl) return "xxl";
   else if (size >= sizes.xl && size < sizes.xxl) setBreackpoint("xl");
   else if (size >= sizes.md && size < sizes.xl) setBreackpoint("md");

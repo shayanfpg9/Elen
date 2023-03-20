@@ -1,5 +1,6 @@
 import chroma from "chroma-js";
 
+//use chroma to change the colors
 export const colors = {
   "alkali metal": chroma("#FF080C"),
   "alkaline earth metal": chroma("#FF952E"),

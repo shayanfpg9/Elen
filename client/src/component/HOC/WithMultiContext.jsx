@@ -12,11 +12,7 @@ const AllContexts = {
 const CTP = (ActionCmponent, Context) =>
   class extends Component {
     state = {
-      Context:
-        AllContexts[Context] ||
-        Context.map((i) => {
-          return AllContexts[i];
-        }),
+      Context: AllContexts[Context] || Context.map((index) => AllContexts[index]),
     };
 
     render() {
@@ -34,6 +30,7 @@ export function WithMultiContext(ActionCmponent, Context) {
   } else if (Context.length === 1) {
     return CTP(ActionCmponent, Context[0]);
   } else if (Array.isArray(Context)) {
+    //multi
     let result;
 
     for (let i = 0; i < Context.length; i++) {

@@ -5,7 +5,7 @@ import { getSize } from "../funcs/funcs";
 export default function media(options, ContentCss) {
   return css`
     @media only screen and ${_.keys(options)
-        .map((prop, i) => {
+        .map((prop) => {
           const Size = getSize(options[prop]);
           return `(${prop}: ${
             !_.isUndefined(Size) ? Size + "px" : options[prop]
