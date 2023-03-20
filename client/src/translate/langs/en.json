@@ -59,7 +59,8 @@
     "back-table": "back to table",
     "page": "page not found",
     "or": "or",
-    "search": "search it"
+    "search": "search it",
+    "406": "The page is under construction"
   },
   "info": {
     "wikipedia": "in wikipedia",

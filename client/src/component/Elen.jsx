@@ -135,7 +135,13 @@ class Elen extends Component {
                   <Route path="/atom/:atom" element={<Info />} />
                   <Route
                     path="/document"
-                    element={<Error code="406" loaded />}
+                    element={
+                      <Error
+                        code="406"
+                        msg={this.props.translate.t("406")}
+                        loaded
+                      />
+                    }
                   />
                   <Route path="/" element={<Home />} />
                   <Route
