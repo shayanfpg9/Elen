@@ -5,7 +5,7 @@ import styled, { css } from "styled-components";
 import flex from "../CssComponents/Flexbox";
 import media from "../CssComponents/Media";
 import { writeEffect } from "../funcs/funcs";
-import banner from "../../asset/banner.jpg";
+import banner from "../../asset/banner.webp";
 import {
   BsFillPhoneFill,
   BsSpeedometer2,
