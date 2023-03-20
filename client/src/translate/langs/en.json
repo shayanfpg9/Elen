@@ -10,7 +10,8 @@
       "github": "github",
       "refresh": "refresh the datas",
       "theme": "change color theme",
-      "lang": "change the language"
+      "lang": "change the language",
+      "share": "share this page"
     }
   },
   "table": {
