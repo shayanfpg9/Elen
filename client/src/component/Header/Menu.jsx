@@ -75,6 +75,20 @@ export default function Menu(props) {
 
   const { pathname } = useLocation();
 
+  const Search = () => {
+    try {
+      navigator.share({
+        title: document.title,
+        text: document
+          .querySelector("meta[name~='description']")
+          .getAttribute("content"),
+        url: window?.location.href,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <div ref={blur} className={props.status ? "blur" : "hide"}></div>
@@ -140,6 +154,10 @@ export default function Menu(props) {
             }}
           >
             {ThemeIcon}
+          </button>
+
+          <button type="button" title={t("icons.share")} onClick={Search}>
+            <bs.BsShareFill />
           </button>
 
           <button
