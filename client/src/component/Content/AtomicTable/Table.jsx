@@ -1,15 +1,23 @@
-import axios from "axios";
+//deps
 import { Component } from "react";
 import styled, { css, ThemeProvider } from "styled-components";
+import { Link, useNavigate, useParams } from "react-router-dom";
+
+
+//components
 import Atom from "./Atom";
 import Categories from "./Categories";
 import Phase from "./Phase";
-import { media } from "../../CssComponents/Util";
-import _ from "lodash";
+import Error from "../../Error/Error";
+
+//HOCs
 import { WithMultiContext } from "../../HOC/WithMultiContext";
 import { WithHook } from "../../HOC/WithHooks";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import Error from "../../Error/Error";
+
+//libs & utils
+import axios from "axios";
+import { media } from "../../CssComponents/Util";
+import _ from "lodash";
 import { DB, equal, message } from "../../funcs/funcs";
 import { useTranslation } from "react-i18next";
 
