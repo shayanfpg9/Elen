@@ -12,11 +12,16 @@
         position: relative;
         text-align: center;
 
-        &:hover {
+        &:hover,
+        &.active {
           &::after {
             opacity: 1;
             transform: translateX(-50%) scaleX(1);
           }
+        }
+
+        &.active {
+          pointer-events: none;
         }
 
         &::after {

@@ -112,7 +112,10 @@ export default function Menu(props) {
               title={item.text}
               key={item.text}
             >
-              <item.link.element {...item.link.props}>
+              <item.link.element
+                {...item.link.props}
+                className={pathname === item?.link?.props?.to ? "active" : ""}
+              >
                 <item.icon />
                 {item.text}
               </item.link.element>
