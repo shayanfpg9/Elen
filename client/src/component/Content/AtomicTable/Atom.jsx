@@ -54,7 +54,7 @@ const AtomCel = styled(Link).attrs((props) => ({
   }
 
   sub {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
     margin-right: 0.1rem;
   }
 

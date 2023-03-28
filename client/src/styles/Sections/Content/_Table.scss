@@ -19,7 +19,7 @@
     margin-bottom: 0.5rem;
   }
 
-  @include media("xs", 860) {
+  @include media("xs", "md") {
     .Atom {
       font-size: 1.2rem !important;
     }
@@ -32,6 +32,22 @@
     sub,
     sup {
       font-size: 15px !important; //for lighthouse
+    }
+  }
+
+  @include media("md", 860) {
+    .Atom {
+      font-size: 0.8rem !important;
+    }
+
+    .row,
+    .col {
+      display: none;
+    }
+
+    sub,
+    sup {
+      font-size: 10px !important;
     }
   }
 
