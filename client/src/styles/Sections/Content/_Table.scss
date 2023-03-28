@@ -100,6 +100,10 @@ body.system .table {
   @media (prefers-color-scheme: dark) {
     background-color: rgba(var(--color-text-rgb), 0.2);
   }
+
+  @media (prefers-color-scheme: light) {
+    background-color: transparent !important;
+  }
 }
 
 body.light .table {
