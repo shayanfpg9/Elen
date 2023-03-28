@@ -16,7 +16,7 @@ export default function Search(props) {
   const searchbox = useRef(),
     input = useRef(),
     navigate = useNavigate(),
-    { hide } = useContext(LoadedContext);
+    { hide, show } = useContext(LoadedContext);
 
   const { t } = useTranslation("search");
   const back = useTranslation("error").t("back");
@@ -75,6 +75,7 @@ export default function Search(props) {
     searchbox.current.addEventListener("submit", (e) => {
       e.preventDefault();
       if (!isNull(input.current)) PassSearchRes(input.current.value);
+      show();
     });
   });
 
