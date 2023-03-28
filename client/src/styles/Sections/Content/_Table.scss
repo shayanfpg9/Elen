@@ -15,7 +15,7 @@
     transition: 1s all var(--animation);
   }
 
-  .Atom:first-of-type[data-name="Hydrogen"] {
+  .Atom[data-name="Hydrogen"] {
     margin-bottom: 0.5rem;
   }
 
