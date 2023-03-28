@@ -64,7 +64,7 @@ const AtomCel = styled(Link).attrs((props) => ({
   }
 
   &:hover {
-    transform: translateY(-0.5rem);
+    transform: scale(1.1); //for hover corners this animation is better
     box-shadow: 0px 0px 10px var(--color-bg);
 
     @supports (backdrop-filter: blur(2px);
