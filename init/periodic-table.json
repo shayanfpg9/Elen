@@ -2205,7 +2205,7 @@
       "block": "p"
     },
     {
-      "name": "Cesium",
+      "name": "Caesium",
       "appearance": "silvery gold",
       "atomic_mass": 132.905451966,
       "boil": 944,
@@ -2219,7 +2219,7 @@
       "period": 6,
       "group": 1,
       "phase": "Solid",
-      "source": "https://en.wikipedia.org/wiki/Cesium",
+      "source": "https://en.wikipedia.org/wiki/Caesium",
       "bohr_model_image": "https://storage.googleapis.com/search-ar-edu/periodic-table/element_055_cesium/element_055_cesium_srp_th.png",
       "bohr_model_3d": "https://storage.googleapis.com/search-ar-edu/periodic-table/element_055_cesium/element_055_cesium.glb",
       "spectral_img": null,
