@@ -1,0 +1,28 @@
+{
+  "get/all": {
+    "api": "http://localhost:4000/api/atom/",
+    "output": "[...{\nid:string//mongoDB id\nname:string//atom name\ncategory:string//categories of atom\nmelt:number//atom melt\nboil:number//atom boil\natomic_mass:number//atom atomic mass or atomic mass of the most stable isotope\nnumber:number//atomic number\ngroup:number//atom group number\nperiod:number//atom period number\nphase:string//atom phase in STP\nsymbol:string//atom symbol\nposition:[x:number, y:number]//atom position in periodic table\n}...]",
+    "error": "{\nmethod: GET\nstatus: 500\naction: Get all of the Atoms\nparams: //params\nerror: //error message or error resean\n}"
+  },
+  "get/single": {
+    "api": "http://localhost:4000/api/atom/:atom_english_name",
+    "output": "{\n_id:number//mongoDB id\nname:string//atom name\nappearance:string\natomic_mass:number\nboil:number\ncategory:string\ndensity:number\ndiscovered_by:string\nmelt:number\nmolar_heat:number\nnumber:number\nperiod:number\ngroup:number\nphase:string\nsource:string//wikipedia page\nbohr_model_image:string//bohr model image\nsummary:string\nsymbol:string\nxpos:number//x position in periodic table\nypos:number//y position in periodic table\nelectron_configuration:number\nimage: obj {title:string, url:string, attribution:string}//image of usage\n__v:number\n?updatedAt:date\n?fa: obj {name:string, category:string, discovered_by:string, phase: string, summary:string image.title:string, source:string}\n}",
+    "error": "{\nmethod: GET\nstatus: 404\naction: Get a single Atom\nparams: //params\nerror: //error message or error resean\n}"
+  },
+  "get/single-translate": {
+    "api": [
+      "http://localhost:4000/api/atom/:atom_english_name?translate=:translate_code",
+      "http://localhost:4000/api/atom/:atom_english_name?translate=fa?refresh=true"
+    ],
+    "output": "{\n_id:number//mongoDB id\nname:string//atom name\nappearance:string\natomic_mass:number\nboil:number\ncategory:string\ndensity:number\ndiscovered_by:string\nmelt:number\nmolar_heat:number\nnumber:number\nperiod:number\ngroup:number\nphase:string\nsource:string//wikipedia page\nbohr_model_image:string//bohr model image\nsummary:string\nsymbol:string\nxpos:number//x position in periodic table\nypos:number//y position in periodic table\nelectron_configuration:number\nimage: obj {title:string, url:string, attribution:string}//image of usage\n__v:number\n?updatedAt:date\n?fa: obj {name:string, category:string, discovered_by:string, phase: string, summary:string image.title:string, source:string}\n:translate_code: obj {name:string, category:string, discovered_by:string, phase: string, summary:string image.title:string, source:string}\n}",
+    "error": "{\nmethod: GET\nstatus: 400\naction: Get a single Atom\nparams: //params\nquery: //query\nerror: //error message or error resean -> usually 'translate' parameter is incorrect\n}"
+  },
+  "post/search": {
+    "api": [
+      "http://localhost:4000/api/atom/search ~> body:{q: //query}",
+      "http://localhost:4000/api/atom/search?limit=:limit_number ~> body:{q: //query}"
+    ],
+    "output": "{\nlength:number\nlimit:number\nresults:[...{ id:string//mongoDB id\nname:string//atom name\ncategory:string//categories of atom\nmelt:number//atom melt\nboil:number//atom boil\natomic_mass:number//atom atomic mass or atomic mass of the most stable isotope\nnumber:number//atomic number\ngroup:number//atom group number\nperiod:number//atom period number\nphase:string//atom phase in STP\nsymbol:string//atom symbol\nposition:[x:number, y:number]//atom position in periodic table\n}...]\n}",
+    "error": "{\nmethod: POST\nstatus: 404\naction: action: Search to find atom\nparams: //params\nbody: //return `q` value\nquery: //query\nerror: //error message or error resean\n}"
+  }
+}

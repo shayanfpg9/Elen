@@ -1,0 +1,35 @@
+{
+  "config": {
+    "error": "types of errors"
+  },
+  "/": {
+    "name": "Home",
+    "title": "Document of Elen Atomic World api",
+    "text": "Here you can get new information about Elen online atomi world api.\nThis api includes things to get all atoms, get a specific atom information, translate and search among them.\nThe documentation is simple and They are written fluently so that anyone can easily use them, you can use this api in all programming languages, but know we don't have any special library for use in a specific programming language. \nUsing this api is free and you can also contribute to the development of this project."
+  },
+  "init/": {
+    "name": "Initialize",
+    "title": "Initialize project for development",
+    "text": "If you can see this page, you have definitely cloned this project from GitHub and installed its packages and requirements, then you can use this project and api easily.\nRemember this page is based on port 3000 and the api is on port 4000.\n\nBut if you can't see this page and you have access to this text in other ways, it is necessary to follow the steps and install the requirements, and then use yarn start in the root and the client folder of the project."
+  },
+  "get/all": {
+    "name": "Get all of the atoms",
+    "title": "Get all of the atoms",
+    "text": "To get all the atoms, you need to send a GET request to the above address, then you will receive the following information."
+  },
+  "get/single": {
+    "name": "Get specific atom",
+    "title": "Get the information of a specific atom",
+    "text": "To get the information of a specific atom, you only need to enter its name, then you will get a list of most of the information.\n In some atoms that have been visited before, there is a Persian translation of the information, but in some others, this information is not available. And if you want to translate them, you must act according to the translate api."
+  },
+  "get/single-translate": {
+    "name": "Translate an atom",
+    "title": "Translate an atom",
+    "text": "The translation of the information of a particular atom is available by the shortcute of that language; The reason is the use of the Google Translate api, so it's translates easily.\nOf course, the names of atoms are not translated well by Google Translate, and because we need the Wikipedia source too, so we use the Wikipedia api to translate the names. The Persian translation is stored in the database and the speed of the operation increases for the next time, but for the rest of the languages, you have to wait for a while in each round. The translation is the longest part of this api because It takes a lot of time to get a good result;\nBecause the Persian language is saved afor a long time, we have also put a ?refresh=true so that you can update the saved translation.\nIf the translation is done successfully, you will see a `translated to ... `message in the console"
+  },
+  "post/search": {
+    "name": "Search",
+    "title": "Search to find any atom",
+    "text": "To search, you must send a POST request including a q which can be a string or a number to the above address, then you will receive the following information according to your request,\nYou can enter the values of name, category, phase, symbol, detector/discovery time, boiling/melting temperature, density and mass/atomic number, but among these values, only the name, detector/discovery time, category and phase can be searched in Farsi.\nOf course, the search with Persian parameters is not accurate at all because an atom with the characteristics you want may didn't translated.\nYou can limit the number of result by ?limit."
+  }
+}
