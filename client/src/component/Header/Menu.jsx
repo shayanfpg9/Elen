@@ -70,14 +70,14 @@ export default function Menu(props) {
         setThemeIcon(<bs.BsFillSunFill />);
       }
 
-      blur.current.onclick = () => {
-        window.onkeyup = undefined;
-        blur.current.onclick = undefined;
-        props.function();
-      };
-
       Mount.current = true;
     }
+
+    blur.current.onclick = () => {
+      window.onkeyup = undefined;
+      blur.current.onclick = undefined;
+      props.function();
+    };
   }, [setThemeIcon, props, theme]);
 
   const { pathname } = useLocation();
