@@ -36,6 +36,10 @@ export default function useConfig(error = false) {
         document.title += ` (${params.query})`;
         break;
 
+      case "document":
+        document.title += " -> /" + (params.action || params.method || "");
+        break;
+
       default:
         break;
     }
@@ -44,8 +48,15 @@ export default function useConfig(error = false) {
   const setDesc = () => {
     const DescriptionMeta = document.querySelector("meta[name~='description']");
 
-    if (location !== "info") {
+    if (location !== "info" && location !== "document") {
       DescriptionMeta.setAttribute("content", t(`descriptions.${location}`));
+    } else if (location === "document") {
+      DescriptionMeta.setAttribute(
+        "content",
+        t(`descriptions.${location}`, {
+          action: "/" + (params.action || params.method || ""),
+        })
+      );
     } else {
       DescriptionMeta.setAttribute(
         "content",
