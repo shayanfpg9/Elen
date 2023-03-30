@@ -15,7 +15,7 @@ import Search from "./component/Header/Search";
 import Home from "./component/Home/Home";
 
 //utils
-import i18n from "./translate/i18n";
+import "./translate/i18n";
 
 const router = createBrowserRouter([
   {
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
       },
       {
         path: "document",
-        element: <Error code="406" msg={i18n.t("406")} loaded />,
+        element: <Error code="406" loaded />,
       },
     ],
   },
