@@ -13,6 +13,8 @@ import Elen, { InitLoader } from "./component/Elen";
 import Error from "./component/Error/Error";
 import Search from "./component/Header/Search";
 import Home from "./component/Home/Home";
+import Document, { ApiGatewaysLoader } from "./component/Document/Document";
+import DocumentPages from "./component/Document/Pages";
 
 //utils
 import "./translate/i18n";
@@ -55,7 +57,14 @@ const router = createBrowserRouter([
       },
       {
         path: "document",
-        element: <Error code="406" loaded />,
+        element: <Document />,
+        loader: ApiGatewaysLoader,
+        children: [
+          {
+            path: ":method?/:action?",
+            element: <DocumentPages />,
+          },
+        ],
       },
     ],
   },
