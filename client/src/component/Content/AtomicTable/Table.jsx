@@ -4,8 +4,8 @@ import styled, { css, ThemeProvider } from "styled-components";
 import {
   json,
   Link,
+  Navigate,
   useLoaderData,
-  useNavigate,
   useParams,
 } from "react-router-dom";
 
@@ -145,12 +145,11 @@ class Table extends Component {
       data.bold.length === 1 &&
       typeof data.bold[0] === "string"
     ) {
-      this.props.navigate(`/atom/${data.bold[0]}`);
-    }
-
-    loaded.hide();
-
-    if (data !== undefined) {
+      this.setState({
+        ...this.state,
+        atoms: [<Navigate key="navigate" to={`/atom/${data.bold[0]}`} />], //for 'react-router: navigate in first render' error
+      });
+    } else if (data !== undefined) {
       this.setState({
         ...this.state,
         atoms: data.all?.map((prop) => (
@@ -168,6 +167,8 @@ class Table extends Component {
         )),
       });
     }
+
+    loaded.hide();
   };
 
   setTheme = () => {
@@ -329,10 +330,6 @@ export default WithHook(
     {
       name: "params",
       HookFunc: useParams,
-    },
-    {
-      name: "navigate",
-      HookFunc: useNavigate,
     },
     {
       name: "error",
