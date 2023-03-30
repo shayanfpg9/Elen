@@ -1,103 +1,113 @@
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { json, Link, useLoaderData, useParams } from "react-router-dom";
 import { BiX } from "react-icons/bi";
 import _ from "lodash";
 import { GiSpeaker } from "react-icons/gi";
 import { RefreshContext } from "../../Context/Refresh";
 import { LoadedContext } from "../../Context/Loaded";
-import Error from "../../Error/Error";
 import { DB, message } from "../../funcs/funcs";
 import { useTranslation } from "react-i18next";
 import { useConfig } from "../../Hook/hooks";
+import i18n from "../../../translate/i18n";
+
+export const InfoLoader = async ({ params, refresh }) => {
+  const db = new DB("Single");
+
+  const saved = await db.getSingle(params.atom);
+
+  try {
+    if (
+      _.isUndefined(saved) ||
+      (!saved?.fa && i18n.language === "fa") ||
+      Boolean(refresh)
+    ) {
+      if (i18n.language === "fa" && !saved) {
+        message("translating", "", "info");
+      }
+
+      const data = (
+        await axios.get(
+          `/api/atom/${params.atom}?translate=${i18n.language}&refresh=${refresh}`
+        )
+      ).data;
+
+      db.set([data], false);
+
+      return data;
+    } else {
+      return saved;
+    }
+  } catch (error) {
+    throw json(error.response.statusText, { status: error.response.status });
+  }
+};
 
 export default function Info() {
   const { atom } = useParams();
-  const [info, setInfo] = useState({});
+  const [info, setInfo] = useState(useLoaderData());
   const { refresh, setRefresh } = useContext(RefreshContext);
   const loaded = useContext(LoadedContext);
   const { t, i18n } = useTranslation("info");
-  const tableTranslate = useTranslation("table").t;
   const [translate, setTranslate] = useState({ ...info });
-  const error = useTranslation("error").t;
+  const [lang, setLang] = useState(null);
   useConfig();
 
   let unMount = useRef(true);
   const ReadingBtn = useRef();
 
   useEffect(() => {
-    if (unMount.current || refresh) {
-      const db = new DB("Single");
-
+    const ShouldRefresh = async () => {
       loaded.show();
+
+      setRefresh(false);
+
+      const data = await InfoLoader({ params: { atom }, refresh: true });
+
+      setInfo(data);
+
+      loaded.hide();
+    };
+
+    if (unMount.current) {
+      loaded.hide();
 
       unMount.current = false;
 
-      let LastRefresh = refresh; //for set it to false
-      setRefresh(false);
-
-      db.getSingle(atom, async (res) => {
-        if (
-          _.isUndefined(res) ||
-          LastRefresh ||
-          (!res?.fa && i18n.language === "fa")
-        ) {
-          try {
-            if (!LastRefresh && !res?.fa && i18n.language === "fa") {
-              message(
-                tableTranslate("messages.load.title"),
-                tableTranslate("messages.load.msg"),
-                "info"
-              );
-            }
-
-            const { data } = await axios.get(
-              `/api/atom/${atom}?translate=${i18n.language}&refresh=true`
-            );
-
-            db.set([data], false);
-
-            if (LastRefresh) {
-              message(tableTranslate("messages.refresh"));
-            } else {
-              message(
-                tableTranslate("messages.save.title"),
-                tableTranslate("messages.save.msg")
-              );
-            }
-
-            setInfo(data);
-          } catch (e) {
-            setInfo({});
-
-            loaded.hide();
-          }
-        } else {
-          setInfo(res);
-        }
-
-        loaded.hide();
+      ReadingBtn.current?.addEventListener("click", () => {
+        read(ReadingBtn.current.dataset.word);
       });
     }
 
-    if (i18n.language === "fa") {
-      setTranslate({ ...info.fa });
-    } else {
-      setTranslate({ ...info });
+    if (lang !== i18n.language) {
+      try {
+        if (i18n.language === "fa") {
+          if (!info.fa) throw new Error("should translate");
+          setTranslate({ ...info.fa });
+        } else {
+          setTranslate({ ...info });
+        }
+      } catch (e) {
+        ShouldRefresh();
+      }
+
+      setLang(i18n.language);
     }
 
-    ReadingBtn.current?.addEventListener("click", () => {
-      read(ReadingBtn.current.dataset.word);
-    });
+    if (refresh) {
+      ShouldRefresh();
+    }
   }, [
-    atom,
     loaded,
-    setRefresh,
-    refresh,
     i18n.language,
     setTranslate,
     info,
-    tableTranslate,
+    lang,
+    setLang,
+    refresh,
+    setInfo,
+    atom,
+    setRefresh,
   ]);
 
   if (_.keys(info).length > 0) {
@@ -167,7 +177,7 @@ export default function Info() {
           <figure className="info__image">
             <img src={info.image.url} alt={translate["image.title"]} />
             <figcaption>
-              <em>{translate["image.title"]}</em>
+              <em>{translate["image.title"] || translate.image.title}</em>
             </figcaption>
           </figure>
 
@@ -184,8 +194,6 @@ export default function Info() {
         </section>
       </section>
     );
-  } else {
-    return <Error code="404" msg={error("find")} />;
   }
 }
 
