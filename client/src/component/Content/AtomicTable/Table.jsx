@@ -1,8 +1,13 @@
 //deps
 import { Component } from "react";
 import styled, { css, ThemeProvider } from "styled-components";
-import { Link, useNavigate, useParams } from "react-router-dom";
-
+import {
+  json,
+  Link,
+  useLoaderData,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 
 //components
 import Atom from "./Atom";
@@ -18,7 +23,7 @@ import { WithHook } from "../../HOC/WithHooks";
 import axios from "axios";
 import { media } from "../../CssComponents/Util";
 import _ from "lodash";
-import { DB, equal, message } from "../../funcs/funcs";
+import { DB } from "../../funcs/funcs";
 import { useTranslation } from "react-i18next";
 
 //row and cols same styles
@@ -78,6 +83,38 @@ const FreeSpace = styled.div`
   )}
 `;
 
+export const TableLoader = async ({ refresh }) => {
+  const db = new DB("Atoms");
+
+  const saved = await db.getAll();
+
+  try {
+    if (refresh || _.isUndefined(saved) || saved.length === 0) {
+      const data = (await axios.get("/api/atom")).data;
+
+      await db.set(data);
+
+      return data;
+    } else return saved;
+  } catch (error) {
+    throw json(error.response.statusText, { status: error.response.status });
+  }
+};
+
+export const SearchLoader = async ({ params }) => {
+  try {
+    const data = (
+      await axios.post("/api/atom/search/", {
+        q: params.query,
+      })
+    ).data.results;
+
+    return data.map((info) => info.name);
+  } catch (error) {
+    throw json(error.response.statusText, { status: error.response.status });
+  }
+};
+
 class Table extends Component {
   state = {
     cols: 19,
@@ -86,82 +123,51 @@ class Table extends Component {
     theme: {
       name: this.props.Theme.theme,
     },
-    location: window?.location.href,
   };
 
-  GetDatas = async (refresh) => {
-    this.props.Loaded.show();
+  GetDatas = async (refresh = false) => {
+    const loaded = this.props.Loaded;
+    let data;
 
-    const db = new DB("Atoms");
+    loaded.show();
 
-    await db.getAll(async (res) => {
-      if (
-        equal(res, []) ||
-        Boolean(refresh) ||
-        Boolean(this.props?.params?.query)
-      ) {
-        let data;
+    if (refresh) {
+      data = {
+        all: await TableLoader({ refresh: true }),
+        bold: this.props.params.query ? await SearchLoader() : undefined,
+      };
+    } else {
+      data = this.props.loader;
+    }
 
-        try {
-          if (this.props?.params?.query) {
-            //search all of the atoms with "this.props.params.atom" property
-            data = (
-              await axios.post("/api/atom/search", {
-                q: this.props.params.query,
-              })
-            ).data.results;
-          } else {
-            //get datas with axios
-            data = (await axios.get("/api/atom")).data;
-          }
-        } catch (e) {
-          this.props.Loaded.hide();
+    if (
+      data.bold !== undefined &&
+      data.bold.length === 1 &&
+      typeof data.bold[0] === "string"
+    ) {
+      this.props.navigate(`/atom/${data.bold[0]}`);
+    }
 
-          this.setState({
-            atoms: null,
-          });
-        }
+    loaded.hide();
 
-        if (!Array.isArray(data) || data.length === 1) {
-          if (Array.isArray(data)) data = data[0];
-
-          this.props.navigate(`/atom/${data.name}`);
-        } else {
-          if (!this.props?.params?.query) {
-            db.set(data);
-          }
-
-          data = data?.map((prop) => <Atom key={prop.name} {...prop} />);
-
-          this.props.Loaded.hide();
-
-          if (refresh) {
-            message(this.props.table.t("messages.refresh"));
-          } else if (!Boolean(this.props?.params?.query)) {
-            message(
-              this.props.table.t("messages.save.title"),
-              this.props.table.t("messages.save.msg")
-            );
-          }
-
-          this.setState({
-            atoms: data,
-            cols: this.state.cols,
-            rows: this.state.rows,
-          });
-        }
-      } else {
-        this.props.Loaded.hide();
-
-        res = res?.map((prop) => <Atom key={prop.name} {...prop} />);
-
-        this.setState({
-          atoms: res,
-          cols: this.state.cols,
-          rows: this.state.rows,
-        });
-      }
-    });
+    if (data !== undefined) {
+      this.setState({
+        ...this.state,
+        atoms: data.all?.map((prop) => (
+          <Atom
+            className={
+              data.bold
+                ? data?.bold?.includes(prop.name)
+                  ? "active"
+                  : "hide"
+                : ""
+            }
+            key={prop.name}
+            {...prop}
+          />
+        )),
+      });
+    }
   };
 
   setTheme = () => {
@@ -212,23 +218,20 @@ class Table extends Component {
     }
   };
 
-  async componentDidMount() {
-    await this.GetDatas();
+  componentDidMount() {
+    this.GetDatas();
 
     this.setTheme();
   }
 
-  async componentDidUpdate() {
+  componentDidUpdate(pastProp) {
     if (this.props.Refresh.refresh) {
       this.props.Refresh.setRefresh(false);
-      await this.GetDatas(true);
+      this.GetDatas(true);
     }
 
-    if (this.state.location !== window?.location.href) {
-      this.setState({
-        location: window?.location.href,
-      });
-      await this.GetDatas();
+    if (pastProp.params.query !== this.props.params.query) {
+      this.GetDatas();
     }
 
     if (this.state.theme.name !== this.props.Theme.theme) {
@@ -340,6 +343,10 @@ export default WithHook(
       name: "table",
       HookFunc: useTranslation,
       param: "table",
+    },
+    {
+      name: "loader",
+      HookFunc: useLoaderData,
     },
   ]
 );
