@@ -16,13 +16,6 @@
   },
   "table": {
     "result": "search result",
-    "messages": {
-      "refresh": "datas updated successfully",
-      "save": {
-        "title": "datas saved",
-        "msg": "The speed of information retrieval increased"
-      }
-    },
     "categories": {
       "metal": "metal",
       "nometal": "no metal",
@@ -60,8 +53,7 @@
     "back-table": "back to table",
     "page": "page not found",
     "or": "or",
-    "search": "search it",
-    "406": "The page is under construction"
+    "search": "search it"
   },
   "info": {
     "wikipedia": "in wikipedia",
