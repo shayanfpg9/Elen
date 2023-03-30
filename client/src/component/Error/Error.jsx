@@ -1,13 +1,19 @@
-import { useContext, useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+//deps
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, useRouteError } from "react-router-dom";
+
+//context
 import { LoadedContext } from "../Context/Loaded";
+
+//hook
+import { useTranslation } from "react-i18next";
 import useConfig from "../Hook/useConfig";
 
 export default function Error(props) {
   const { t } = useTranslation("error");
   const { hide } = useContext(LoadedContext);
   const unMount = useRef(true);
+  const [errorProps, setErrors] = useState(useRouteError());
   useConfig(true);
 
   useEffect(() => {
@@ -15,15 +21,22 @@ export default function Error(props) {
       hide();
       unMount.current = false;
     }
-  });
+
+    if (errorProps === undefined) {
+      setErrors({
+        status: props.code,
+        data: props.msg,
+      });
+    }
+  }, [setErrors, hide, unMount, errorProps, props]);
 
   return (
     <section className="error">
       <div className="error__box">
         <h2>
-          {t("error")} {props.code}:
+          {t("error")} {errorProps?.status}:
         </h2>
-        <h3>{props.msg}</h3>
+        <h3>{errorProps?.data}</h3>
         <Link to="/">{t("back")}</Link>
         <br />
         {t("or")}
