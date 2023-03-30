@@ -112,7 +112,7 @@ const A = styled(Link).attrs((props) => ({ title: props.children }))`
 
   &:hover {
     transform: translateY(-1rem);
-    box-shadow: 0px 0.5rem 1rem 2px rgba(var(--color-bg-rgb),.7)};
+    box-shadow: 0px 0.5rem 1rem 2px rgba(var(--color-bg-rgb), 0.7);
   }
 `;
 
