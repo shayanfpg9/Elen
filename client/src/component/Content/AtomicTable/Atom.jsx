@@ -63,6 +63,7 @@ const AtomCel = styled(Link).attrs((props) => ({
   &.hide {
     filter: blur(5px);
     background-color: ${(props) => props.color.darken(0.2)};
+    pointer-events: none;
   }
 
   &:hover {
