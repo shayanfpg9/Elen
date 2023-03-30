@@ -17,6 +17,7 @@ export default function useConfig(error = false) {
     search: "/table/find",
     table: "/table",
     TableResult: "/table/find/",
+    document: "/document",
   };
 
   let location = "";
@@ -65,6 +66,8 @@ export default function useConfig(error = false) {
     setLocation("TableResult");
   } else if (pathname.includes(locations["info"])) {
     setLocation("info");
+  } else if (pathname.includes(locations["document"])) {
+    setLocation("document");
   }
 
   function setLocation(NewLoc) {
