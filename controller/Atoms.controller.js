@@ -221,20 +221,22 @@ const PostSearch = async (req, res) => {
       AllAtoms = await Atoms.find({
         $or: [
           { name: new RegExp(q, "gi") },
-          {
-            category:
-              q === "transition"
-                ? /[^post\-transition](transition)/gim
-                : new RegExp(q, "gi"),
-          },
+          { category: new RegExp(q, "gi") },
           { phase: new RegExp(q, "gi") },
           { symbol: new RegExp(q, "gi") },
           { discovered_by: new RegExp(q, "gi") },
           { "fa.name": new RegExp(q, "gi") },
           { "fa.discovered_by": new RegExp(q, "gi") },
           { "fa.phase": new RegExp(q, "gi") },
+          { "fa.category": new RegExp(q, "gi") },
         ],
       }).sort({ number: 1 });
+
+      if (q === "transition" || q === "انتقالی") {
+        AllAtoms = AllAtoms.filter(
+          (atom) => !atom.category.includes("post-transition")
+        );
+      }
     }
 
     if (!AllAtoms.length) {
