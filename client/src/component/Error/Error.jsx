@@ -18,15 +18,20 @@ export default function Error(props) {
 
   useEffect(() => {
     if (props.loaded && unMount.current) {
+      if (errorProps === undefined) {
+        setErrors({
+          status: props.code,
+          data: props.msg,
+        });
+      }
+
+      setErrors({
+        ...errorProps,
+        data: errorProps.data.replaceAll(`"`, ""),
+      });
+
       hide();
       unMount.current = false;
-    }
-
-    if (errorProps === undefined) {
-      setErrors({
-        status: props.code,
-        data: props.msg,
-      });
     }
   }, [setErrors, hide, unMount, errorProps, props]);
 

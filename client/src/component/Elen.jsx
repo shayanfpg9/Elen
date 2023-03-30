@@ -146,9 +146,7 @@ class Elen extends Component {
             <LangContext.Provider value={this.setLang}>
               <Header></Header>
             </LangContext.Provider>
-            <Content>
-              <Outlet />
-            </Content>
+            <Content>{!this.props.use ? <Outlet /> : this.props.use}</Content>
             <Footer></Footer>
           </RefreshContext.Provider>
         </LoadedContext.Provider>

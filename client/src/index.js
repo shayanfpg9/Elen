@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <Elen />,
     loader: InitLoader,
-    errorElement: <Error loaded />,
+    errorElement: <Elen use={<Error loaded />} />,
     children: [
       {
         index: true,
