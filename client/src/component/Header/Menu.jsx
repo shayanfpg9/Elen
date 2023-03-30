@@ -50,27 +50,34 @@ export default function Menu(props) {
     },
   ];
 
+  const Mount = useRef(false);
+
   useEffect(() => {
-    window.onkeyup = ({ code }) => {
-      if (code === "Escape" && props.status) {
-        window.onkeyup = undefined;
-        props.function();
+    if (!Mount.current) {
+      window.onkeyup = ({ code }) => {
+        if (code === "Escape" && props.status) {
+          window.onkeyup = undefined;
+          props.function();
+          Mount.current = false;
+        }
+      };
+
+      if (theme === "system") {
+        setThemeIcon(<bs.BsFillDropletFill />);
+      } else if (theme === "dark") {
+        setThemeIcon(<bs.BsFillMoonStarsFill />);
+      } else if (theme === "light") {
+        setThemeIcon(<bs.BsFillSunFill />);
       }
-    };
 
-    if (theme === "system") {
-      setThemeIcon(<bs.BsFillDropletFill />);
-    } else if (theme === "dark") {
-      setThemeIcon(<bs.BsFillMoonStarsFill />);
-    } else if (theme === "light") {
-      setThemeIcon(<bs.BsFillSunFill />);
+      blur.current.onclick = () => {
+        window.onkeyup = undefined;
+        blur.current.onclick = undefined;
+        props.function();
+      };
+
+      Mount.current = true;
     }
-
-    blur.current.onclick = () => {
-      window.onkeyup = undefined;
-      blur.current.onclick = undefined;
-      props.function();
-    };
   }, [setThemeIcon, props, theme]);
 
   const { pathname } = useLocation();
