@@ -1,17 +1,14 @@
 //deps
 import { Component } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 //styles
 import "../styles/Main.scss";
 
 //components
-import Table from "./Content/AtomicTable/Table";
 import Content from "./Content/Content";
-import Info from "./Content/Info/Info";
 import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
-import Home from "./Home/Home";
 
 //contexts
 import Loader from "./Loader/Loader";
@@ -19,14 +16,36 @@ import { RefreshContext } from "./Context/Refresh";
 import { LoadedContext } from "./Context/Loaded";
 import { ThemeContext } from "./Context/Theme";
 import { LangContext } from "./Context/Lang";
-import Error from "./Error/Error";
-import Search from "./Header/Search";
 
 //libs & utils
 import _ from "lodash";
 import DB from "./funcs/DB";
 import { WithHook } from "./HOC/WithHooks";
 import { useTranslation } from "react-i18next";
+import i18n from "../translate/i18n";
+
+export const InitLoader = async () => {
+  const stores = ["Atoms", "Single"];
+  const init = await new DB().init(...stores);
+
+  if (!localStorage.getItem("language")) {
+    const langs = window.navigator.languages;
+
+    if (langs.includes("fa")) {
+      i18n.changeLanguage("fa");
+    } else if (langs.includes("en")) {
+      i18n.changeLanguage("en");
+    }
+  } else {
+    i18n.changeLanguage(localStorage.getItem("language"));
+  }
+
+  if (init.length === stores.length) {
+    return true;
+  }
+
+  return false;
+};
 
 class Elen extends Component {
   state = {
@@ -40,19 +59,11 @@ class Elen extends Component {
   componentDidMount() {
     document.body.classList.add(this.state.theme);
 
-    new DB().init("Atoms", "Single");
-
     if (_.isNull(this.state.theme)) {
       localStorage.setItem("theme-mode", "system");
 
       this.setTheme(localStorage.getItem("theme-mode"));
     }
-
-    window
-      ?.matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", (e) => {
-        if (this.theme === "system") this.setTheme("system");
-      });
 
     if (!localStorage.getItem("language")) {
       const langs = window.navigator.languages;
@@ -117,59 +128,31 @@ class Elen extends Component {
 
   render() {
     return (
-      <Router>
-        <ThemeContext.Provider
-          value={{
-            theme: this.state.theme,
-            setTheme: this.setTheme,
-          }}
-        >
-          {!this.state.stop.remove && <Loader stop={!this.state.stop.show} />}
+      <ThemeContext.Provider
+        value={{
+          theme: this.state.theme,
+          setTheme: this.setTheme,
+        }}
+      >
+        {!this.state.stop.remove && <Loader stop={!this.state.stop.show} />}
 
-          <LoadedContext.Provider value={{ ...this.loaded }}>
-            <RefreshContext.Provider
-              value={{
-                refresh: this.state.refresh,
-                setRefresh: this.setRefresh,
-              }}
-            >
-              <LangContext.Provider value={this.setLang}>
-                <Header></Header>
-              </LangContext.Provider>
-              <Content>
-                <Routes>
-                  <Route path="/table" element={<Table />} />
-                  <Route path="/table/find/:query" element={<Table />} />
-                  <Route path="/table/find/" element={<Search single />} />
-                  <Route path="/atom/:atom" element={<Info />} />
-                  <Route //TODO: make document
-                    path="/document"
-                    element={
-                      <Error
-                        code="406"
-                        msg={this.props.translate.t("406")}
-                        loaded
-                      />
-                    }
-                  />
-                  <Route path="/" element={<Home />} />
-                  <Route
-                    path="*"
-                    element={
-                      <Error
-                        code="404"
-                        msg={this.props.translate.t("page")}
-                        loaded
-                      />
-                    }
-                  />
-                </Routes>
-              </Content>
-              <Footer></Footer>
-            </RefreshContext.Provider>
-          </LoadedContext.Provider>
-        </ThemeContext.Provider>
-      </Router>
+        <LoadedContext.Provider value={{ ...this.loaded }}>
+          <RefreshContext.Provider
+            value={{
+              refresh: this.state.refresh,
+              setRefresh: this.setRefresh,
+            }}
+          >
+            <LangContext.Provider value={this.setLang}>
+              <Header></Header>
+            </LangContext.Provider>
+            <Content>
+              <Outlet />
+            </Content>
+            <Footer></Footer>
+          </RefreshContext.Provider>
+        </LoadedContext.Provider>
+      </ThemeContext.Provider>
     );
   }
 }
@@ -178,6 +161,5 @@ export default WithHook(Elen, [
   {
     name: "translate",
     HookFunc: useTranslation,
-    param: "error",
   },
 ]);
