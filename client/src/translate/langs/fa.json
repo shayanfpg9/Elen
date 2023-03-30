@@ -70,7 +70,10 @@
     "boil": "دمای جوش",
     "period": "دوره",
     "group": "گروه",
-    "electron-configuration": "طرز قرار گیری الکترون ها"
+    "electron-configuration": "طرز قرار گیری الکترون ها",
+    "close": "بستن",
+    "read": "تلفظ",
+    "image":"تصویری از این اتم"
   },
   "home": {
     "effect": "با الن دنیای اتم ها رو بهتر بشناس:",

@@ -70,7 +70,10 @@
     "boil": "boiling temperature",
     "period": "period",
     "group": "group",
-    "electron-configuration": "electron configuration"
+    "electron-configuration": "electron configuration",
+    "close": "close",
+    "read": "pronunciation",
+    "image":"image of this atom"
   },
   "home": {
     "effect": "Get to know the world of atoms better with Elen:",

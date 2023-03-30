@@ -121,12 +121,17 @@ export default function Info() {
   if (_.keys(info).length > 0) {
     return (
       <section className="info">
-        <Link to="/table" className="info__close">
+        <Link to="/table" className="info__close" title={t("close")}>
           <BiX />
         </Link>
 
         <h2>
-          <button ref={ReadingBtn} data-word={info.name} className="info__read">
+          <button
+            title={t("read")}
+            ref={ReadingBtn}
+            data-word={info.name}
+            className="info__read"
+          >
             <GiSpeaker />
           </button>
           {translate.name}:
@@ -137,6 +142,7 @@ export default function Info() {
         </h2>
         <a
           className="wikipedia"
+          title={t("wikipedia")}
           rel="noreferrer"
           target="_blank"
           href={translate.source}
@@ -152,49 +158,49 @@ export default function Info() {
 
         <section>
           <div className="info__summary">
-            <h4>
+            <h4 title={t("number")}>
               {t("number")}: {info.number}
             </h4>
-            <h4>
+            <h4 title={t("atomic-mass")}>
               {t("atomic-mass")}: {info.atomic_mass}
             </h4>
-            <h4>
+            <h4 title={t("density")}>
               {t("density")}: {info.density}
             </h4>
             <br />
-            <h4>
+            <h4 title={t("appearance")}>
               {t("appearance")}: {translate.appearance || t("no-appearance")}
             </h4>
-            <h4>
+            <h4 title={t("category")}>
               {t("category")}: {translate.category}
             </h4>
-            <h4>
+            <h4 title={t("phase")}>
               {t("phase")}:{translate.phase || t("no-phase")}
             </h4>
             <br />
-            <h4>
+            <h4 title={t("melt")}>
               {t("melt")}: {info.melt ? info.melt + "K" : "?"}
             </h4>
-            <h4>
+            <h4 title={t("boil")}>
               {t("boil")}: {info.boil ? info.boil + "K" : "?"}
             </h4>
             <br />
-            <h4>
+            <h4 title={t("period")}>
               {t("period")}: {t("period")} {info.period}
             </h4>
-            <h4>
+            <h4 title={t("group")}>
               {t("group")}: {t("group")} {info.group}
             </h4>
           </div>
 
-          <figure className="info__image">
+          <figure className="info__image" title={t("image")}>
             <img src={info.image.url} alt={translate["image.title"]} />
             <figcaption>
               <em>{translate["image.title"] || translate.image.title}</em>
             </figcaption>
           </figure>
 
-          <figure className="info__model">
+          <figure className="info__model" title={t("electron-configuration")}>
             <img
               src={info.bohr_model_image}
               alt={`bohr model of ${info.name}`}
