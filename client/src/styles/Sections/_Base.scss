@@ -19,12 +19,12 @@ html {
 
   &.rtl * {
     direction: rtl;
-    font-family: vazirmatn, helvetica;
+    font-family: vazirmatn, 'Roboto';
   }
 
   &.ltr * {
     direction: ltr;
-    font-family: helvetica;
+    font-family: 'Roboto';
   }
 }
 

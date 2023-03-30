@@ -7,6 +7,11 @@
     }
     padding: 0.5rem;
 
+    h4 {
+      margin-bottom: 0.5rem;
+      line-height: 1.5rem;
+    }
+
     figure {
       @include flex();
       margin: 0.5rem 0;
