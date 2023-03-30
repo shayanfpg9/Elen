@@ -4,6 +4,7 @@ import { json, Link, useLoaderData, useParams } from "react-router-dom";
 import { BiX } from "react-icons/bi";
 import _ from "lodash";
 import { GiSpeaker } from "react-icons/gi";
+import { BsWikipedia } from "react-icons/bs";
 import { RefreshContext } from "../../Context/Refresh";
 import { LoadedContext } from "../../Context/Loaded";
 import { DB, message } from "../../funcs/funcs";
@@ -127,8 +128,13 @@ export default function Info() {
             {info.symbol})
           </span>
         </h2>
-        <a rel="noreferrer" target="_blank" href={translate.source}>
-          {t("wikipedia")}
+        <a
+          className="wikipedia"
+          rel="noreferrer"
+          target="_blank"
+          href={translate.source}
+        >
+          <BsWikipedia /> {t("wikipedia")}
         </a>
         <h3>
           {t("discovered-by")}: {translate.discovered_by}
