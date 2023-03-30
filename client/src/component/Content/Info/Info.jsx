@@ -143,7 +143,7 @@ export default function Info() {
               {t("number")}: {info.number}
             </h4>
             <h4>
-              {t("atomic-mass")} {info.atomic_mass}
+              {t("atomic-mass")}: {info.atomic_mass}
             </h4>
             <h4>
               {t("density")}: {info.density}
