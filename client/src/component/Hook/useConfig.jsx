@@ -49,7 +49,7 @@ export default function useConfig(error = false) {
     } else {
       DescriptionMeta.setAttribute(
         "content",
-        t(`descriptions.${location}`).replace("%NAME%", params.atom)
+        t(`descriptions.${location}`, { name: params.atom })
       );
     }
   };

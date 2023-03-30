@@ -127,7 +127,7 @@
       "search": "You can search with any property you want: link atomic mass, atomic number, name, category, phase and ...",
       "table": "This is a fantastic periodic table you see atoms with colorful style and you can click to see the details",
       "TableResult": "You look for a special atom? you can find it here",
-      "info": "Information about %NAME% atom is visible in here:",
+      "info": "Information about {name} atom is visible in here:",
       "document": "document of Elen Atomic World api",
       "error": "oh no, i get an error, we can't get anything"
     }
