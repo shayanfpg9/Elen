@@ -23,12 +23,12 @@ export default function Error(props) {
           status: props.code,
           data: props.msg,
         });
+      } else {
+        setErrors({
+          ...errorProps,
+          data: errorProps.data.replaceAll(`"`, ""),
+        });
       }
-
-      setErrors({
-        ...errorProps,
-        data: errorProps.data.replaceAll(`"`, ""),
-      });
 
       hide();
       unMount.current = false;
