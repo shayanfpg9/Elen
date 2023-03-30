@@ -1,16 +1,23 @@
+//deps
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { json, Link, useLoaderData, useParams } from "react-router-dom";
+
+//contexts
+import { RefreshContext } from "../../Context/Refresh";
+import { LoadedContext } from "../../Context/Loaded";
+
+//hooks
+import { useTranslation } from "react-i18next";
+import { useConfig } from "../../Hook/hooks";
+
+//utils
 import { BiX } from "react-icons/bi";
 import _ from "lodash";
 import { GiSpeaker } from "react-icons/gi";
-import { BsWikipedia } from "react-icons/bs";
-import { RefreshContext } from "../../Context/Refresh";
-import { LoadedContext } from "../../Context/Loaded";
-import { DB, message } from "../../funcs/funcs";
-import { useTranslation } from "react-i18next";
-import { useConfig } from "../../Hook/hooks";
 import i18n from "../../../translate/i18n";
+import { BsWikipedia } from "react-icons/bs";
+import { DB, message } from "../../funcs/funcs";
 
 export const InfoLoader = async ({ params, refresh }) => {
   const db = new DB("Single");
