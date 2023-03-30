@@ -6,6 +6,7 @@
     "home": "home",
     "table": "table",
     "search": "search",
+    "document": "document",
     "icons": {
       "github": "github",
       "refresh": "refresh the datas",
@@ -73,7 +74,7 @@
     "electron-configuration": "electron configuration",
     "close": "close",
     "read": "pronunciation",
-    "image":"image of this atom"
+    "image": "image of this atom"
   },
   "home": {
     "effect": "Get to know the world of atoms better with Elen:",
@@ -119,12 +120,14 @@
     "table": "Table",
     "error": "Error",
     "TableResult": "Search result",
+    "document": "document",
     "descriptions": {
       "home": "Do know anything about atoms?\ncheck Elen Atomic World to learn more",
       "search": "You can search with any property you want: link atomic mass, atomic number, name, category, phase and ...",
       "table": "This is a fantastic periodic table you see atoms with colorful style and you can click to see the details",
       "TableResult": "You look for a special atom? you can find it here",
       "info": "Information about %NAME% atom is visible in here:",
+      "document": "document of Elen Atomic World api",
       "error": "oh no, i get an error, we can't get anything"
     }
   }
