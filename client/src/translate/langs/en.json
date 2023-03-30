@@ -111,7 +111,8 @@
     "span-develope": "There is room for you too, you can develop your application with our API",
     "document": "Take a look at the api document",
     "whereis": "Where is here?!",
-    "about": "Elen is a completely Iranian, dynamic and responsive open-source project that is designed for people all over the world and all people can learn the world of atoms with it. This site has a good api with which you can access information in all languages by Google Translate it and use it in your work.\nThis project is designed with expressJS, react and several other libraries and uses a very good NoSQL database to store information, also the information is cached with the initial loading and you no longer need to wait for them to be translated. Don't waste your time with foreign sites right now and use the information on this site through the link above."
+    "about": "Elen is a completely Iranian, dynamic and responsive open-source project that is designed for people all over the world and all people can learn the world of atoms with it. This site has a good api with which you can access information in all languages by Google Translate it and use it in your work.\nThis project is designed with expressJS, react and several other libraries and uses a very good NoSQL database to store information, also the information is cached with the initial loading and you no longer need to wait for them to be translated. Don't waste your time with foreign sites right now and use the information on this site through the link above.",
+    "contact-me": "contact me"
   },
   "config": {
     "home": "Home",

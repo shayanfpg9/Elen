@@ -213,6 +213,12 @@ export default function Home() {
         <Title>{t("whereis")}</Title>
         <P>{t("about")}</P>
       </Section>
+
+      <Section>
+        <A as="a" href="mailto:shayanfpg9@duck.com">
+          {t("contact-me")}
+        </A>
+      </Section>
     </>
   );
 }
