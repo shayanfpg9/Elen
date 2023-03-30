@@ -1,3 +1,4 @@
+import { openDB } from "idb";
 import { message } from "./funcs";
 
 export default class DB {
@@ -5,79 +6,76 @@ export default class DB {
     this.dbname = dbname;
   }
 
-  init(...ObjStores) {
-    const OpenReq = indexedDB.open("Elen", 3);
+  async init(...ObjStores) {
+    const db = await openDB("Elen", 4, {
+      upgrade: (db) => {
+        ObjStores.forEach((store) => {
+          db.createObjectStore(store, { keyPath: "name" }); // search and find is easy by names
+        });
+      },
+    });
 
-    OpenReq.onupgradeneeded = () => {
-      const db = OpenReq.result;
-
-      ObjStores.forEach((store) => {
-        db.createObjectStore(store, { keyPath: "name" }); // search and find easy by name
+    db.onversionchange = function () {
+      db.close();
+      message("error", "refresh...", "error").then(() => {
+        window?.location.reload(); //fix Line:18
       });
     };
 
-    OpenReq.onsuccess = () => {
-      const db = OpenReq.result;
-
-      db.onversionchange = function () {
-        db.close();
-        message("error", "refresh...", "error").then(() => {
-          window?.location.reload(); //fix Line:22
-        });
-      };
-    };
+    return db.objectStoreNames;
   }
 
-  getAll(callback) {
-    const OpenReq = indexedDB.open("Elen", 3);
+  delete() {
+    indexedDB.deleteDatabase("Elen");
+  }
 
-    OpenReq.onsuccess = () => {
-      const db = OpenReq.result;
+  async getAll(error = false) {
+    try {
+      const db = await openDB("Elen", 4);
+
       const transaction = db.transaction(this.dbname, "readonly");
 
-      const Atoms = transaction.objectStore(this.dbname);
+      const Datas = transaction.objectStore(this.dbname);
 
-      const all = Atoms.getAll();
-
-      all.onsuccess = () => {
-        callback(all.result.sort((a, b) => a.number - b.number));
-      };
-    };
+      return Datas.getAll();
+    } catch (e) {
+      if (error) return e;
+    }
   }
 
-  getSingle(name, callback) {
-    const OpenReq = indexedDB.open("Elen", 3);
+  async getSingle(name, error = false) {
+    try {
+      const db = await openDB("Elen", 4);
 
-    OpenReq.onsuccess = () => {
       try {
-        const db = OpenReq.result;
         const transaction = db.transaction(this.dbname, "readonly");
 
-        const Atoms = transaction.objectStore(this.dbname);
+        const Datas = transaction.objectStore(this.dbname);
 
-        const atom = Atoms.get(name);
-
-        atom.onsuccess = () => {
-          callback(atom.result);
-        };
+        return Datas.get(name);
       } catch (e) {
-        callback(undefined);
+        return e;
       }
-    };
+    } catch (e) {
+      if (error) return e;
+    }
   }
 
-  set(items = [{}], clear = true) {
-    const OpenReq = indexedDB.open("Elen", 3);
+  async set(items = [{}], clear = true) {
+    const db = await openDB("Elen", 4);
 
-    OpenReq.onsuccess = () => {
-      const db = OpenReq.result;
+    try {
       const transaction = db.transaction(this.dbname, "readwrite");
 
-      const Atoms = transaction.objectStore(this.dbname);
+      const Datas = transaction.objectStore(this.dbname);
 
-      if (clear) Atoms.clear(); //set a dbl datas
+      if (clear) Datas.clear(); //set a dbl datas
 
-      items.forEach((obj) => Atoms.add(obj));
-    };
+      items.forEach((obj) => Datas.add(obj));
+    } catch (error) {
+      this.delete();
+      console.error(error);
+      window?.location.reload();
+    }
   }
 }
