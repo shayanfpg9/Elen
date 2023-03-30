@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import * as bs from "react-icons/bs";
 import { LangContext } from "../Context/Lang";
+import { HiDocumentText } from "react-icons/hi";
 
 //contexts
 import { RefreshContext } from "../Context/Refresh";
@@ -47,6 +48,15 @@ export default function Menu(props) {
         props: { onClick: search, type: "button" },
       },
       text: t("search"),
+    },
+
+    {
+      icon: HiDocumentText,
+      link: {
+        element: Link,
+        props: { to: "/document" },
+      },
+      text: t("document"),
     },
   ];
 
@@ -121,7 +131,15 @@ export default function Menu(props) {
             >
               <item.link.element
                 {...item.link.props}
-                className={pathname === item?.link?.props?.to ? "active" : ""}
+                className={
+                  (
+                    item?.link?.props?.to === "/docuemnt"
+                      ? pathname.includes("/document")
+                      : pathname === item?.link?.props?.to
+                  )
+                    ? "active"
+                    : ""
+                }
               >
                 <item.icon />
                 {item.text}
