@@ -1,6 +1,8 @@
 import { mix } from "chroma-js";
+import { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { LoadedContext } from "../../Context/Loaded";
 import { colors, flex, media } from "../../CssComponents/Util";
 
 //style of AtomCles
@@ -94,6 +96,9 @@ const AtomCel = styled(Link).attrs((props) => ({
 
 export default function Atom(props) {
   let PropCat = props.category.replace("post-transition", "posttran");
+
+  const { show } = useContext(LoadedContext);
+
   const category = [];
   [...Object.keys(colors), "metal"].forEach((cat) => {
     if (PropCat.includes(cat)) {
@@ -110,6 +115,19 @@ export default function Atom(props) {
     category.includes("unknown") ? 0.75 : 0
   );
 
+  const ThisEl = useRef();
+  const Mount = useRef(false);
+
+  useEffect(() => {
+    if (!Mount.current) {
+      ThisEl.current.addEventListener("click", () => {
+        show();
+      });
+
+      Mount.current = true;
+    }
+  });
+
   return (
     <AtomCel
       to={`/atom/${props.name}`}
@@ -121,7 +139,8 @@ export default function Atom(props) {
       color={color}
       title={props.name}
       aria-label={props.name}
-      className="Atom"
+      className={`Atom ${props.className}`}
+      ref={ThisEl}
     >
       <span>
         <sub>{props.number}</sub>
