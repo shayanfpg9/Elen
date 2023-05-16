@@ -10,7 +10,7 @@
   "init/": {
     "name": "Initialize",
     "title": "Initialize project for development",
-    "text": "If you can see this page, you have definitely cloned this project from GitHub and installed its packages and requirements, then you can use this project and api easily.\nRemember this page is based on port 3000 and the api is on port 4000.\n\nBut if you can't see this page and you have access to this text in other ways, it is necessary to follow the steps and install the requirements, and then use yarn start in the root and the client folder of the project."
+    "text": "You need to clone this project on your PC via GitHub and then install the requirements and run yarn start in both the root (/) folder and the client to deploy site on your systems.\nNow do the next steps."
   },
   "get/all": {
     "name": "Get all of the atoms",
