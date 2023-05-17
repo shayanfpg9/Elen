@@ -55,7 +55,14 @@ const Item = styled.span.attrs((props) => ({
   > svg {
     width: 1rem;
     height: 1rem;
+  }
+
+  html.rtl & > svg {
     margin-left: 0.5rem;
+  }
+
+  html.ltr & > svg {
+    margin-right: 0.5rem;
   }
 `;
 
