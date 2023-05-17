@@ -1,6 +1,6 @@
 //deps
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, Outlet, useLoaderData } from "react-router-dom";
+import { Link, Outlet, useLoaderData, useParams } from "react-router-dom";
 
 // context
 import { LoadedContext } from "../Context/Loaded";
@@ -38,13 +38,18 @@ const Aside = styled.aside`
       "max-width": "md",
     },
     css`
-      padding-top: calc(1.5 * var(--first-fibo));
-      width: 90vw;
       position: relative;
+      left: 50%;
+      width: 90vw;
       height: 30vh;
       border-radius: calc(var(--first-fibo) / 2);
       margin-bottom: 2rem;
-      transform: translateY(0);
+      transform: translate(-50%, 0);
+      overflow-y: scroll;
+
+      > ul {
+        transform: translateY(0%);
+      }
     `
   )};
 
@@ -62,6 +67,8 @@ const List = styled.ul`
 const Item = styled.li`
   width: 100%;
   text-align: center;
+  position: relative;
+  margin-top: 0.2rem;
 
   ${media(
     {
@@ -74,12 +81,38 @@ const Item = styled.li`
     `
   )};
 
+  &:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  pointer-events: ${(props) => props.active && "none"};
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    transform: translateX(-50%) scaleX(${(props) => (props.active ? 1 : 0)});
+    display: block;
+    left: 50%;
+
+    width: 50%;
+    height: 3px;
+    border-radius: 1rem;
+    background-color: var(--color-text);
+    opacity: ${(props) => (props.active ? 1 : 0)};
+
+    transition: all 0.5s ease;
+    transform: ${(props) => props.active && "translateX(-50%) scaleX(1)"};
+  }
+
   a {
     text-decoration: none;
-    min-height: 4rem;
+    min-height: 2.5rem;
     height: auto;
     display: block;
     overflow: visible;
+    padding-bottom: 0.5rem;
 
     ${(props) =>
       props.method !== "init" &&
@@ -98,7 +131,7 @@ const Item = styled.li`
           margin-block-end: -0.5rem;
           font-size: var(--method-font-size);
         }
-      `}
+      `};
   }
 `;
 
@@ -155,6 +188,9 @@ export default function Document() {
     { t } = useTranslation("pages"),
     [top, setTop] = useState(0);
 
+  const { method, action } = useParams();
+  const path = `${method || ""}/${action || ""}`;
+
   useConfig();
 
   useEffect(() => {
@@ -172,7 +208,11 @@ export default function Document() {
       <Aside top={top}>
         <List>
           {Gateways.map((gateway) => (
-            <Item key={t(`${gateway.path}.name`)} method={gateway.method}>
+            <Item
+              active={path === gateway.path}
+              key={t(`${gateway.path}.name`)}
+              method={gateway.method}
+            >
               <Link relative="path" to={"/document/" + gateway.path}>
                 {t(`${gateway.path}.name`)}
               </Link>
