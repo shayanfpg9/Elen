@@ -38,14 +38,31 @@ const Aside = styled.aside`
       "max-width": "md",
     },
     css`
-      position: relative;
+      position: absolute;
+      top: 2vh;
       left: 50%;
       width: 90vw;
-      height: 30vh;
+      height: 32vh;
       border-radius: calc(var(--first-fibo) / 2);
-      margin-bottom: 2rem;
       transform: translate(-50%, 0);
       overflow-y: scroll;
+      padding: 0.5rem 0;
+
+      @supports (scrollbar-width: thin) {
+        //firefox familly
+        scrollbar-width: thin;
+        scrollbar-color: #fffa transparent;
+      }
+
+      &::-webkit-scrollbar {
+        width: 0.5rem;
+        background-color: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #fffa;
+        border-radius: 10px;
+      }
 
       > ul {
         transform: translateY(0%);
@@ -148,6 +165,7 @@ const Pages = styled.section`
     },
     css`
       width: 100%;
+      margin-top: 32vh;
     `
   )};
 `;
