@@ -20,8 +20,8 @@ export default function Error(props) {
     if (props.loaded && unMount.current) {
       if (errorProps === undefined) {
         setErrors({
-          status: props.code,
-          data: props.msg,
+          status: props.code || 404,
+          data: props.msg || "",
         });
       } else {
         setErrors({
@@ -36,7 +36,7 @@ export default function Error(props) {
   }, [setErrors, hide, unMount, errorProps, props]);
 
   return (
-    <section className="error">
+    <section className="error" style={props.style}>
       <div className="error__box">
         <h2>
           {t("error")} {errorProps?.status}:

@@ -15,6 +15,7 @@ import media from "../CssComponents/Media";
 
 //datas
 import similar from "../../translate/langs/pages/similar.json";
+import Error from "../Error/Error";
 
 const A = styled(Link)`
   display: block;
@@ -58,37 +59,41 @@ export default function DocumentPages() {
   const { t } = useTranslation("pages");
   const FirstSection = useContext(DocumentContext)[1];
 
-  return (
-    <>
-      <h1>{t(`${path}.title`)}</h1>
-      {similar[path]?.api &&
-        (!Array.isArray(similar[path]?.api)
-          ? [similar[path]?.api]
-          : similar[path]?.api
-        ).map((api, i) => (
-          <Code small key={`code-${i}`}>
-            {AddBr(api)}
-          </Code>
-        ))}
+  if (t(`${path}.text`) !== `${path}.text`) {
+    return (
+      <>
+        <h1>{t(`${path}.title`)}</h1>
+        {similar[path]?.api &&
+          (!Array.isArray(similar[path]?.api)
+            ? [similar[path]?.api]
+            : similar[path]?.api
+          ).map((api, i) => (
+            <Code small key={`code-${i}`}>
+              {AddBr(api)}
+            </Code>
+          ))}
 
-      <p>{AddBr(t(`${path}.text`), false)}</p>
+        <p>{AddBr(t(`${path}.text`), false)}</p>
 
-      {similar[path]?.output && (
-        <Code>{AddBr(similar[path].output.replace(/\/\//g, " //"))}</Code>
-      )}
+        {similar[path]?.output && (
+          <Code>{AddBr(similar[path].output.replace(/\/\//g, " //"))}</Code>
+        )}
 
-      {similar[path]?.error && (
-        <>
-          <h2> {t("config.error")}:</h2>
-          <Code>{AddBr(similar[path].error.replace(/\/\//g, " //"))}</Code>
-        </>
-      )}
+        {similar[path]?.error && (
+          <>
+            <h2> {t("config.error")}:</h2>
+            <Code>{AddBr(similar[path].error.replace(/\/\//g, " //"))}</Code>
+          </>
+        )}
 
-      {method === undefined && action === undefined && (
-        <A to={FirstSection.path}>{t(`${FirstSection.path}.name`)}</A>
-      )}
-    </>
-  );
+        {method === undefined && action === undefined && (
+          <A to={FirstSection.path}>{t(`${FirstSection.path}.name`)}</A>
+        )}
+      </>
+    );
+  } else {
+    return <Error loaded style={{ position: "relative" }} />;
+  }
 }
 
 function AddBr(string, code = true) {
