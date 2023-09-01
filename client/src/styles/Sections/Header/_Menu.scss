@@ -76,7 +76,7 @@
   @include media("xl") {
     &__menu {
       list-style-type: none;
-      width: 50%;
+      width: 60%;
 
       position: absolute;
 
@@ -89,7 +89,7 @@
       html.rtl & {
         padding-right: 2vh;
         left: 50%;
-        transform: translateX(-75%);
+        transform: translateX(-50%);
 
         & > * {
           float: left;
@@ -99,7 +99,7 @@
       html.ltr & {
         padding-left: 6vh;
         right: 50%;
-        transform: translateX(75%);
+        transform: translateX(50%);
 
         & > * {
           float: right;

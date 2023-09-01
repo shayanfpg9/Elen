@@ -124,7 +124,7 @@ export default function Menu(props) {
         {items.map((item) => {
           return (
             <li
-              className="header__menu-item fibo-1--sq"
+              className="header__menu-item"
               onClick={props.function}
               title={item.text}
               key={item.text}
