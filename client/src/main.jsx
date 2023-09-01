@@ -9,7 +9,7 @@ import Table, {
 
 //components
 import Info, { InfoLoader } from "./component/Content/Info/Info";
-import Elen, { InitLoader } from "./component/Elen";
+import Elen, { InitLoader } from "./component/App";
 import Error from "./component/Error/Error";
 import Search from "./component/Header/Search";
 import Home from "./component/Home/Home";
