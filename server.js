@@ -22,7 +22,7 @@ connect(process.env.MONGOURI)
 //middlewares:
 app.use(morgan("dev"));
 app.use(express.json());
-app.use("/api/atom/", AtomsRouter);
+app.use("/atom", AtomsRouter);
 
 //404 error
 app.all("*", (req, res) => {
