@@ -150,7 +150,7 @@ export default function Menu(props) {
             <bs.BsGithub />
           </a>
 
-          {pathname.match(/(table|atom)/gi) && (
+          {pathname.match(/(table|atom)/gi) && !pathname.includes("find") && (
             <button
               type="button"
               title={t("icons.refresh")}
