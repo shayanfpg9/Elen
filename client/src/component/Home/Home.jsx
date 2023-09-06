@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { LoadedContext } from "../Context/Loaded";
+import { LoaderContext } from "../Context/loader";
 import styled, { css } from "styled-components";
 import flex from "../CssComponents/Flexbox";
 import media from "../CssComponents/Media";
@@ -16,7 +16,6 @@ import { FaMoneyBillWave } from "react-icons/fa";
 import { RiOpenSourceFill } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
 import _ from "lodash";
-import { useConfig } from "../Hook/hooks";
 
 const Section = styled.section`
   width: 100%;
@@ -124,12 +123,11 @@ const P = styled.p.attrs((props) => ({
 
 export default function Home() {
   const { t, i18n } = useTranslation("home");
-  const loaded = useContext(LoadedContext);
+  const loaded = useContext(LoaderContext);
   const Mount = useRef(false);
   const [lang, setLang] = useState(null);
   const TextEffect = useRef();
   const WriteEffect = new writeEffect().effect;
-  useConfig();
 
   useEffect(() => {
     if (_.isNull(lang)) {

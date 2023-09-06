@@ -3,18 +3,16 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useRouteError } from "react-router-dom";
 
 //context
-import { LoadedContext } from "../Context/Loaded";
+import { LoaderContext } from "../Context/loader";
 
 //hook
 import { useTranslation } from "react-i18next";
-import useConfig from "../Hook/useConfig";
 
 export default function Error(props) {
   const { t } = useTranslation("error");
-  const { hide } = useContext(LoadedContext);
+  const { hide } = useContext(LoaderContext);
   const unMount = useRef(true);
   const [errorProps, setErrors] = useState(useRouteError());
-  useConfig(true);
 
   useEffect(() => {
     if (props.loaded && unMount.current) {

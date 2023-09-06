@@ -1,6 +1,7 @@
 //deps
-import { Component } from "react";
-import { Outlet } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
 
 //styles
 import "../styles/Main.scss";
@@ -13,16 +14,15 @@ import Header from "./Header/Header";
 //contexts
 import Loader from "./Loader/Loader";
 import { RefreshContext } from "./Context/Refresh";
-import { LoadedContext } from "./Context/Loaded";
+import { LoaderContext } from "./Context/loader";
 import { ThemeContext } from "./Context/Theme";
 import { LangContext } from "./Context/Lang";
 
 //libs & utils
-import _ from "lodash";
 import DB from "./funcs/DB";
-import { WithHook } from "./HOC/WithHooks";
 import { useTranslation } from "react-i18next";
 import i18n from "../translate/i18n";
+import useConfig from "./Hook/useConfig";
 
 export const InitLoader = async () => {
   const stores = ["Atoms", "Single"];
@@ -47,72 +47,50 @@ export const InitLoader = async () => {
   return false;
 };
 
-class Elen extends Component {
-  state = {
-    stop: {
-      show: true,
-      remove: false,
-    },
-    theme: localStorage.getItem("theme-mode"),
-  };
+export default function Elen(props) {
+  const location = useLocation();
+  const mount = useRef(false);
 
-  componentDidMount() {
-    document.body.classList.add(this.state.theme);
-
-    if (_.isNull(this.state.theme)) {
-      localStorage.setItem("theme-mode", "system");
-
-      this.setTheme(localStorage.getItem("theme-mode"));
-    }
-
-    if (!localStorage.getItem("language")) {
-      const langs = window.navigator.languages;
-
-      if (langs.includes("fa")) {
-        this.setLang("fa");
-      } else if (langs.includes("en")) {
-        this.setLang("en");
-      }
-    } else {
-      this.setLang(localStorage.getItem("language"));
-    }
-  }
-
-  loaded = {
+  const [load, setLoad] = useState({
+    show: true,
+    remove: false,
+  });
+  const loader = {
     hide: () => {
-      this.setState({ stop: { show: false } });
+      setLoad({ remove: false });
 
       setTimeout(() => {
-        this.setState({ stop: { remove: true } });
-      }, 600);
+        setLoad({ remove: true });
+        document.documentElement.style.overflowY = "visible";
+      }, 500);
     },
     show: () => {
-      this.setState({ stop: { show: true, remove: false } });
+      document.documentElement.style.overflowY = "hidden";
+
+      setLoad({ remove: false });
     },
   };
 
-  setRefresh = (value) => {
-    this.setState({
-      refresh: value,
-    });
-  };
-
-  setTheme = (theme) => {
+  const theme = useRef(localStorage.getItem("theme"));
+  const SetTheme = (newTheme, onChange) => {
     document.body.classList.remove("dark", "light", "system");
-    document.body.classList.add(theme);
+    document.body.classList.add(newTheme);
 
-    this.setState({
-      theme,
-    });
+    theme.current = newTheme;
 
-    localStorage.setItem("theme-mode", theme);
+    localStorage.setItem("theme", newTheme);
+
+    onChange(newTheme);
   };
 
-  setLang = (lang) => {
+  const [refresh, SetRefresh] = useState(undefined);
+
+  const translate = useTranslation();
+  const SetLang = (lang) => {
     if (["en", "fa"].includes(lang)) {
       document.documentElement.classList.remove("ltr", "rtl");
 
-      const { i18n } = this.props.translate;
+      const { i18n } = translate;
 
       i18n.changeLanguage(lang);
 
@@ -126,38 +104,67 @@ class Elen extends Component {
     }
   };
 
-  render() {
-    return (
-      <ThemeContext.Provider
-        value={{
-          theme: this.state.theme,
-          setTheme: this.setTheme,
-        }}
-      >
-        {!this.state.stop.remove && <Loader stop={!this.state.stop.show} />}
+  useEffect(() => {
+    if (!mount.current) {
+      mount.current = true;
 
-        <LoadedContext.Provider value={{ ...this.loaded }}>
-          <RefreshContext.Provider
-            value={{
-              refresh: this.state.refresh,
-              setRefresh: this.setRefresh,
-            }}
-          >
-            <LangContext.Provider value={this.setLang}>
-              <Header></Header>
-            </LangContext.Provider>
-            <Content>{!this.props.use ? <Outlet /> : this.props.use}</Content>
-            <Footer></Footer>
-          </RefreshContext.Provider>
-        </LoadedContext.Provider>
-      </ThemeContext.Provider>
-    );
-  }
+      document.body.classList.add(theme.current);
+
+      if (theme.current == null) {
+        localStorage.setItem("theme", "system");
+
+        SetTheme(localStorage.getItem("theme"));
+      }
+
+      if (!localStorage.getItem("language")) {
+        const langs = window.navigator.languages;
+
+        if (langs.includes("fa")) {
+          SetLang("fa");
+        } else if (langs.includes("en")) {
+          SetLang("en");
+        }
+      } else {
+        SetLang(localStorage.getItem("language"));
+      }
+    }
+  });
+
+  useConfig(loader);
+
+  useMemo(() => {
+    loader.show();
+  }, [location]);
+
+  return (
+    <ThemeContext.Provider
+      value={{
+        theme,
+        SetTheme,
+      }}
+    >
+      {!load.remove && <Loader />}
+
+      <LoaderContext.Provider value={{ ...loader }}>
+        <RefreshContext.Provider
+          value={{
+            refresh,
+            setRefresh: SetRefresh,
+          }}
+        >
+          <LangContext.Provider value={SetLang}>
+            <Header></Header>
+          </LangContext.Provider>
+          <Content>
+            <Outlet />
+          </Content>
+          <Footer></Footer>
+        </RefreshContext.Provider>
+      </LoaderContext.Provider>
+    </ThemeContext.Provider>
+  );
 }
 
-export default WithHook(Elen, [
-  {
-    name: "translate",
-    HookFunc: useTranslation,
-  },
-]);
+Elen.propTypes = {
+  use: PropTypes.object,
+};

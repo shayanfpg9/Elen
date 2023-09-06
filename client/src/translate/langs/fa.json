@@ -22,7 +22,7 @@
       "nometal": "نا فلزات",
       "metalloid": "شبه فلزات",
       "lanthanide": "لانتانید ها",
-      "posttran": "فلزات پس واسطه",
+      "post_transition": "فلزات پس واسطه",
       "transition": "فلزات واسطه",
       "actinide": "اکتینید ها",
       "unknown": "ناشناخته",

@@ -1,27 +1,32 @@
-import _ from "lodash";
 import { useState } from "react";
 
 export default function useSearch() {
   //this hook just search with the attr of the elements on the page
   const [data, setData] = useState(null);
 
-  const ChangeStatus = (option, single = true) => {
+  const search = (option, single = true) => {
     document.querySelectorAll(".Atom").forEach((el) => {
       el.classList.remove("active");
       el.classList.add("hide");
     });
 
-    const query =
+    let query =
       ".Atom" +
-      _.keys(option).map(
+      Object.keys(option).map(
         (prop) =>
-          `[data-${prop}*="${option[prop].replace( // match in any where
+          `[data-${prop}*="${option[prop].replace(
+            // match in any where
             /-/g,
             " "
           )}"]:not(.${prop}__item)`
       );
 
-    //Get a first one?
+    Object.keys(option).map((prop) => {
+      if (option[prop] === "transition") {
+        query += `:not([data-${prop}*="post_transition"])`;
+      }
+    });
+
     if (single) {
       const el = document.querySelector(query).dataset;
       setData(el["name"]);
@@ -39,5 +44,5 @@ export default function useSearch() {
     }
   };
 
-  return [data, ChangeStatus];
+  return [data, search];
 }

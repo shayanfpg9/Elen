@@ -3,11 +3,10 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLoaderData, useParams } from "react-router-dom";
 
 // context
-import { LoadedContext } from "../Context/Loaded";
+import { LoaderContext } from "../Context/loader";
 import { DocumentContext } from "../Context/Document";
 
 //hooks
-import useConfig from "../Hook/useConfig";
 import { useTranslation } from "react-i18next";
 
 //utils
@@ -200,7 +199,7 @@ export function ApiGatewaysLoader() {
 }
 
 export default function Document() {
-  const loaded = useContext(LoadedContext),
+  const loaded = useContext(LoaderContext),
     Mount = useRef(false),
     Gateways = useLoaderData(),
     { t } = useTranslation("pages"),
@@ -208,8 +207,6 @@ export default function Document() {
 
   const { method, action } = useParams();
   const path = `${method || ""}/${action || ""}`;
-
-  useConfig();
 
   useEffect(() => {
     if (!Mount.current) {

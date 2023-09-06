@@ -22,7 +22,7 @@
       "nometal": "no metal",
       "metalloid": "metalloid",
       "lanthanide": "lanthanides",
-      "posttran": "post-transition metals",
+      "post_transition": "post-transition metals",
       "transition": "transition metals",
       "actinide": "actinides",
       "unknown": "unknown",

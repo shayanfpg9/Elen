@@ -1,17 +1,24 @@
 //deps
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 //libs & utils
 import { useTranslation } from "react-i18next";
-import { useLocation, useParams } from "react-router-dom";
+import {
+  isRouteErrorResponse,
+  useLocation,
+  useParams,
+  useRouteError,
+} from "react-router-dom";
 import chroma from "chroma-js";
 
-export default function useConfig(error = false) {
-  const { pathname } = useLocation();
+export default function useConfig(loader) {
+  const pageMount = useRef(false);
+  const location = useLocation();
   const { t, i18n } = useTranslation("config");
   const name = useTranslation().t("name");
   const params = useParams();
-  const locations = {
+  const error = useRouteError();
+  const paths = {
     home: "/",
     info: "/atom/",
     search: "/table/find",
@@ -20,13 +27,13 @@ export default function useConfig(error = false) {
     document: "/document",
   };
 
-  let location = "";
+  let page = "";
 
   const setTitle = () => {
-    document.title = name + " - " + t(location);
+    document.title = name + " - " + t(page);
 
     switch (
-      location //with special params
+      page //with special params
     ) {
       case "info":
         document.title += ` (${params.atom})`;
@@ -48,41 +55,44 @@ export default function useConfig(error = false) {
   const setDesc = () => {
     const DescriptionMeta = document.querySelector("meta[name~='description']");
 
-    if (location !== "info" && location !== "document") {
-      DescriptionMeta.setAttribute("content", t(`descriptions.${location}`));
-    } else if (location === "document") {
+    if (page !== "info" && page !== "document") {
+      DescriptionMeta.setAttribute("content", t(`descriptions.${page}`));
+    } else if (page === "document") {
       DescriptionMeta.setAttribute(
         "content",
-        t(`descriptions.${location}`, {
+        t(`descriptions.${page}`, {
           action: "/" + (params.action || params.method || ""),
         })
       );
     } else {
       DescriptionMeta.setAttribute(
         "content",
-        t(`descriptions.${location}`, { name: params.atom })
+        t(`descriptions.${page}`, { name: params.atom })
       );
     }
   };
 
-  if (error) {
-    setLocation("error");
-  } else if (pathname === locations["home"]) {
-    setLocation("home");
-  } else if (pathname === locations["search"]) {
-    setLocation("search");
-  } else if (pathname === locations["table"]) {
-    setLocation("table");
-  } else if (pathname.includes(locations["TableResult"])) {
-    setLocation("TableResult");
-  } else if (pathname.includes(locations["info"])) {
-    setLocation("info");
-  } else if (pathname.includes(locations["document"])) {
-    setLocation("document");
-  }
+  useMemo(() => {
+    if (isRouteErrorResponse(error)) {
+      setPage("error");
+    } else if (location.pathname === paths["home"]) {
+      setPage("home");
+    } else if (location.pathname === paths["search"]) {
+      setPage("search");
+    } else if (location.pathname === paths["table"]) {
+      setPage("table");
+    } else if (location.pathname.includes(paths["TableResult"])) {
+      setPage("TableResult");
+    } else if (location.pathname.includes(paths["info"])) {
+      setPage("info");
+    } else if (location.pathname.includes(paths["document"])) {
+      setPage("document");
+      loader.hide();
+    }
+  }, [location]);
 
-  function setLocation(NewLoc) {
-    location = NewLoc;
+  function setPage(newPage) {
+    page = newPage;
     setTitle();
     setDesc();
   }

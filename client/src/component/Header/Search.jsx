@@ -6,22 +6,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { BsXLg } from "react-icons/bs";
 import { isNull } from "lodash";
 import Swal from "sweetalert2";
-import { useConfig } from "../Hook/hooks";
 
 //contexts
-import { LoadedContext } from "../Context/Loaded";
+import { LoaderContext } from "../Context/loader";
 import { useTranslation } from "react-i18next";
 
 export default function Search(props) {
   const searchbox = useRef(),
     input = useRef(),
     navigate = useNavigate(),
-    { hide, show } = useContext(LoadedContext);
+    { hide, show } = useContext(LoaderContext);
 
   const { t } = useTranslation("search");
   const back = useTranslation("error").t("back");
-
-  useConfig();
 
   const close = () => {
     input.current.value = "";

@@ -5,11 +5,10 @@ import { json, Link, useLoaderData, useParams } from "react-router-dom";
 
 //contexts
 import { RefreshContext } from "../../Context/Refresh";
-import { LoadedContext } from "../../Context/Loaded";
+import { LoaderContext } from "../../Context/loader";
 
 //hooks
 import { useTranslation } from "react-i18next";
-import { useConfig } from "../../Hook/hooks";
 
 //utils
 import { BiX } from "react-icons/bi";
@@ -55,11 +54,10 @@ export default function Info() {
   const { atom } = useParams();
   const [info, setInfo] = useState(useLoaderData());
   const { refresh, setRefresh } = useContext(RefreshContext);
-  const loaded = useContext(LoadedContext);
+  const loaded = useContext(LoaderContext);
   const { t, i18n } = useTranslation("info");
   const [translate, setTranslate] = useState({ ...info });
   const [lang, setLang] = useState(null);
-  useConfig();
 
   let unMount = useRef(true);
   const ReadingBtn = useRef();

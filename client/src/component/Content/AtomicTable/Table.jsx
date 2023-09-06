@@ -1,5 +1,6 @@
 //deps
-import { Component } from "react";
+import { useTranslation } from "react-i18next";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import styled, { css, ThemeProvider } from "styled-components";
 import {
   json,
@@ -7,6 +8,7 @@ import {
   Navigate,
   useLoaderData,
   useParams,
+  useSearchParams,
 } from "react-router-dom";
 
 //components
@@ -15,16 +17,15 @@ import Categories from "./Categories";
 import Phase from "./Phase";
 import Error from "../../Error/Error";
 
-//HOCs
-import { WithMultiContext } from "../../HOC/WithMultiContext";
-import { WithHook } from "../../HOC/WithHooks";
-
 //libs & utils
 import axios from "axios";
-import { media } from "../../CssComponents/Util";
 import _ from "lodash";
+import { media } from "../../CssComponents/Util";
 import { DB } from "../../funcs/funcs";
-import { useTranslation } from "react-i18next";
+import { LoaderContext } from "../../Context/loader";
+import { RefreshContext } from "../../Context/Refresh";
+import { ThemeContext } from "../../Context/Theme";
+import useSearch from "../../Hook/useSearch";
 
 //row and cols same styles
 const RowCol = styled.span`
@@ -89,7 +90,7 @@ export const TableLoader = async ({ refresh }) => {
   const saved = await db.getAll();
 
   try {
-    if (refresh || _.isUndefined(saved) || saved.length === 0) {
+    if (refresh || saved === undefined || saved.length === 0) {
       const data = (await axios.get("/api/atom")).data;
 
       await db.set(data);
@@ -115,44 +116,45 @@ export const SearchLoader = async ({ params }) => {
   }
 };
 
-class Table extends Component {
-  state = {
-    cols: 19,
-    rows: 9,
-    atoms: null,
-    theme: {
-      name: this.props.Theme.theme,
-    },
+export default function Table() {
+  const { t } = useTranslation("table");
+  const error = useTranslation("error");
+  const mount = useRef(false);
+  const table = {
+    cols: useRef(19),
+    rows: useRef(9),
   };
 
-  GetDatas = async (refresh = false) => {
-    const loaded = this.props.Loaded;
-    let data;
+  const [atoms, setData] = useState(null);
+  const LoaderData = useLoaderData();
+  const loaded = useContext(LoaderContext);
+  const params = useParams();
+  const [lastParams, setNewParam] = useState(undefined);
+  const search = useSearch()[1];
 
-    loaded.show();
+  const GetDatas = async (refresh = false) => {
+    let data;
 
     if (refresh) {
       data = {
         all: await TableLoader({ refresh: true }),
-        bold: this.props.params.query ? await SearchLoader() : undefined,
+        bold: params.query ? await SearchLoader() : undefined,
       };
     } else {
-      data = this.props.loader;
+      data = LoaderData;
     }
 
     if (
-      data.bold !== undefined &&
-      data.bold.length === 1 &&
+      data?.bold !== undefined &&
+      data?.bold.length === 1 &&
       typeof data.bold[0] === "string"
     ) {
-      this.setState({
-        ...this.state,
-        atoms: [<Navigate key="navigate" to={`/atom/${data.bold[0]}`} />], //for 'react-router: navigate in first render' error
-      });
+      setData(
+        [<Navigate key="navigate" to={`/atom/${data.bold[0]}`} />] //for 'react-router: navigate in first render' error
+      );
     } else if (data !== undefined) {
-      this.setState({
-        ...this.state,
-        atoms: data.all?.map((prop) => (
+      setData(
+        data.all?.map((prop) => (
           <Atom
             className={
               data.bold
@@ -164,186 +166,159 @@ class Table extends Component {
             key={prop.name}
             {...prop}
           />
-        )),
-      });
+        ))
+      );
     }
 
     loaded.hide();
   };
 
-  setTheme = () => {
-    const { theme } = this.props.Theme;
-
-    if (theme === "system") {
-      this.setState({
-        theme: {
-          name: this.props.Theme.theme,
-          UnknownTransitionColor: {
-            false: "var(--color-fg)",
-            true: "var(--color-text)",
-          },
-          CategortItemColor: {
-            true: "var(--color-text)",
-            false: "var(--color-fg)",
-          },
+  const themeCon = useContext(ThemeContext);
+  const [theme, changeThemeState] = useState({
+    name: themeCon.theme.current,
+  });
+  const setTheme = () => {
+    if (theme.name === "system") {
+      changeThemeState({
+        name: themeCon.theme,
+        UnknownTransitionColor: {
+          true: "var(--color-fg)",
+          false: "var(--color-text)",
+        },
+        CategoryItemColor: {
+          false: "var(--color-text)",
+          true: "var(--color-fg)",
         },
       });
-    } else if (theme === "dark") {
-      this.setState({
-        theme: {
-          name: this.props.Theme.theme,
-          UnknownTransitionColor: {
-            true: "var(--color-fg)",
-            false: "var(--color-text)",
-          },
-          CategortItemColor: {
-            false: "var(--color-text)",
-            true: "var(--color-fg)",
-          },
+    } else if (theme.name === "dark") {
+      changeThemeState({
+        name: themeCon.theme,
+        UnknownTransitionColor: {
+          true: "var(--color-fg)",
+          false: "var(--color-text)",
+        },
+        CategoryItemColor: {
+          false: "var(--color-text)",
+          true: "var(--color-fg)",
         },
       });
-    } else if (theme === "light") {
-      this.setState({
-        theme: {
-          name: this.props.Theme.theme,
-          UnknownTransitionColor: {
-            false: "var(--color-fg)",
-            true: "var(--color-text)",
-          },
-          CategortItemColor: {
-            true: "var(--color-text)",
-            false: "var(--color-fg)",
-          },
+    } else if (theme.name === "light") {
+      changeThemeState({
+        name: themeCon.theme,
+        UnknownTransitionColor: {
+          false: "var(--color-fg)",
+          true: "var(--color-text)",
+        },
+        CategoryItemColor: {
+          true: "var(--color-text)",
+          false: "var(--color-fg)",
         },
       });
     }
   };
 
-  componentDidMount() {
-    this.GetDatas();
+  const { refresh, setRefresh } = useContext(RefreshContext);
 
-    this.setTheme();
-  }
+  useEffect(() => {
+    if (!mount.current) {
+      GetDatas();
+      setTheme();
 
-  componentDidUpdate(pastProp) {
-    if (this.props.Refresh.refresh) {
-      this.props.Refresh.setRefresh(false);
-      this.GetDatas(true);
+      mount.current = true;
     }
+  }, []);
 
-    if (pastProp.params.query !== this.props.params.query) {
-      this.GetDatas();
+  useMemo(() => {
+    if (refresh) {
+      setRefresh(false);
+      GetDatas(true);
     }
+  }, [refresh]);
 
-    if (this.state.theme.name !== this.props.Theme.theme) {
-      this.setTheme();
+  useMemo(() => {
+    if (lastParams !== undefined && lastParams.query !== params.query) {
+      setNewParam(params);
+      GetDatas();
     }
+  }, [params.query]);
 
-    //run event in Update for line:293
+  useMemo(() => {
+    if (themeCon.name !== theme.name) {
+      setTheme();
+    }
+  }, [themeCon.name]);
+
+  const Active = () => {
+    //run event in Update
     const CatPhase = document.querySelectorAll(".phase__item, .category__item");
+    let lastEvent = "";
 
-    if (CatPhase.length > 0 && !this.state.CatPhaseEvent) {
-      this.setState({ CatPhaseEvent: true });
+    CatPhase.forEach((el) => {
+      const prop = el?.dataset?.phase ? "phase" : "category";
 
-      CatPhase.forEach((el) => {
-        const Event = () => {
-          const prop = el?.dataset?.phase ? "phase" : "category";
-          this.props.useSearch[1](
-            {
-              [prop]: el.dataset[prop],
-            },
-            false
-          );
-        };
+      const Event = () => {
+        search(
+          {
+            [prop]: el.dataset[prop],
+          },
+          false
+        );
+      };
 
-        el.addEventListener("mouseenter", () => {
-          Event();
-        });
-        el.addEventListener("mousemove", () => {
-          Event();
-        });
-        el.addEventListener("mouseleave", () => {
-          document.querySelectorAll(".Atom").forEach((el) => {
-            el.classList.remove("hide", "active");
-          });
+      el.addEventListener("mouseenter", () => {
+        Event();
+      });
+
+      el.addEventListener("mouseleave", () => {
+        document.querySelectorAll(".Atom").forEach((el) => {
+          el.classList.remove("hide", "active");
         });
       });
-    }
+    });
+  };
+
+  const Cols = [];
+  for (let i = 1; i < table.cols.current; i++) {
+    Cols.push(
+      <Col className="col" col={i + 1} children={i} key={`col-${i}`} />
+    );
   }
 
-  render() {
-    const Cols = [];
-    for (let i = 1; i < this.state.cols; i++) {
-      Cols.push(
-        <Col className="col" col={i + 1} children={i} key={`col-${i}`} />
-      );
-    }
+  const Rows = [];
+  for (let i = 1; i < table.rows.current; i++) {
+    Rows.push(
+      <Row className="row" row={i + 1} children={i} key={`row-${i}`} />
+    );
+  }
 
-    const Rows = [];
-    for (let i = 1; i < this.state.rows; i++) {
-      Rows.push(
-        <Row className="row" row={i + 1} children={i} key={`row-${i}`} />
-      );
-    }
+  if (atoms !== null) {
+    Active();
+    return (
+      <ThemeProvider theme={theme}>
+        {params?.query && <h2>{t("result")}:</h2>}
 
-    if (!_.isNull(this.state.atoms)) {
-      return (
-        <ThemeProvider theme={this.state.theme}>
-          {this.props?.params?.query && (
-            <h2>{this.props.table.t("result")}:</h2>
-          )}
+        <section className="table">
+          {/* columns: */}
+          {Cols}
 
-          <section className="table">
-            {/* columns: */}
-            {Cols}
+          {/* rows: */}
+          {Rows}
 
-            {/* rows: */}
-            {Rows}
+          <FreeSpace />
 
-            <FreeSpace />
+          {!params?.query && [
+            <Categories key="category" />,
+            <Phase key="phase" />,
+          ]}
 
-            {!this.props?.params?.query && [
-              <Categories key="category" />,
-              <Phase key="phase" />,
-            ]}
+          {/* import datas */}
+          {atoms}
+        </section>
 
-            {/* import datas */}
-            {this.state.atoms}
-          </section>
-
-          {this.props?.params?.query && (
-            <Link to="/table">{this.props.error.t("back-table")}</Link>
-          )}
-        </ThemeProvider>
-      );
-    } else {
-      return <Error code="404" msg={this.props.error.t("find")} />;
-    }
+        {params?.query && <Link to="/table">{error.t("back-table")}</Link>}
+      </ThemeProvider>
+    );
+  } else {
+    return <Error code="404" msg={error.t("find")} />;
   }
 }
-
-export default WithHook(
-  WithMultiContext(Table, ["Refresh", "Theme", "Loaded"]),
-  [
-    "useSearch",
-    "useConfig",
-    {
-      name: "params",
-      HookFunc: useParams,
-    },
-    {
-      name: "error",
-      HookFunc: useTranslation,
-      param: "error",
-    },
-    {
-      name: "table",
-      HookFunc: useTranslation,
-      param: "table",
-    },
-    {
-      name: "loader",
-      HookFunc: useLoaderData,
-    },
-  ]
-);

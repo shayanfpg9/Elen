@@ -88,8 +88,8 @@ const Item = styled.span.attrs((props) => ({
   margin: 0 0.1rem;
   color: ${(props) =>
     props.light
-      ? props.theme?.CategortItemColor.true
-      : props.theme?.CategortItemColor.false};
+      && props.theme?.CategoryItemColor?.true
+     };
   cursor: pointer;
   padding: 0.2rem 0;
 
@@ -120,8 +120,8 @@ export default function Categories() {
         <Item className="category__item" data-category="transition" light>
           {t("categories.transition")}
         </Item>
-        <Item className="category__item" data-category="posttran">
-          {t("categories.posttran")}
+        <Item className="category__item" data-category="post_transition">
+          {t("categories.post_transition")}
         </Item>
         <Item className="category__item" data-category="lanthanide" light>
           {t("categories.lanthanide")}

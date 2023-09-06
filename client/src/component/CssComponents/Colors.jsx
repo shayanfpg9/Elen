@@ -6,7 +6,7 @@ export const colors = {
   "alkaline earth metal": chroma("#FF952E"),
   metalloid: chroma("#57C3F8"),
   lanthanide: chroma("#FC9FFF"),
-  posttran: chroma("#00833F"),
+  post_transition: chroma("#00833F"),
   transition: chroma("#FFF428"),
   actinide: chroma("#FC2865"),
   unknown: chroma("#232323"),

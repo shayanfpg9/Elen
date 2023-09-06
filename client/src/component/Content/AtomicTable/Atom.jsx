@@ -2,7 +2,7 @@ import { mix } from "chroma-js";
 import { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { LoadedContext } from "../../Context/Loaded";
+// import { LoaderContext } from "../../Context/Loaded";
 import { colors, flex, media } from "../../CssComponents/Util";
 
 //style of AtomCles
@@ -64,6 +64,7 @@ const AtomCel = styled(Link).attrs((props) => ({
     filter: blur(5px);
     background-color: ${(props) => props.color.darken(0.2)};
     pointer-events: none;
+    opacity: 0.6; 
   }
 
   &:hover {
@@ -96,9 +97,9 @@ const AtomCel = styled(Link).attrs((props) => ({
 `;
 
 export default function Atom(props) {
-  let PropCat = props.category.replace("post-transition", "posttran");
+  let PropCat = props.category.replace("post-transition", "post_transition");
 
-  const { show } = useContext(LoadedContext);
+  // const { show } = useContext(LoaderContext);
 
   const category = [];
   [...Object.keys(colors), "metal"].forEach((cat) => {
@@ -119,15 +120,15 @@ export default function Atom(props) {
   const ThisEl = useRef();
   const Mount = useRef(false);
 
-  useEffect(() => {
-    if (!Mount.current) {
-      ThisEl.current.addEventListener("click", () => {
-        show();
-      });
+  // useEffect(() => {
+  //   if (!Mount.current) {
+  //     ThisEl.current.addEventListener("click", () => {
+  //       show();
+  //     });
 
-      Mount.current = true;
-    }
-  });
+  //     Mount.current = true;
+  //   }
+  // });
 
   return (
     <AtomCel
