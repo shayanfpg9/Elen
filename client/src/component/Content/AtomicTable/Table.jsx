@@ -175,7 +175,7 @@ export default function Table() {
 
   const themeCon = useContext(ThemeContext);
   const [theme, changeThemeState] = useState({
-    name: themeCon.theme.current,
+    name: themeCon.theme,
   });
   const setTheme = () => {
     if (theme.name === "system") {
