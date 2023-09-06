@@ -23,6 +23,7 @@ import DB from "./funcs/DB";
 import { useTranslation } from "react-i18next";
 import i18n from "../translate/i18n";
 import useConfig from "./Hook/useConfig";
+import * as bs from "react-icons/bs";
 
 export const InitLoader = async () => {
   const stores = ["Atoms", "Single"];
@@ -71,6 +72,7 @@ export default function Elen(props) {
     },
   };
 
+  const [themeIcon, setIcon] = useState();
   const theme = useRef(localStorage.getItem("theme"));
   const SetTheme = (newTheme, onChange) => {
     document.body.classList.remove("dark", "light", "system");
@@ -80,7 +82,15 @@ export default function Elen(props) {
 
     localStorage.setItem("theme", newTheme);
 
-    onChange(newTheme);
+    if (theme.current === "system") {
+      setIcon(() => <bs.BsFillDropletFill />);
+    } else if (theme.current === "dark") {
+      setIcon(() => <bs.BsFillMoonStarsFill />);
+    } else if (theme.current === "light") {
+      setIcon(() => <bs.BsFillSunFill />);
+    }
+
+    if (typeof onChange === "function") onChange(newTheme);
   };
 
   const [refresh, SetRefresh] = useState(undefined);
@@ -112,9 +122,9 @@ export default function Elen(props) {
 
       if (theme.current == null) {
         localStorage.setItem("theme", "system");
-
-        SetTheme(localStorage.getItem("theme"));
       }
+
+      SetTheme(localStorage.getItem("theme"));
 
       if (!localStorage.getItem("language")) {
         const langs = window.navigator.languages;
@@ -139,8 +149,9 @@ export default function Elen(props) {
   return (
     <ThemeContext.Provider
       value={{
-        theme,
-        SetTheme,
+        theme: theme.current,
+        Icon: themeIcon,
+        setTheme: SetTheme,
       }}
     >
       {!load.remove && <Loader />}

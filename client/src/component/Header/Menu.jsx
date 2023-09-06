@@ -17,8 +17,7 @@ export default function Menu(props) {
   const MenuRef = useRef();
   const dis = props.status ? 0 : "calc(-1 * var(--menu-width))";
   const { setRefresh } = useContext(RefreshContext);
-  const { theme, setTheme } = useContext(ThemeContext);
-  const [ThemeIcon, setThemeIcon] = useState(<bs.BsFillDropletFill />);
+  const { theme, setTheme , Icon} = useContext(ThemeContext);
   const handleLang = useContext(LangContext);
   const { t, i18n } = useTranslation("menu");
   const { language } = i18n;
@@ -72,14 +71,6 @@ export default function Menu(props) {
         }
       };
 
-      if (theme === "system") {
-        setThemeIcon(<bs.BsFillDropletFill />);
-      } else if (theme === "dark") {
-        setThemeIcon(<bs.BsFillMoonStarsFill />);
-      } else if (theme === "light") {
-        setThemeIcon(<bs.BsFillSunFill />);
-      }
-
       Mount.current = true;
     }
 
@@ -88,7 +79,7 @@ export default function Menu(props) {
       blur.current.onclick = undefined;
       props.function();
     };
-  }, [setThemeIcon, props, theme]);
+  }, [props]);
 
   const { pathname } = useLocation();
 
@@ -181,7 +172,7 @@ export default function Menu(props) {
               else if (theme === "light") setTheme("system");
             }}
           >
-            {ThemeIcon}
+            {Icon}
           </button>
 
           <button type="button" title={t("icons.share")} onClick={Search}>
