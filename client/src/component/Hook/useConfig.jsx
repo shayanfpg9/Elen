@@ -6,13 +6,14 @@ import { useTranslation } from "react-i18next";
 import {
   isRouteErrorResponse,
   useLocation,
+  useNavigate,
   useParams,
   useRouteError,
 } from "react-router-dom";
 import chroma from "chroma-js";
 
 export default function useConfig(loader) {
-  const pageMount = useRef(false);
+  const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation("config");
   const name = useTranslation().t("name");
@@ -91,6 +92,42 @@ export default function useConfig(loader) {
       setPage("document");
       loader.hide();
     }
+
+    document.addEventListener("keyup", (ev) => {
+      if (ev.code === "Escape") {
+        navigate(-1);
+      }
+
+      if (ev.shiftKey) {
+        let path = undefined;
+
+        switch (ev.key) {
+          case "H":
+            path = "/";
+            break;
+
+          case "T":
+            path = "/table";
+            break;
+
+          case "S":
+            path = "/table/find";
+            break;
+
+          case "D":
+            path = "/document";
+            break;
+
+          default:
+            break;
+        }
+
+        if (path !== undefined) {
+          ev.preventDefault();
+          navigate(path);
+        }
+      }
+    });
   }, [location]);
 
   function setPage(newPage) {
