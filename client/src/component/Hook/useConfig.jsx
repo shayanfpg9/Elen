@@ -100,7 +100,7 @@ export default function useConfig(loader) {
           navigate(-1);
         }
 
-        if (ev.shiftKey) {
+        if (ev.shiftKey && ev.target === document.body) {
           let path = undefined;
 
           switch (ev.key) {
@@ -124,8 +124,9 @@ export default function useConfig(loader) {
               break;
           }
 
-          if (path !== undefined) {
+          if (path !== undefined && window.location.pathname !== path) {
             ev.preventDefault();
+            ev.stopPropagation();
             navigate(path);
           }
         }
