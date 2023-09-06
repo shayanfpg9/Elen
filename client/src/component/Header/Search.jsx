@@ -1,6 +1,6 @@
 //deps
 import { useContext, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //utils
 import { BsXLg } from "react-icons/bs";
@@ -18,7 +18,6 @@ export default function Search(props) {
     { hide, show } = useContext(LoaderContext);
 
   const { t } = useTranslation("search");
-  const back = useTranslation("error").t("back");
 
   const close = () => {
     input.current.value = "";
@@ -104,8 +103,6 @@ export default function Search(props) {
           {t("btn")}{" "}
         </button>
       </form>
-
-      {props.single && <Link to="/">{back}</Link>}
     </>
   );
 }
