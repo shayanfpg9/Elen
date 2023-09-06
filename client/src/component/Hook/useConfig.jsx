@@ -73,6 +73,8 @@ export default function useConfig(loader) {
   };
 
   useMemo(() => {
+    window.scrollTo(0, 0);
+
     if (isRouteErrorResponse(error)) {
       setPage("error");
     } else if (location.pathname === paths["home"]) {
