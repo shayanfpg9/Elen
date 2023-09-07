@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 import { DocumentContext } from "../Context/Document";
 
 //utils
-import { flatMap } from "lodash";
 import styled, { css } from "styled-components";
 import media from "../CssComponents/Media";
 
@@ -97,14 +96,16 @@ export default function DocumentPages() {
 }
 
 function AddBr(string, code = true) {
-  return (
-    flatMap(string.split(/\n/g), (value, index, array) =>
+  const result = string
+    .split(/\n/g)
+    .flatMap((value, index, array) =>
       array.length - 1 !== index
         ? [
             value + (index !== 0 && code ? "," : ""),
-            <br key={`br-${index}-${string}`} />,
+            document.createElement("br"),
           ]
         : value
-    ) || string
-  );
+    );
+
+  return result.length > 0 ? result : string;
 }

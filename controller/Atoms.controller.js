@@ -1,8 +1,10 @@
 const Atoms = require("../model/Atoms.model");
 const { translate } = require("free-translate");
-const _ = require("lodash");
 const wikipedia = require("../functions/wikipedia");
 const ManageErrors = require("../functions/errors");
+const _ = require("lodash")
+const getNest = require("../functions/getNest");
+const isEmpty = require("../functions/isEmpty");
 
 const GetAll = async (req, res) => {
   try {
@@ -54,7 +56,7 @@ const GetSingle = async (req, res) => {
 
     if (!Atom) {
       throw "Atom name is incorrect";
-    } else if (!_.isUndefined(query?.translate)) {
+    } else if (query?.translate !== undefined) {
       //Obj for translation properties:
       let TranslateAtom = {};
 
@@ -68,7 +70,7 @@ const GetSingle = async (req, res) => {
         "image.title",
         "source",
       ].forEach((p) => {
-        if (!_.isNull(_.at(Atom, p)[0])) {
+        if (getNest(Atom, p) !== null) {
           TranslateAtom[p] = "";
         }
       });
@@ -78,23 +80,23 @@ const GetSingle = async (req, res) => {
       if (query.translate === "fa") {
         //checking the existence of translation in database for this atom:
         ShouldTranslate =
-          _.isUndefined(Atom?.fa) ||
-          !_.isNull(
+          (Atom?.fa) === undefined ||
+          (
             Object.values(Atom?.fa)
               .join("")
               .match(/null|object/g)
-          ) ||
-          (!_.isUndefined(query.refresh) && query.refresh == "true");
+          ) !== null ||
+          ((query.refresh) !== undefined && query.refresh == "true");
       }
 
       if (ShouldTranslate) {
         //Translating function:
         const Translating = async (callback) => {
-          await _.keys(TranslateAtom).forEach(async (prop) => {
+          await Object.keys(TranslateAtom).forEach(async (prop) => {
             try {
-              if (_.isEmpty(TranslateAtom[prop])) {
-                if (!_.includes(["name", "source"], prop)) {
-                  TranslateAtom[prop] = await translate(_.at(Atom, prop)[0], {
+              if (isEmpty(TranslateAtom[prop])) {
+                if (!["name", "source"].includes(prop)) {
+                  TranslateAtom[prop] = await translate(getNest(Atom, prop), {
                     to: query.translate,
                   });
                 } else {
@@ -111,14 +113,8 @@ const GetSingle = async (req, res) => {
                     )
                   ).data.query.pages;
 
-                  findTraName[_.keys(findTraName)[0]]?.langlinks?.forEach(
-                    (obj) => {
-                      if (obj.lang === query.translate) {
-                        //the translated name in google translate has some spelling or meaning problems
-                        TranslateAtom.name = obj["*"];
-                      }
-                    }
-                  );
+                  //the translated name in google translate has some spelling or meaning problems
+                  TranslateAtom.name = findTraName[Object.keys(findTraName)[0]]?.langlinks?.find((obj) => (obj.lang === query.translate))["*"]
 
                   const res = await wikipedia(
                     {
@@ -131,15 +127,13 @@ const GetSingle = async (req, res) => {
                     query.translate
                   );
 
-                  if (!res) {
+                  if (res.status !== 200) {
                     throw "'translate' parameter is incorrect";
                   }
 
-                  const source = `https://${
-                    query.translate
-                  }.wikipedia.com/w/index.php?curid=${
-                    _.keys(_.at(res.data, "query.pages")[0])[0]
-                  }`;
+                  const source = `https://${query.translate
+                    }.wikipedia.com/w/index.php?curid=${Object.keys(getNest(res.data, "query.pages"))[0]
+                    }`;
 
                   TranslateAtom.source = source;
                 }
@@ -148,14 +142,14 @@ const GetSingle = async (req, res) => {
               callback(e);
             }
 
-            if (!_.values(TranslateAtom).includes("")) {
+            if (!Object.values(TranslateAtom).includes("")) {
               callback(null);
             }
           });
         };
 
         Translating((e) => {
-          if (_.isNull(e)) {
+          if (e === null) {
             const Retrun = {
               ...Atom._doc,
               [query.translate]: TranslateAtom,
@@ -171,7 +165,7 @@ const GetSingle = async (req, res) => {
             /* eslint no-console: 0 */
             console.log(`translated to ${query.translate}`);
 
-            res.json(Retrun);
+            res.status(200).json(Retrun);
           } else {
             ManageErrors(res, {
               method: "GET",
@@ -198,6 +192,8 @@ const GetSingle = async (req, res) => {
       query,
       error: e?.errors || e,
     });
+
+    res.end()
   }
 };
 
@@ -207,7 +203,7 @@ const PostSearch = async (req, res) => {
     const { limit } = req.query;
     let AllAtoms;
 
-    if (!isNaN(q)) {
+    if (q !== null) {
       AllAtoms = await Atoms.find({
         $or: [
           { number: q },
@@ -244,7 +240,7 @@ const PostSearch = async (req, res) => {
     } else {
       const OrgLength = AllAtoms.length;
 
-      if (!_.isUndefined(limit) && !isNaN(limit) && limit < AllAtoms.length) {
+      if ((limit) !== undefined && (limit) !== null && limit < AllAtoms.length) {
         AllAtoms = AllAtoms.slice(0, +limit);
       }
 
@@ -266,9 +262,10 @@ const PostSearch = async (req, res) => {
         };
       });
 
+
       res.json({
         length: OrgLength,
-        limit: !isNaN(limit) ? +limit : undefined,
+        limit: (limit) !== null ? +limit : undefined,
         results: [...AllAtoms],
       });
     }

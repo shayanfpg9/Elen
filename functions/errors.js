@@ -1,8 +1,6 @@
-const _ = require("lodash");
-
 //manage errors:
 function ManageErrors(res, arg) {
-  if (_.isUndefined(res?.passed)) {
+  if ((res?.passed) !== undefined) {
     res.passed = true;
     res.status(arg.status).json(arg);
   }

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 //utils
 import { BsXLg } from "react-icons/bs";
-import { isNull } from "lodash";
 import Swal from "sweetalert2";
 
 //contexts
@@ -70,7 +69,7 @@ export default function Search(props) {
 
     searchbox.current.addEventListener("submit", (e) => {
       e.preventDefault();
-      if (!isNull(input.current)) PassSearchRes(input.current.value);
+      if (input.current !== null) PassSearchRes(input.current.value);
       show();
     });
   });
@@ -100,7 +99,7 @@ export default function Search(props) {
         />
 
         <button className="searchbox__submit" type="submit">
-          {t("btn")}{" "}
+          {t("btn")}
         </button>
       </form>
     </>

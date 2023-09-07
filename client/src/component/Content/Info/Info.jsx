@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 
 //utils
 import { BiX } from "react-icons/bi";
-import _ from "lodash";
 import { GiSpeaker } from "react-icons/gi";
 import i18n from "../../../translate/i18n";
 import { BsWikipedia } from "react-icons/bs";
@@ -25,7 +24,7 @@ export const InfoLoader = async ({ params, refresh }) => {
 
   try {
     if (
-      _.isUndefined(saved) ||
+      saved === undefined ||
       (!saved?.fa && i18n.language === "fa") ||
       Boolean(refresh)
     ) {
@@ -68,7 +67,10 @@ export default function Info() {
 
       setRefresh(false);
 
-      const data = await InfoLoader({ params: { atom }, refresh: true });
+      const data = await InfoLoader({
+        params: { atom },
+        refresh: true,
+      });
 
       setInfo(data);
 
@@ -116,7 +118,7 @@ export default function Info() {
     setRefresh,
   ]);
 
-  if (_.keys(info).length > 0) {
+  if (Object.keys(info).length > 0) {
     return (
       <section className="info">
         <Link to="/table" className="info__close" title={t("close")}>
