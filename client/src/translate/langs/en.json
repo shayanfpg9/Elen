@@ -17,6 +17,7 @@
   },
   "table": {
     "result": "search result",
+    "redirect": "redirecting to destination...",
     "categories": {
       "metal": "metal",
       "nometal": "no metal",

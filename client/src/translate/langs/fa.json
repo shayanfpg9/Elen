@@ -17,6 +17,7 @@
   },
   "table": {
     "result": "جواب جستجو",
+    "redirect":"در حال تغییر مسیر به مقصد...",
     "categories": {
       "metal": "فلزات",
       "nometal": "نا فلزات",

@@ -5,10 +5,9 @@ import styled, { css, ThemeProvider } from "styled-components";
 import {
   json,
   Link,
-  Navigate,
   useLoaderData,
+  useNavigate,
   useParams,
-  useSearchParams,
 } from "react-router-dom";
 
 //components
@@ -19,7 +18,6 @@ import Error from "../../Error/Error";
 
 //libs & utils
 import axios from "axios";
-import _ from "lodash";
 import { media } from "../../CssComponents/Util";
 import { DB } from "../../funcs/funcs";
 import { LoaderContext } from "../../Context/loader";
@@ -131,6 +129,8 @@ export default function Table() {
   const params = useParams();
   const [lastParams, setNewParam] = useState(undefined);
   const search = useSearch()[1];
+  const [single, setSingle] = useState(false);
+  const navigate = useNavigate();
 
   const GetDatas = async (refresh = false) => {
     let data;
@@ -149,9 +149,8 @@ export default function Table() {
       data?.bold.length === 1 &&
       typeof data.bold[0] === "string"
     ) {
-      setData(
-        [<Navigate key="navigate" to={`/atom/${data.bold[0]}`} />] //for 'react-router: navigate in first render' error
-      );
+      setSingle(true);
+      navigate("/atom/" + data.bold);
     } else if (data !== undefined) {
       setData(
         data.all?.map((prop) => (
@@ -251,7 +250,6 @@ export default function Table() {
   const Active = () => {
     //run event in Update
     const CatPhase = document.querySelectorAll(".phase__item, .category__item");
-    let lastEvent = "";
 
     CatPhase.forEach((el) => {
       const prop = el?.dataset?.phase ? "phase" : "category";
@@ -291,7 +289,13 @@ export default function Table() {
     );
   }
 
-  if (atoms !== null) {
+  if (single) {
+    return (
+      <>
+        <h2>{t("redirect")}</h2>
+      </>
+    );
+  } else if (atoms !== null) {
     Active();
     return (
       <ThemeProvider theme={theme}>
