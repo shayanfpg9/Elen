@@ -199,11 +199,11 @@ const GetSingle = async (req, res) => {
 
 const PostSearch = async (req, res) => {
   try {
-    let { q } = req.body;
+    const { q } = req.body;
     const { limit } = req.query;
     let AllAtoms;
 
-    if (q !== null) {
+    if (typeof q === "number") {
       AllAtoms = await Atoms.find({
         $or: [
           { number: q },
@@ -213,7 +213,7 @@ const PostSearch = async (req, res) => {
           { density: q },
         ],
       }).sort({ number: 1 });
-    } else {
+    } else if (typeof q === "string") {
       AllAtoms = await Atoms.find({
         $or: [
           { name: new RegExp(q, "gi") },
@@ -233,6 +233,8 @@ const PostSearch = async (req, res) => {
           (atom) => !atom.category.includes("post-transition")
         );
       }
+    } else {
+      throw "query type isn't valid"
     }
 
     if (!AllAtoms.length) {
@@ -240,7 +242,7 @@ const PostSearch = async (req, res) => {
     } else {
       const OrgLength = AllAtoms.length;
 
-      if ((limit) !== undefined && (limit) !== null && limit < AllAtoms.length) {
+      if (limit !== undefined && limit !== NaN && limit < AllAtoms.length) {
         AllAtoms = AllAtoms.slice(0, +limit);
       }
 
@@ -265,7 +267,7 @@ const PostSearch = async (req, res) => {
 
       res.json({
         length: OrgLength,
-        limit: (limit) !== null ? +limit : undefined,
+        limit: limit !== NaN ? +limit : undefined,
         results: [...AllAtoms],
       });
     }

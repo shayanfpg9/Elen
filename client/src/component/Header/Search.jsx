@@ -14,13 +14,14 @@ export default function Search(props) {
   const searchbox = useRef(),
     input = useRef(),
     navigate = useNavigate(),
-    { hide, show } = useContext(LoaderContext);
+    { hide } = useContext(LoaderContext);
 
   const { t } = useTranslation("search");
 
   const close = () => {
     input.current.value = "";
     props.close();
+    hide();
   };
 
   const Mount = useRef(false);
@@ -70,7 +71,6 @@ export default function Search(props) {
     searchbox.current.addEventListener("submit", (e) => {
       e.preventDefault();
       if (input.current !== null) PassSearchRes(input.current.value);
-      show();
     });
   });
 

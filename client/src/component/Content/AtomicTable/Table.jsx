@@ -19,7 +19,7 @@ import Error from "../../Error/Error";
 //libs & utils
 import axios from "axios";
 import { media } from "../../CssComponents/Util";
-import { DB } from "../../funcs/funcs";
+import { DB, message } from "../../funcs/funcs";
 import { LoaderContext } from "../../Context/loader";
 import { RefreshContext } from "../../Context/Refresh";
 import { ThemeContext } from "../../Context/Theme";
@@ -104,7 +104,7 @@ export const SearchLoader = async ({ params }) => {
   try {
     const data = (
       await axios.post("/api/atom/search/", {
-        q: params.query,
+        q: Number.isNaN(+params.query) ? params.query : +params.query,
       })
     ).data.results;
 
@@ -290,6 +290,7 @@ export default function Table() {
   }
 
   if (single) {
+    message(t("redirect"), "", "info");
     return (
       <>
         <h2>{t("redirect")}</h2>
