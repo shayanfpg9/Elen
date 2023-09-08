@@ -199,36 +199,35 @@ const GetSingle = async (req, res) => {
 
 const PostSearch = async (req, res) => {
   try {
-    const { q } = req.body;
-    const { limit } = req.query;
+    const { query, limit } = req.body;
     let AllAtoms;
 
-    if (typeof q === "number") {
+    if (typeof query === "number") {
       AllAtoms = await Atoms.find({
         $or: [
-          { number: q },
-          { boil: q },
-          { melt: q },
-          { atomic_mass: q },
-          { density: q },
+          { number: query },
+          { boil: query },
+          { melt: query },
+          { atomic_mass: query },
+          { density: query },
         ],
       }).sort({ number: 1 });
-    } else if (typeof q === "string") {
+    } else if (typeof query === "string") {
       AllAtoms = await Atoms.find({
         $or: [
-          { name: new RegExp(q, "gi") },
-          { category: new RegExp(q, "gi") },
-          { phase: new RegExp(q, "gi") },
-          { symbol: new RegExp(q, "gi") },
-          { discovered_by: new RegExp(q, "gi") },
+          { name: new RegExp(query, "gi") },
+          { category: new RegExp(query, "gi") },
+          { phase: new RegExp(query, "gi") },
+          { symbol: new RegExp(query, "gi") },
+          { discovered_by: new RegExp(query, "gi") },
           { "fa.name": new RegExp(q, "gi") },
-          { "fa.discovered_by": new RegExp(q, "gi") },
-          { "fa.phase": new RegExp(q, "gi") },
-          { "fa.category": new RegExp(q, "gi") },
+          { "fa.discovered_by": new RegExp(query, "gi") },
+          { "fa.phase": new RegExp(query, "gi") },
+          { "fa.category": new RegExp(query, "gi") },
         ],
       }).sort({ number: 1 });
 
-      if (q === "transition" || q === "انتقالی") {
+      if (query === "transition" || query === "انتقالی") {
         AllAtoms = AllAtoms.filter(
           (atom) => !atom.category.includes("post-transition")
         );

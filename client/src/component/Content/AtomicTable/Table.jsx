@@ -104,7 +104,7 @@ export const SearchLoader = async ({ params }) => {
   try {
     const data = (
       await axios.post("/api/atom/search/", {
-        q: Number.isNaN(+params.query) ? params.query : +params.query,
+        query: Number.isNaN(+params.query) ? params.query : +params.query,
       })
     ).data.results;
 
