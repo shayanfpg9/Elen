@@ -100,23 +100,23 @@ export default function useConfig(loader) {
           navigate(-1);
         }
 
-        if (ev.shiftKey && ev.target === document.body) {
+        if (ev.shiftKey && ev.target.tagName.toLowerCase() !== "input") {
           let path = undefined;
 
-          switch (ev.key) {
-            case "H":
+          switch (ev.code.toLowerCase().replace("key", "")) {
+            case "h":
               path = "/";
               break;
 
-            case "T":
+            case "t":
               path = "/table";
               break;
 
-            case "S":
+            case "s":
               path = "/table/find";
               break;
 
-            case "D":
+            case "d":
               path = "/document";
               break;
 
