@@ -14,7 +14,7 @@ export default function Search(props) {
   const searchbox = useRef(),
     input = useRef(),
     navigate = useNavigate(),
-    { hide } = useContext(LoaderContext);
+    { hide, show } = useContext(LoaderContext);
 
   const { t } = useTranslation("search");
 
@@ -37,26 +37,30 @@ export default function Search(props) {
         .replace(/[A-Z]|[a-z]|[0-9]|[-_\n\t\s()|/!@#$%^&*+=`~'".?<>,]/gi, "")
         .trim();
 
-      if (replaced.length) {
-        Swal.fire({
-          title: t("character.title"),
-          text: t("character.msg"),
-          icon: "warning",
-          cancelButtonText: t("character.false"),
-          confirmButtonText: t("character.true"),
-          background: "var(--color-fg)",
-          color: "var(--color-text)",
-          showCancelButton: true,
-          showCloseButton: true,
-        }).then((res) => {
-          if (res.isDismissed && res.dismiss === "cancel") {
-            if (!props.single) close();
-            navigate(`/table/find/${encodeURI(value)}`);
-          }
-        });
-      } else {
-        if (!props.single) close();
-        navigate(`/table/find/${encodeURI(value)}`);
+      if (value !== "") {
+        if (replaced.length) {
+          Swal.fire({
+            title: t("character.title"),
+            text: t("character.msg"),
+            icon: "warning",
+            cancelButtonText: t("character.false"),
+            confirmButtonText: t("character.true"),
+            background: "var(--color-fg)",
+            color: "var(--color-text)",
+            showCancelButton: true,
+            showCloseButton: true,
+          }).then((res) => {
+            if (res.isDismissed && res.dismiss === "cancel") {
+              if (!props.single) close();
+              navigate(`/table/find/${encodeURI(value)}`);
+              show();
+            }
+          });
+        } else {
+          if (!props.single) close();
+          navigate(`/table/find/${encodeURI(value)}`);
+          show();
+        }
       }
     };
 
