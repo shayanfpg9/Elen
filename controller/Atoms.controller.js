@@ -2,9 +2,9 @@ const Atoms = require("../model/Atoms.model");
 const { translate } = require("free-translate");
 const wikipedia = require("../functions/wikipedia");
 const ManageErrors = require("../functions/errors");
-const _ = require("lodash")
 const getNest = require("../functions/getNest");
 const isEmpty = require("../functions/isEmpty");
+const { log } = require("../functions/logger");
 
 const GetAll = async (req, res) => {
   try {
@@ -80,13 +80,11 @@ const GetSingle = async (req, res) => {
       if (query.translate === "fa") {
         //checking the existence of translation in database for this atom:
         ShouldTranslate =
-          (Atom?.fa) === undefined ||
-          (
-            Object.values(Atom?.fa)
-              .join("")
-              .match(/null|object/g)
-          ) !== null ||
-          ((query.refresh) !== undefined && query.refresh == "true");
+          Atom?.fa === undefined ||
+          Object.values(Atom?.fa)
+            .join("")
+            .match(/null|object/g) !== null ||
+          (query.refresh !== undefined && query.refresh == "true");
       }
 
       if (ShouldTranslate) {
@@ -114,7 +112,11 @@ const GetSingle = async (req, res) => {
                   ).data.query.pages;
 
                   //the translated name in google translate has some spelling or meaning problems
-                  TranslateAtom.name = findTraName[Object.keys(findTraName)[0]]?.langlinks?.find((obj) => (obj.lang === query.translate))["*"]
+                  TranslateAtom.name = findTraName[
+                    Object.keys(findTraName)[0]
+                  ]?.langlinks?.find((obj) => obj.lang === query.translate)[
+                    "*"
+                  ];
 
                   const res = await wikipedia(
                     {
@@ -131,9 +133,11 @@ const GetSingle = async (req, res) => {
                     throw "'translate' parameter is incorrect";
                   }
 
-                  const source = `https://${query.translate
-                    }.wikipedia.com/w/index.php?curid=${Object.keys(getNest(res.data, "query.pages"))[0]
-                    }`;
+                  const source = `https://${
+                    query.translate
+                  }.wikipedia.com/w/index.php?curid=${
+                    Object.keys(getNest(res.data, "query.pages"))[0]
+                  }`;
 
                   TranslateAtom.source = source;
                 }
@@ -158,12 +162,10 @@ const GetSingle = async (req, res) => {
             //save to the DB:
             if (query.translate === "fa") {
               Atom.updateOne(Retrun).then(() => {
-                /* eslint no-console: 0 */
-                console.log("translated added");
+                log("translated added", "success");
               });
             }
-            /* eslint no-console: 0 */
-            console.log(`translated to ${query.translate}`);
+            log(`translated to ${query.translate}`, "info");
 
             res.status(200).json(Retrun);
           } else {
@@ -193,7 +195,7 @@ const GetSingle = async (req, res) => {
       error: e?.errors || e,
     });
 
-    res.end()
+    res.end();
   }
 };
 
@@ -220,7 +222,7 @@ const PostSearch = async (req, res) => {
           { phase: new RegExp(query, "gi") },
           { symbol: new RegExp(query, "gi") },
           { discovered_by: new RegExp(query, "gi") },
-          { "fa.name": new RegExp(q, "gi") },
+          { "fa.name": new RegExp(query, "gi") },
           { "fa.discovered_by": new RegExp(query, "gi") },
           { "fa.phase": new RegExp(query, "gi") },
           { "fa.category": new RegExp(query, "gi") },
@@ -233,7 +235,7 @@ const PostSearch = async (req, res) => {
         );
       }
     } else {
-      throw "query type isn't valid"
+      throw "query type isn't valid";
     }
 
     if (!AllAtoms.length) {
@@ -241,7 +243,11 @@ const PostSearch = async (req, res) => {
     } else {
       const OrgLength = AllAtoms.length;
 
-      if (limit !== undefined && limit !== NaN && limit < AllAtoms.length) {
+      if (
+        limit !== undefined &&
+        !Number.isNaN(limit) &&
+        limit < AllAtoms.length
+      ) {
         AllAtoms = AllAtoms.slice(0, +limit);
       }
 
@@ -263,10 +269,9 @@ const PostSearch = async (req, res) => {
         };
       });
 
-
       res.json({
         length: OrgLength,
-        limit: limit !== NaN ? +limit : undefined,
+        limit: !Number.isNaN(limit)  ? +limit : undefined,
         results: [...AllAtoms],
       });
     }

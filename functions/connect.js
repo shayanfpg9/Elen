@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
 
 //connecting function:
-module.exports = mongoose.set("strictQuery", true).connect;
+module.exports = {
+  default: mongoose.set("strictQuery", true).connect,
+  connection: mongoose.connection,
+};

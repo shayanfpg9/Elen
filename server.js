@@ -1,23 +1,26 @@
+const { log, setting } = require("./functions/logger");
 require("dotenv").config();
 const express = require("express"),
   app = express(),
   morgan = require("morgan"),
   AtomsRouter = require("./routes/Atoms.route"),
-  connect = require("./functions/connect");
+  connect = require("./functions/connect").default;
 
 //listen + connect to DB:
 
-/* eslint-disable */
+setting({
+  save: false,
+});
+
 connect(process.env.MONGOURI)
   .then(() => {
     app.listen(process.env.PORT, () => {
-      console.log(`listening on port ${process.env.PORT}`);
+      log(`listening on port ${process.env.PORT}`, "success");
     });
   })
   .catch((e) => {
-    console.error(e);
+    log(e, "error");
   });
-/* eslint-enable */
 
 //middlewares:
 app.use(morgan("dev"));
