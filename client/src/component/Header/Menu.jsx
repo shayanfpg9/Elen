@@ -1,5 +1,5 @@
 //deps
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 //libs & utils
@@ -17,7 +17,7 @@ export default function Menu(props) {
   const MenuRef = useRef();
   const dis = props.status ? 0 : "calc(-1 * var(--menu-width))";
   const { setRefresh } = useContext(RefreshContext);
-  const { theme, setTheme , Icon} = useContext(ThemeContext);
+  const { theme, setTheme, Icon } = useContext(ThemeContext);
   const handleLang = useContext(LangContext);
   const { t, i18n } = useTranslation("menu");
   const { language } = i18n;
@@ -58,19 +58,16 @@ export default function Menu(props) {
       text: t("document"),
     },
   ];
+  const location = useLocation();
 
   const Mount = useRef(false);
 
+  useMemo(() => {
+    if (props.status) props.function();
+  }, [location]);
+
   useEffect(() => {
     if (!Mount.current) {
-      window.onkeyup = ({ code }) => {
-        if (code === "Escape" && props.status) {
-          window.onkeyup = undefined;
-          props.function();
-          Mount.current = false;
-        }
-      };
-
       Mount.current = true;
     }
 
