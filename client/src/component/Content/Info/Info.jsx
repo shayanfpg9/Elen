@@ -194,7 +194,7 @@ export default function Info() {
           </div>
 
           <figure className="info__image" title={t("image")}>
-            <img src={info.image.url} alt={translate["image.title"]} />
+            <img src={info.image.url + `?i=${Date.now()}`} alt={translate["image.title"]} />
             <figcaption>
               <em>{translate["image.title"] || translate.image.title}</em>
             </figcaption>
