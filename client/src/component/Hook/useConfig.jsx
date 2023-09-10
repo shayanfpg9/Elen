@@ -13,6 +13,7 @@ import {
 import chroma from "chroma-js";
 
 export default function useConfig(loader) {
+  const mount = useRef(false);
   const navigate = useNavigate();
   const [lastLocation, setNewLocation] = useState(undefined);
   const location = useLocation();
@@ -144,6 +145,22 @@ export default function useConfig(loader) {
     setDesc();
   }
 
+  const title = "Are You Developer?";
+  const text = "Get in touch with me";
+  const style = [
+    `      
+      font-size:3rem;
+      font-weight:bold;
+      `,
+
+    `font-family:helvetica;
+      color: white !important;
+      font-weight:bold;
+      background: rgb(255,89,94);
+      background: linear-gradient(90deg, rgba(255,89,94,1) 0%, rgba(255,202,58,1) 25%, rgba(138,201,38,1) 50%, rgba(25,130,196,1) 75%, rgba(106,76,147,1) 100%);
+      `,
+  ];
+
   useEffect(() => {
     //theme maybe change in updates
     const ThemeMeta = document.querySelector("meta[name~='theme-color']");
@@ -154,5 +171,17 @@ export default function useConfig(loader) {
     ThemeMeta.setAttribute("content", chroma(bgc).hex());
 
     document.documentElement.lang = i18n.language;
+
+    if (!mount.current) {
+      console.log("%cHi", style[0] + style[1] + "font-style:italic");
+      console.log("%c" + title, style[0] + style[1]);
+      console.log(
+        "%c" + text,
+        style[1] + "font-size:1rem;",
+        "mailto://shayanfpg9@duck.com"
+      );
+
+      mount.current = true;
+    }
   });
 }
