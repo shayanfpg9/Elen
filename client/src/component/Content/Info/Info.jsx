@@ -36,7 +36,7 @@ export const InfoLoader = async ({ params, refresh }) => {
         await axios.get(
           `/api/atom/${params.atom}?translate=${i18n.language}&refresh=${refresh}`
         )
-      ).data;
+      ).data.data;
 
       db.set([data], false);
 
@@ -212,7 +212,7 @@ export default function Info() {
           {info.bohr_model_image !== null && (
             <figure className="info__model" title={t("electron-configuration")}>
               <img
-                src={info.bohr_model_image + `?i=${Date.now()}`}
+                src={info.bohr_model_image + `?i=${Date.now()}&t=${Math.random()}`}
                 alt={`bohr model of ${info.name}`}
               />
 

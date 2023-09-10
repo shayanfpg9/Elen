@@ -1,4 +1,5 @@
 const { log, setting } = require("./functions/logger");
+const response = require("./functions/response");
 require("dotenv").config();
 const express = require("express"),
   app = express(),
@@ -29,14 +30,9 @@ app.use("/atom", AtomsRouter);
 
 //404 error
 app.all("*", (req, res) => {
-  res.status(404).json({
-    method: req.method,
-    action: undefined,
-    path: req.path,
-    error: {
-      title: "Error 404",
-      msg: "Action is undefined",
-      status: 404,
-    },
-  });
+  response({
+    req,
+    message: "page not defined",
+    error: true,
+  })(res);
 });

@@ -89,7 +89,7 @@ export const TableLoader = async ({ refresh }) => {
 
   try {
     if (refresh || saved === undefined || saved.length === 0) {
-      const data = (await axios.get("/api/atom")).data;
+      const data = (await axios.get("/api/atom")).data.data;
 
       await db.set(data);
 
@@ -106,7 +106,7 @@ export const SearchLoader = async ({ params }) => {
       await axios.post("/api/atom/search/", {
         query: Number.isNaN(+params.query) ? params.query : +params.query,
       })
-    ).data.results;
+    ).data.data.results;
 
     return data.map((info) => info.name);
   } catch (error) {

@@ -5,13 +5,17 @@ const ManageErrors = require("../functions/errors");
 const getNest = require("../functions/getNest");
 const isEmpty = require("../functions/isEmpty");
 const { log } = require("../functions/logger");
+const response = require("../functions/response");
 
 const GetAll = async (req, res) => {
   try {
     let AllAtoms = await Atoms.find().sort({ number: 1 });
 
     if (!AllAtoms) {
-      throw null;
+      throw {
+        status: 500,
+        message: "database error",
+      };
     }
 
     AllAtoms = AllAtoms.map((prop) => {
@@ -32,15 +36,20 @@ const GetAll = async (req, res) => {
       };
     });
 
-    res.json(AllAtoms);
+    response({
+      req,
+      status: 200,
+      action: "get all atoms",
+      data: AllAtoms,
+    })(res);
   } catch (e) {
-    ManageErrors(res, {
-      method: "GET",
+    response({
+      req,
       status: 500,
-      action: "Get all of the Atoms",
-      params: req.params,
-      error: e?.errors || e,
-    });
+      action: "get all atoms",
+      error: true,
+      message: e?.errors || e,
+    })(res);
   }
 };
 
@@ -55,7 +64,10 @@ const GetSingle = async (req, res) => {
     )[0];
 
     if (!Atom) {
-      throw "Atom name is incorrect";
+      throw {
+        status: 400,
+        message: "Atom name is incorrect",
+      };
     } else if (query?.translate !== undefined) {
       //Obj for translation properties:
       let TranslateAtom = {};
@@ -130,7 +142,10 @@ const GetSingle = async (req, res) => {
                   );
 
                   if (res.status !== 200) {
-                    throw "'translate' parameter is incorrect";
+                    throw {
+                      status: 400,
+                      message: "'translate' parameter is incorrect",
+                    };
                   }
 
                   const source = `https://${
@@ -165,37 +180,46 @@ const GetSingle = async (req, res) => {
                 log("translated added", "success");
               });
             }
+
             log(`translated to ${query.translate}`, "info");
 
-            res.status(200).json(Retrun);
+            response({
+              req,
+              status: 200,
+              action: `get ${Atom.name} atom`,
+              data: Atom,
+            })(res);
           } else {
-            ManageErrors(res, {
-              method: "GET",
-              status: 400,
-              action: "Get a single Atom",
-              params: req.params,
-              query,
-              error: e?.errors || e,
-            });
+            throw {
+              status: e?.status || 500,
+              message: e?.message || e,
+            };
           }
         });
       } else {
-        res.json(Atom);
+        response({
+          req,
+          status: 200,
+          action: `get ${Atom.name} atom`,
+          data: Atom,
+        })(res);
       }
     } else {
-      res.json(Atom);
+      response({
+        req,
+        status: 200,
+        action: `get ${Atom.name} atom`,
+        data: Atom,
+      })(res);
     }
   } catch (e) {
-    ManageErrors(res, {
-      method: "GET",
-      status: 404,
-      action: "Get a single Atom",
-      params: req.params,
-      query,
-      error: e?.errors || e,
-    });
-
-    res.end();
+    response({
+      req,
+      status: e?.status || 404,
+      error: true,
+      action: `get atom`,
+      message: e?.message || e,
+    })(res);
   }
 };
 
@@ -235,11 +259,14 @@ const PostSearch = async (req, res) => {
         );
       }
     } else {
-      throw "query type isn't valid";
+      throw {
+        status: 400,
+        message: "query type isn't valid",
+      };
     }
 
     if (!AllAtoms.length) {
-      throw "Atom is undefined or not translated to this language";
+      throw "Atom is undefined";
     } else {
       const OrgLength = AllAtoms.length;
 
@@ -269,22 +296,25 @@ const PostSearch = async (req, res) => {
         };
       });
 
-      res.json({
-        length: OrgLength,
-        limit: !Number.isNaN(limit)  ? +limit : undefined,
-        results: [...AllAtoms],
-      });
+      response({
+        req,
+        status: 200,
+        action: `find atom(s)`,
+        data: {
+          length: OrgLength,
+          limit: !Number.isNaN(limit) ? +limit : undefined,
+          results: [...AllAtoms],
+        },
+      })(res);
     }
   } catch (e) {
-    ManageErrors(res, {
-      method: "POST",
-      status: 404,
-      action: "Search to find atom",
-      body: req.body,
-      query: req.query,
-      params: req.params,
-      error: e?.errors || e,
-    });
+    response({
+      req,
+      status: e?.status || 404,
+      error: true,
+      action: `find atom(s)`,
+      message: e?.message || e,
+    })(res);
   }
 };
 
