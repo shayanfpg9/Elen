@@ -152,6 +152,15 @@ export default function Info() {
         <h3>
           {t("discovered-by")}: {translate.discovered_by}
         </h3>
+        {info.bohr_model_image === null && (
+          <>
+            <h4 title={t("electron-configuration")}>
+              {t("electron-configuration")} : <br />
+              {info.electron_configuration}
+            </h4>
+            <br />
+          </>
+        )}
         <p>{translate.summary}</p>
 
         <hr className="info__hr" />
@@ -200,16 +209,19 @@ export default function Info() {
             </figcaption>
           </figure>
 
-          <figure className="info__model" title={t("electron-configuration")}>
-            <img
-              src={info.bohr_model_image}
-              alt={`bohr model of ${info.name}`}
-            />
-            <figcaption>
-              {t("electron-configuration")} : <br />
-              {info.electron_configuration}
-            </figcaption>
-          </figure>
+          {info.bohr_model_image !== null && (
+            <figure className="info__model" title={t("electron-configuration")}>
+              <img
+                src={info.bohr_model_image + `?i=${Date.now()}`}
+                alt={`bohr model of ${info.name}`}
+              />
+
+              <figcaption>
+                {t("electron-configuration")} : <br />
+                {info.electron_configuration}
+              </figcaption>
+            </figure>
+          )}
         </section>
       </section>
     );
