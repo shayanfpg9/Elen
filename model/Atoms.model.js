@@ -34,6 +34,8 @@ const mongoose = require("mongoose"),
       },
       number: {
         type: "number",
+        unique: true,
+        required: true,
       },
       period: {
         type: "number",
@@ -43,6 +45,7 @@ const mongoose = require("mongoose"),
       },
       phase: {
         type: "string",
+        enum: ["Liquid", "Gas", "Solid"],
       },
       source: {
         type: "string",
@@ -96,6 +99,7 @@ const mongoose = require("mongoose"),
           },
           phase: {
             type: "string",
+            enum: ["گاز", "جامد", "مایع"],
           },
           summary: {
             type: "string",
@@ -107,6 +111,7 @@ const mongoose = require("mongoose"),
             type: "string",
           },
         },
+        required: false,
       },
     },
     {
