@@ -1,5 +1,7 @@
 function response({ req, error, ...props }) {
-  if (req === undefined) req = {};
+  if (req === undefined) {
+    req = {};
+  }
 
   props.status = props.status || req.statusCode || 404;
 
@@ -7,7 +9,7 @@ function response({ req, error, ...props }) {
     method: req?.method,
     path: req?.path,
     status: props.status,
-    action: props?.action?.replaceAll(" ","-")?.toUpperCase(),
+    action: props?.action?.replaceAll(" ", "-")?.toUpperCase(),
     error: error,
     debug: {
       params: req?.params,
@@ -28,7 +30,7 @@ function response({ req, error, ...props }) {
 
   const print = (res) => {
     res.status(props.status).json(result);
-    res.end()
+    res.end();
   };
 
   print.result = result;

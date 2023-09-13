@@ -1,7 +1,6 @@
 const Atoms = require("../model/Atoms.model");
 const { translate } = require("free-translate");
 const wikipedia = require("../functions/wikipedia");
-const ManageErrors = require("../functions/errors");
 const getNest = require("../functions/getNest");
 const isEmpty = require("../functions/isEmpty");
 const { log } = require("../functions/logger");
@@ -18,9 +17,11 @@ const GetAll = async (req, res) => {
       };
     }
 
-    AllAtoms = AllAtoms.map((prop) => {
-      //filter submissions:
-      return {
+    response({
+      req,
+      status: 200,
+      action: "get all atoms",
+      data: AllAtoms.map((prop) => ({
         id: prop._id,
         name: prop.name,
         category: prop.category,
@@ -33,14 +34,7 @@ const GetAll = async (req, res) => {
         phase: prop.phase,
         symbol: prop.symbol,
         position: [prop.xpos, prop.ypos],
-      };
-    });
-
-    response({
-      req,
-      status: 200,
-      action: "get all atoms",
-      data: AllAtoms,
+      })),
     })(res);
   } catch (e) {
     response({
@@ -65,8 +59,7 @@ const GetSingle = async (req, res) => {
 
     if (!Atom) {
       throw {
-        status: 400,
-        message: "Atom name is incorrect",
+        message: "name is undefined",
       };
     } else if (query?.translate !== undefined) {
       //Obj for translation properties:
@@ -101,8 +94,8 @@ const GetSingle = async (req, res) => {
 
       if (ShouldTranslate) {
         //Translating function:
-        const Translating = async (callback) => {
-          await Object.keys(TranslateAtom).forEach(async (prop) => {
+        const Translating = new Promise((rs, rj) => {
+          Object.keys(TranslateAtom).forEach(async (prop) => {
             try {
               if (isEmpty(TranslateAtom[prop])) {
                 if (!["name", "source"].includes(prop)) {
@@ -142,10 +135,7 @@ const GetSingle = async (req, res) => {
                   );
 
                   if (res.status !== 200) {
-                    throw {
-                      status: 400,
-                      message: "'translate' parameter is incorrect",
-                    };
+                    throw null;
                   }
 
                   const source = `https://${
@@ -158,43 +148,51 @@ const GetSingle = async (req, res) => {
                 }
               }
             } catch (e) {
-              callback(e);
-            }
-
-            if (!Object.values(TranslateAtom).includes("")) {
-              callback(null);
-            }
-          });
-        };
-
-        Translating((e) => {
-          if (e === null) {
-            const Retrun = {
-              ...Atom._doc,
-              [query.translate]: TranslateAtom,
-            };
-
-            //save to the DB:
-            if (query.translate === "fa") {
-              Atom.updateOne(Retrun).then(() => {
-                log("translated added", "success");
+              rj({
+                status: 400,
+                message: "'translate' query is incorrect",
               });
             }
 
-            log(`translated to ${query.translate}`, "info");
+            if (!Object.values(TranslateAtom).includes("")) {
+              rs();
+            }
+          });
+        });
 
-            response({
-              req,
-              status: 200,
-              action: `get ${Atom.name} atom`,
-              data: Atom,
-            })(res);
-          } else {
-            throw {
-              status: e?.status || 500,
-              message: e?.message || e,
-            };
+        Translating.then(() => {
+          const Retrun = {
+            ...Atom._doc,
+            [query.translate]: TranslateAtom,
+          };
+
+          //save to the DB:
+          if (query.translate === "fa" && process.env.NODE_ENV !== "test") {
+            Atom.fa = Retrun.fa;
+
+            Atom.save().then(() => {
+              log("translated added", "success");
+            });
           }
+
+          log(`translated to ${query.translate}`, "info");
+
+          response({
+            req,
+            status: 200,
+            action: `get ${Atom.name} atom`,
+            data: Retrun,
+          })(res);
+        }).catch((e) => {
+          response({
+            req,
+            error: true,
+            action: `get atom`,
+            status: e?.status || 500,
+            message: e?.message || e,
+          })(res);
+
+          res.end();
         });
       } else {
         response({
