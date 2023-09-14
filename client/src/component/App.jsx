@@ -202,9 +202,7 @@ export default function Elen(props) {
           <LangContext.Provider value={SetLang}>
             <Header></Header>
           </LangContext.Provider>
-          <Content>
-            <Outlet />
-          </Content>
+          <Content>{props.use ? props.use : <Outlet />}</Content>
           <Footer></Footer>
         </RefreshContext.Provider>
       </LoaderContext.Provider>
