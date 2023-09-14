@@ -31,7 +31,7 @@ const AtomCel = styled(Link).attrs((props) => ({
         `};
   transition: all 0.5s var(--animation);
 
-  ${flex}
+  ${flex};
 
   &,
   & * {
@@ -44,17 +44,23 @@ const AtomCel = styled(Link).attrs((props) => ({
         : props.theme.name === "light"
         ? "var(--color-fg)"
         : "var(--color-text)"};
-        
-  sub {
-    font-size: 0.8rem;
-    margin-right: 0.1rem;
+
+    sub {
+      font-size: 0.8rem;
+      margin-right: 0.1rem;
+    }
+
+    &.hide {
+      filter: blur(5px);
+      background-color: ${(props) => props.color.darken(0.2)};
+      pointer-events: none;
+      opacity: 0.6;
+    }
   }
 
-  &.hide {
-    filter: blur(5px);
-    background-color: ${(props) => props.color.darken(0.2)};
-    pointer-events: none;
-    opacity: 0.6;
+  &.active,
+  &:hover {
+    border: 3px solid ${(props) => props.color.darken(0.7)};
   }
 
   &:hover {
@@ -66,11 +72,6 @@ const AtomCel = styled(Link).attrs((props) => ({
       //firefox familly bug
       backdrop-filter: blur(2px);
     }
-  }
-
-  &.active,
-  &:hover {
-    border: 3px solid ${(props) => props.color.darken(0.7)};
   }
 
   ${media(
