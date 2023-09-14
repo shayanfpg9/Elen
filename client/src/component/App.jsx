@@ -41,6 +41,10 @@ export const InitLoader = async () => {
     i18n.changeLanguage(localStorage.getItem("language"));
   }
 
+  if (!localStorage.getItem("theme")) {
+    localStorage.setItem("theme", "system");
+  }
+
   if (init.length === stores.length) {
     return true;
   }
@@ -74,23 +78,53 @@ export default function Elen(props) {
 
   const [themeIcon, setIcon] = useState();
   const theme = useRef(localStorage.getItem("theme"));
-  const SetTheme = (newTheme, onChange) => {
-    document.body.classList.remove("dark", "light", "system");
-    document.body.classList.add(newTheme);
+  const BehindTheme = useRef(localStorage.getItem("theme"));
+  const SetTheme = (newTheme, automate = false) => {
+    let MainThemeName = newTheme;
 
-    theme.current = newTheme;
-
-    localStorage.setItem("theme", newTheme);
-
-    if (theme.current === "system") {
-      setIcon(() => <bs.BsFillDropletFill />);
-    } else if (theme.current === "dark") {
-      setIcon(() => <bs.BsFillMoonStarsFill />);
-    } else if (theme.current === "light") {
-      setIcon(() => <bs.BsFillSunFill />);
+    if (newTheme === "system") {
+      if (window.matchMedia) {
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          MainThemeName = "dark";
+        } else {
+          MainThemeName = "light";
+        }
+      } else {
+        MainThemeName = "dark";
+      }
     }
 
-    if (typeof onChange === "function") onChange(newTheme);
+    if (
+      !automate ||
+      (BehindTheme.current === "system" && MainThemeName !== theme.current)
+    ) {
+      document.body.classList.remove("dark", "light");
+      document.body.classList.add(MainThemeName);
+
+      theme.current = MainThemeName;
+      BehindTheme.current = newTheme;
+
+      localStorage.setItem("theme", newTheme);
+
+      if (BehindTheme.current === "system") {
+        setIcon(() => <bs.BsFillDropletFill />);
+      } else if (BehindTheme.current === "dark") {
+        setIcon(() => <bs.BsFillMoonStarsFill />);
+      } else if (BehindTheme.current === "light") {
+        setIcon(() => <bs.BsFillSunFill />);
+      }
+
+      if (mount.current) {
+        console.log(
+          `%c ${theme.current} `,
+          `font-size: 0.8rem; text-transform: capitalize; font-family:helvetica; font-weight:bold; background-color: ${
+            theme.current === "light" ? "white" : "navy"
+          }; color:${theme.current !== "light" ? "white" : "navy"}`,
+          "\nBehind theme: " + BehindTheme.current,
+          "\nAppearance theme: " + theme.current
+        );
+      }
+    }
   };
 
   const [refresh, SetRefresh] = useState(undefined);
@@ -116,15 +150,9 @@ export default function Elen(props) {
 
   useEffect(() => {
     if (!mount.current) {
-      mount.current = true;
-
-      document.body.classList.add(theme.current);
-
-      if (theme.current == null) {
-        localStorage.setItem("theme", "system");
-      }
-
       SetTheme(localStorage.getItem("theme"));
+
+      mount.current = true;
 
       if (!localStorage.getItem("language")) {
         const langs = window.navigator.languages;
@@ -146,9 +174,17 @@ export default function Elen(props) {
     loader.show();
   }, [location]);
 
+  const themeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  themeQuery.addEventListener("change", () => {
+    if (BehindTheme.current === "system") {
+      SetTheme("system", true);
+    }
+  });
+
   return (
     <ThemeContext.Provider
       value={{
+        behind: BehindTheme.current,
         theme: theme.current,
         Icon: themeIcon,
         setTheme: SetTheme,

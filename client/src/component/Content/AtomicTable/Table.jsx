@@ -89,7 +89,7 @@ export const TableLoader = async ({ refresh }) => {
 
   try {
     if (refresh || saved === undefined || saved.length === 0) {
-      const data = (await axios.get("/api/atom")).data.data;
+      const data = (await axios.get("/api/atoms/")).data.data;
 
       await db.set(data);
 
@@ -103,7 +103,7 @@ export const TableLoader = async ({ refresh }) => {
 export const SearchLoader = async ({ params }) => {
   try {
     const data = (
-      await axios.post("/api/atom/search/", {
+      await axios.post("/api/atoms/search/", {
         query: Number.isNaN(+params.query) ? params.query : +params.query,
       })
     ).data.data.results;
@@ -173,55 +173,55 @@ export default function Table() {
   };
 
   const themeCon = useContext(ThemeContext);
-  const [theme, changeThemeState] = useState({
-    name: themeCon.theme,
-  });
-  const setTheme = () => {
-    if (theme.name === "system") {
-      changeThemeState({
-        name: themeCon.theme,
-        UnknownTransitionColor: {
-          true: "var(--color-fg)",
-          false: "var(--color-text)",
-        },
-        CategoryItemColor: {
-          false: "var(--color-text)",
-          true: "var(--color-fg)",
-        },
-      });
-    } else if (theme.name === "dark") {
-      changeThemeState({
-        name: themeCon.theme,
-        UnknownTransitionColor: {
-          true: "var(--color-fg)",
-          false: "var(--color-text)",
-        },
-        CategoryItemColor: {
-          false: "var(--color-text)",
-          true: "var(--color-fg)",
-        },
-      });
-    } else if (theme.name === "light") {
-      changeThemeState({
-        name: themeCon.theme,
-        UnknownTransitionColor: {
-          false: "var(--color-fg)",
-          true: "var(--color-text)",
-        },
-        CategoryItemColor: {
-          true: "var(--color-text)",
-          false: "var(--color-fg)",
-        },
-      });
-    }
-  };
+  // const [theme, changeThemeState] = useState({
+  //   name: themeCon.theme,
+  // });
+  // const setTheme = () => {
+  // if (theme.name === "system") {
+  //   changeThemeState({
+  //     name: themeCon.theme,
+  //     UnknownTransitionColor: {
+  //       true: "var(--color-fg)",
+  //       false: "var(--color-text)",
+  //     },
+  //     CategoryItemColor: {
+  //       false: "var(--color-text)",
+  //       true: "var(--color-fg)",
+  //     },
+  //   });
+  // } else if (theme.name === "dark") {
+  //   changeThemeState({
+  //     name: themeCon.theme,
+  //     UnknownTransitionColor: {
+  //       true: "var(--color-fg)",
+  //       false: "var(--color-text)",
+  //     },
+  //     CategoryItemColor: {
+  //       false: "var(--color-text)",
+  //       true: "var(--color-fg)",
+  //     },
+  //   });
+  // } else if (theme.name === "light") {
+  //   changeThemeState({
+  //     name: themeCon.theme,
+  //     UnknownTransitionColor: {
+  //       false: "var(--color-fg)",
+  //       true: "var(--color-text)",
+  //     },
+  //     CategoryItemColor: {
+  //       true: "var(--color-text)",
+  //       false: "var(--color-fg)",
+  //     },
+  //   });
+  // }
+  // };
 
   const { refresh, setRefresh } = useContext(RefreshContext);
 
   useEffect(() => {
     if (!mount.current) {
       GetDatas();
-      setTheme();
+      // setTheme();
 
       mount.current = true;
     }
@@ -241,11 +241,11 @@ export default function Table() {
     }
   }, [params.query]);
 
-  useMemo(() => {
-    if (themeCon.name !== theme.name) {
-      setTheme();
-    }
-  }, [themeCon.name]);
+  // useMemo(() => {
+  //   if (themeCon.name !== theme.name) {
+  //     setTheme();
+  //   }
+  // }, [themeCon.name]);
 
   const Active = () => {
     //run event in Update
@@ -299,7 +299,7 @@ export default function Table() {
   } else if (atoms !== null) {
     Active();
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={{ name: themeCon.theme }}>
         {params?.query && <h2>{t("result")}:</h2>}
 
         <section className="table">

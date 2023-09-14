@@ -38,23 +38,13 @@ const AtomCel = styled(Link).attrs((props) => ({
     color: ${(props) =>
       props.category.includes("transition") &&
       !props.category.includes("unknown")
-        ? props.theme.UnknownTransitionColor?.true
-        : props.theme.UnknownTransitionColor?.false};
-
-    ${(props) =>
-      props.theme.name === "system" &&
-      media(
-        { "prefers-color-scheme": "dark" },
-        css`
-          color: ${(props) =>
-            props.category.includes("transition") &&
-            !props.category.includes("unknown")
-              ? "var(--color-fg)"
-              : "var(--color-text)"};
-        `
-      )}
-  }
-
+        ? props.theme.name === "light"
+          ? "var(--color-text)"
+          : "var(--color-fg)"
+        : props.theme.name === "light"
+        ? "var(--color-fg)"
+        : "var(--color-text)"};
+        
   sub {
     font-size: 0.8rem;
     margin-right: 0.1rem;
@@ -64,7 +54,7 @@ const AtomCel = styled(Link).attrs((props) => ({
     filter: blur(5px);
     background-color: ${(props) => props.color.darken(0.2)};
     pointer-events: none;
-    opacity: 0.6; 
+    opacity: 0.6;
   }
 
   &:hover {
@@ -99,8 +89,6 @@ const AtomCel = styled(Link).attrs((props) => ({
 export default function Atom(props) {
   let PropCat = props.category.replace("post-transition", "post_transition");
 
-  // const { show } = useContext(LoaderContext);
-
   const category = [];
   [...Object.keys(colors), "metal"].forEach((cat) => {
     if (PropCat.includes(cat)) {
@@ -118,17 +106,6 @@ export default function Atom(props) {
   );
 
   const ThisEl = useRef();
-  const Mount = useRef(false);
-
-  // useEffect(() => {
-  //   if (!Mount.current) {
-  //     ThisEl.current.addEventListener("click", () => {
-  //       show();
-  //     });
-
-  //     Mount.current = true;
-  //   }
-  // });
 
   return (
     <AtomCel

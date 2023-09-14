@@ -17,7 +17,7 @@ export default function Menu(props) {
   const MenuRef = useRef();
   const dis = props.status ? 0 : "calc(-1 * var(--menu-width))";
   const { setRefresh } = useContext(RefreshContext);
-  const { theme, setTheme, Icon } = useContext(ThemeContext);
+  const { behind, setTheme, Icon } = useContext(ThemeContext);
   const handleLang = useContext(LangContext);
   const { t, i18n } = useTranslation("menu");
   const { language } = i18n;
@@ -162,11 +162,11 @@ export default function Menu(props) {
 
           <button
             type="button"
-            title={`${t("icons.theme")} (${theme})`}
+            title={`${t("icons.theme")} (${behind})`}
             onClick={() => {
-              if (theme === "system") setTheme("dark");
-              else if (theme === "dark") setTheme("light");
-              else if (theme === "light") setTheme("system");
+              if (behind === "system") setTheme("dark");
+              else if (behind === "dark") setTheme("light");
+              else if (behind === "light") setTheme("system");
             }}
           >
             {Icon}

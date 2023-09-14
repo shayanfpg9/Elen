@@ -87,21 +87,15 @@ const Item = styled.span.attrs((props) => ({
   border-radius: 5px;
   margin: 0 0.1rem;
   color: ${(props) =>
-    props.light
-      && props.theme?.CategoryItemColor?.true
-     };
+    (
+      props.reverse
+        ? props.theme.name !== "light"
+        : props.theme.name === "light"
+    )
+      ? "var(--color-fg)"
+      : "var(--color-text)"};
   cursor: pointer;
   padding: 0.2rem 0;
-
-  ${(props) =>
-    props.theme.name === "system" &&
-    media(
-      { "prefers-color-scheme": "dark" },
-      css`
-        color: ${(props) =>
-          !props.light ? "var(--color-text)" : "var(--color-fg)"};
-      `
-    )}
 `;
 
 export default function Categories() {
@@ -117,13 +111,13 @@ export default function Categories() {
         <Item className="category__item" data-category="alkaline-earth-metal">
           {t("categories.alkaline-earth-metal")}
         </Item>
-        <Item className="category__item" data-category="transition" light>
+        <Item className="category__item" data-category="transition" reverse>
           {t("categories.transition")}
         </Item>
         <Item className="category__item" data-category="post_transition">
           {t("categories.post_transition")}
         </Item>
-        <Item className="category__item" data-category="lanthanide" light>
+        <Item className="category__item" data-category="lanthanide" reverse>
           {t("categories.lanthanide")}
         </Item>
         <Item className="category__item" data-category="actinide">
@@ -141,10 +135,10 @@ export default function Categories() {
       <Case>
         <Name>{t("categories.nometal")}</Name>
         <Item className="category__item" data-category="noble-gas">
-        {t("categories.noble-gas")}
+          {t("categories.noble-gas")}
         </Item>
         <Item className="category__item" data-category="nonmetal">
-        {t("categories.nometal")}
+          {t("categories.nometal")}
         </Item>
       </Case>
       <Item

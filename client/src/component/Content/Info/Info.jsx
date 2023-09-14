@@ -34,7 +34,7 @@ export const InfoLoader = async ({ params, refresh }) => {
 
       const data = (
         await axios.get(
-          `/api/atom/${params.atom}?translate=${i18n.language}&refresh=${refresh}`
+          `/api/atoms/${params.atom}?translate=${i18n.language}&refresh=${refresh}`
         )
       ).data.data;
 
