@@ -69,7 +69,7 @@ const PostSignin = async (req, res) => {
     if (!errors.isEmpty()) {
       throw {
         status: 400,
-        message: "All fields are required",
+        message: errors.array(),
       };
     }
 
@@ -118,7 +118,7 @@ const Delete = async (req, res) => {
     if (!errors.isEmpty()) {
       throw {
         status: 400,
-        message: "Both username and password are required",
+        message: errors.array(),
       };
     }
 
