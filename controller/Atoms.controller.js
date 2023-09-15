@@ -162,7 +162,7 @@ const GetSingle = async (req, res) => {
 
         Translating.then(() => {
           const Retrun = {
-            ...Atom._doc,
+            ...Atom.toObject(),
             [query.translate]: TranslateAtom,
           };
 
@@ -199,7 +199,7 @@ const GetSingle = async (req, res) => {
           req,
           status: 200,
           action: `get ${Atom.name} atom`,
-          data: Atom,
+          data: Atom.toObject(),
         })(res);
       }
     } else {
@@ -207,7 +207,7 @@ const GetSingle = async (req, res) => {
         req,
         status: 200,
         action: `get ${Atom.name} atom`,
-        data: Atom,
+        data: Atom.toObject(),
       })(res);
     }
   } catch (e) {
