@@ -5,6 +5,7 @@ const getNest = require("../functions/getNest");
 const isEmpty = require("../functions/isEmpty");
 const { log } = require("../functions/logger");
 const response = require("../functions/response");
+const { validationResult } = require("express-validator");
 
 const GetAll = async (req, res) => {
   try {
@@ -48,9 +49,18 @@ const GetAll = async (req, res) => {
 };
 
 const GetSingle = async (req, res) => {
-  const query = req.query;
-
   try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      throw {
+        status: 400,
+        message: errors.array(),
+      };
+    }
+
+    const query = req.query;
+
     const Atom = (
       await Atoms.find({
         name: req.params.name[0].toUpperCase() + req.params.name.slice(1),
@@ -223,6 +233,15 @@ const GetSingle = async (req, res) => {
 
 const PostSearch = async (req, res) => {
   try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      throw {
+        status: 400,
+        message: errors.array(),
+      };
+    }
+
     const { query, limit } = req.body;
     let AllAtoms;
 
@@ -256,11 +275,6 @@ const PostSearch = async (req, res) => {
           (atom) => !atom.category.includes("post-transition")
         );
       }
-    } else {
-      throw {
-        status: 400,
-        message: "query type isn't valid",
-      };
     }
 
     if (!AllAtoms.length) {
@@ -268,11 +282,7 @@ const PostSearch = async (req, res) => {
     } else {
       const OrgLength = AllAtoms.length;
 
-      if (
-        limit !== undefined &&
-        !Number.isNaN(limit) &&
-        limit < AllAtoms.length
-      ) {
+      if (limit !== undefined && limit < AllAtoms.length) {
         AllAtoms = AllAtoms.slice(0, +limit);
       }
 
@@ -300,7 +310,7 @@ const PostSearch = async (req, res) => {
         action: `find atom(s)`,
         data: {
           length: OrgLength,
-          limit: !Number.isNaN(limit) ? +limit : undefined,
+          limit: limit !== undefined && +limit,
           results: [...AllAtoms],
         },
       })(res);
