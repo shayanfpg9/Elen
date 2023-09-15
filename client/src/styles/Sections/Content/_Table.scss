@@ -19,6 +19,10 @@
     margin-bottom: 0.5rem;
   }
 
+  @include media("xs", 719) {
+    overflow: visible !important;
+  }
+
   @include media("xs", "md") {
     .Atom {
       font-size: 1.2rem !important;

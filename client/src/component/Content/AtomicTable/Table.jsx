@@ -187,55 +187,12 @@ export default function Table() {
   };
 
   const themeCon = useContext(ThemeContext);
-  // const [theme, changeThemeState] = useState({
-  //   name: themeCon.theme,
-  // });
-  // const setTheme = () => {
-  // if (theme.name === "system") {
-  //   changeThemeState({
-  //     name: themeCon.theme,
-  //     UnknownTransitionColor: {
-  //       true: "var(--color-fg)",
-  //       false: "var(--color-text)",
-  //     },
-  //     CategoryItemColor: {
-  //       false: "var(--color-text)",
-  //       true: "var(--color-fg)",
-  //     },
-  //   });
-  // } else if (theme.name === "dark") {
-  //   changeThemeState({
-  //     name: themeCon.theme,
-  //     UnknownTransitionColor: {
-  //       true: "var(--color-fg)",
-  //       false: "var(--color-text)",
-  //     },
-  //     CategoryItemColor: {
-  //       false: "var(--color-text)",
-  //       true: "var(--color-fg)",
-  //     },
-  //   });
-  // } else if (theme.name === "light") {
-  //   changeThemeState({
-  //     name: themeCon.theme,
-  //     UnknownTransitionColor: {
-  //       false: "var(--color-fg)",
-  //       true: "var(--color-text)",
-  //     },
-  //     CategoryItemColor: {
-  //       true: "var(--color-text)",
-  //       false: "var(--color-fg)",
-  //     },
-  //   });
-  // }
-  // };
 
   const { refresh, setRefresh } = useContext(RefreshContext);
 
   useEffect(() => {
     if (!mount.current) {
       GetDatas();
-      // setTheme();
 
       mount.current = true;
     }
@@ -254,12 +211,6 @@ export default function Table() {
       GetDatas();
     }
   }, [params.query]);
-
-  // useMemo(() => {
-  //   if (themeCon.name !== theme.name) {
-  //     setTheme();
-  //   }
-  // }, [themeCon.name]);
 
   const Active = () => {
     //run event in Update

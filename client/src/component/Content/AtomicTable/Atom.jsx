@@ -83,6 +83,10 @@ const AtomCel = styled(Link).attrs((props) => ({
       grid-row: ${(props) => props.number};
       border: 3px solid ${(props) => props.color.darken(0.5)};
       grid-column: 1;
+
+      &:hover {
+        transform: scale(1.05);
+      }
     `
   )}
 `;
