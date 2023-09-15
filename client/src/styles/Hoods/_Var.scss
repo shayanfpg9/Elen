@@ -51,21 +51,6 @@ $breakpoints: (
 }
 
 body {
-  // //system theme:
-  // &.system {
-  //   @media (prefers-color-scheme: dark) {
-  //     @each $name, $code in map-get($colors, "dark") {
-  //       --color-#{$name}-rgb: #{$code};
-  //       --color-#{$name}: rgb(#{$code});
-  //     }
-  //   }
-
-  //   @each $name, $code in map-get($colors, "light") {
-  //     --color-#{$name}-rgb: #{$code};
-  //     --color-#{$name}: rgb(#{$code});
-  //   }
-  // }
-
   //light theme:
   &.light {
     @each $name, $code in map-get($colors, "light") {
