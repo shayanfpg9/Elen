@@ -9,11 +9,8 @@ const validates = {
   signup: [
     body("username")
       .notEmpty()
+      .isString()
       .custom((value) => {
-        if (typeof value !== "string") {
-          throw new Error("Invalid value");
-        }
-
         if (value.includes(" ")) {
           throw new Error("Shouldn't have space");
         }
@@ -40,11 +37,8 @@ const validates = {
   signin: [
     body("username")
       .notEmpty()
+      .isString()
       .custom(async (value) => {
-        if (typeof value !== "string") {
-          throw new Error("Invalid value");
-        }
-
         if (value.includes(" ")) {
           throw new Error("Shouldn't have space");
         }
@@ -60,11 +54,8 @@ const validates = {
   delete: [
     param("username")
       .notEmpty()
+      .isString()
       .custom(async (value) => {
-        if (typeof value !== "string") {
-          throw new Error("Invalid value");
-        }
-
         if (value.includes(" ")) {
           throw new Error("Shouldn't have space");
         }
