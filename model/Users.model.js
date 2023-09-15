@@ -25,6 +25,11 @@ const mongoose = require("mongoose"),
         type: "boolean",
         default: false,
       },
+      api_key: {
+        type: "string",
+        unique: true,
+        required: true,
+      },
     },
     {
       timestamps: true,

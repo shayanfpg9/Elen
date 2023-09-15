@@ -9,14 +9,9 @@ test("Missing fields /users/signup [POST]", async () => {
   await request
     .post("/users/signup")
     .send({
-      name: faker.person.firstName(),
-      username: faker.internet.displayName(),
-      role: faker.helpers.arrayElement([
-        "manager",
-        "admin",
-        "teacher",
-        "student",
-      ]),
+      username: faker.person.fullName(),
+      password: faker.internet.password({ length: 5 }),
+      role: faker.person.jobTitle(),
     })
     .expect(400)
     .expect("Content-Type", /json/);
@@ -28,7 +23,7 @@ test("Create new user /users/signup [POST]", async () => {
     .send({
       name: faker.person.firstName(),
       username: faker.internet.displayName(),
-      password: faker.internet.password(),
+      password: faker.internet.password({ length: 10, prefix: "Ae1@" }),
       role: faker.helpers.arrayElement([
         "manager",
         "admin",
@@ -48,7 +43,7 @@ test("Duplicate users /users/signup [POST]", async () => {
     .send({
       name: faker.person.firstName(),
       username,
-      password: faker.internet.password(),
+      password: faker.internet.password({ length: 10, prefix: "Ae1@" }),
       role: faker.helpers.arrayElement([
         "manager",
         "admin",

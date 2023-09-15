@@ -20,6 +20,7 @@ beforeAll(async () => {
       "teacher",
       "student",
     ]),
+    api_key: faker.internet.password({ length: 5 }),
   });
 
   const token = jwt.sign(
@@ -47,6 +48,13 @@ test("Missing fields /users/delete [DELETE]", async () => {
     .delete(`/users/delete/${user.username}`)
     .set("Authorization", user.token)
     .send({})
+    .expect(400)
+    .expect("Content-Type", /json/);
+
+  await request
+    .delete(`/users/delete/${user.username}`)
+    .set("Authorization", user.token)
+    .send({ password: faker.internet.password() })
     .expect(403)
     .expect("Content-Type", /json/);
 
@@ -54,6 +62,13 @@ test("Missing fields /users/delete [DELETE]", async () => {
     .delete(`/users/delete/${user.username}`)
     .send({ password })
     .expect(401)
+    .expect("Content-Type", /json/);
+
+  await request
+    .delete(`/users/delete/123`)
+    .set("Authorization", user.token)
+    .send({ password })
+    .expect(404)
     .expect("Content-Type", /json/);
 });
 

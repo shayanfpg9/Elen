@@ -5,6 +5,8 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "express-rate-limit": "^7.0.0",
+    "express-validator": "^7.0.1",
     "free-translate": "^0.6.1",
     "helmet": "^7.0.0",
     "jest": "^29.6.4",

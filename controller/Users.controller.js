@@ -3,20 +3,18 @@ const response = require("../functions/response");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const key = require("../functions/key");
+const { validationResult } = require("express-validator");
+const md5 = require("../functions/md5");
 
 const PostSignup = async (req, res) => {
   const infomations = req.body;
 
   try {
-    if (
-      infomations.username === undefined ||
-      infomations.name === undefined ||
-      infomations.password === undefined ||
-      infomations.role === undefined
-    ) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
       throw {
         status: 400,
-        message: "All fields are required",
+        message: errors.array(),
       };
     }
 
@@ -28,7 +26,7 @@ const PostSignup = async (req, res) => {
     }
 
     infomations.password = bcrypt.hashSync(infomations.password);
-    const user = await UsersModel.create(infomations);
+
     const token = jwt.sign(
       {
         username: infomations.username,
@@ -39,6 +37,10 @@ const PostSignup = async (req, res) => {
         expiresIn: "1h",
       }
     );
+
+    infomations.api_key = md5(infomations.password).slice(0, 6);
+
+    const user = await UsersModel.create(infomations);
 
     response({
       req,
@@ -62,7 +64,9 @@ const PostSignup = async (req, res) => {
 
 const PostSignin = async (req, res) => {
   try {
-    if (req.body.username === undefined || req.body.password === undefined) {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
       throw {
         status: 400,
         message: "All fields are required",
@@ -109,8 +113,17 @@ const PostSignin = async (req, res) => {
 
 const Delete = async (req, res) => {
   try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      throw {
+        status: 400,
+        message: "Both username and password are required",
+      };
+    }
+
     const { username } = req.params;
-    const password = req.body?.password;
+    const password = req.body.password;
 
     const user = await UsersModel.findOne({ username });
 

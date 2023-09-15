@@ -19,6 +19,7 @@ beforeAll(async () => {
         "teacher",
         "student",
       ]),
+      api_key: faker.internet.password({ length: 5 }),
     })
   ).toObject();
 });
@@ -36,7 +37,7 @@ test("Password is incorrect /users/signin [POST]", async () => {
     .post("/users/signin")
     .send({
       username: user.username,
-      password: faker.internet.password(),
+      password: faker.internet.password() + faker.number.int(),
     })
     .expect(401)
     .expect("Content-Type", /json/);
@@ -50,6 +51,21 @@ test("Valid signin /users/signin [POST]", async () => {
       password,
     })
     .expect(200)
+    .expect("Content-Type", /json/);
+});
+
+test("Undefined user signin /users/signin [POST]", async () => {
+  await request
+    .post("/users/signin")
+    .send({
+      username: (
+        faker.internet.displayName() +
+        faker.number.int() +
+        faker.person.jobArea()
+      ).replaceAll(" ", "-"),
+      password,
+    })
+    .expect(400)
     .expect("Content-Type", /json/);
 });
 
