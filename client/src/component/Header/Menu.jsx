@@ -1,12 +1,11 @@
 //deps
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 //libs & utils
 import { useTranslation } from "react-i18next";
 import * as bs from "react-icons/bs";
 import { LangContext } from "../Context/Lang";
-import { HiDocumentText } from "react-icons/hi";
 
 //contexts
 import { ThemeContext } from "../Context/Theme";
@@ -30,6 +29,14 @@ export default function Menu(props) {
       text: t("home"),
     },
     {
+      icon: bs.BsSpeedometer,
+      link: {
+        element: Link,
+        props: { to: "/panel" },
+      },
+      text: t("panel"),
+    },
+    {
       icon: bs.BsTable,
       link: {
         element: Link,
@@ -46,9 +53,8 @@ export default function Menu(props) {
       },
       text: t("search"),
     },
-
     {
-      icon: HiDocumentText,
+      icon: bs.BsBookHalf,
       link: {
         element: Link,
         props: { to: "/document" },
