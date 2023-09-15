@@ -14,7 +14,7 @@ function set_setting(props) {
   return console.setting;
 }
 
-async function log_action(data, status = "success", props) {
+function log_action(data, status = "success", props) {
   if (process.env.NODE_ENV !== "test") {
     let { save, clear } = props || {};
     if (save === undefined) {
@@ -40,8 +40,8 @@ async function log_action(data, status = "success", props) {
       msg = msg.replace(/%FILE%/gim, logFile);
     }
 
-    if (clear && (await fs.existsSync(logFile))) {
-      await fs.unlinkSync(logFile, "");
+    if (clear && fs.existsSync(logFile)) {
+      fs.unlinkSync(logFile, "");
     }
 
     if (!status.match(/#NoLog/gi)) {
@@ -57,9 +57,9 @@ async function log_action(data, status = "success", props) {
     }
 
     try {
-      !(save && (await fs.readFileSync(logFile)));
+      !(save && fs.readFileSync(logFile));
     } catch (error) {
-      await fs.writeFileSync(logFile, "");
+      fs.writeFileSync(logFile, "");
     }
 
     if (save && status !== "log") {
@@ -71,7 +71,7 @@ async function log_action(data, status = "success", props) {
         PathFile ? PathFile : "Anonymous"
       }" file at ${new Date().toDateString()}\nMessage: ${msg}\n\n`;
 
-      await fs[!clear ? "appendFileSync" : "writeFileSync"](logFile, text);
+      fs[!clear ? "appendFileSync" : "writeFileSync"](logFile, text);
     }
   }
 }
