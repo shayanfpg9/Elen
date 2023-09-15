@@ -11,8 +11,6 @@ const verifyToken = (req, res, next) => {
     }
 
     jwt.verify(token, key("public"), (err, decoded) => {
-      console.log(decoded);
-
       if (err || !decoded.username) {
         throw "Invalid token";
       }
