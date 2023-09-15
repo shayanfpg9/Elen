@@ -9,7 +9,7 @@ const express = require("express"),
 router.post("/signup", Controllers.PostSignup);
 
 //router / Post -- signin
-router.post("/signin", Controllers.PostSignup);
+router.post("/signin", Controllers.PostSignin);
 
 //--------------------------------------------------------> Delete
 
