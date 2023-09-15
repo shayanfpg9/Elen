@@ -9,14 +9,12 @@ import { LangContext } from "../Context/Lang";
 import { HiDocumentText } from "react-icons/hi";
 
 //contexts
-import { RefreshContext } from "../Context/Refresh";
 import { ThemeContext } from "../Context/Theme";
 
 export default function Menu(props) {
   const search = props.SearchBoxClick;
   const MenuRef = useRef();
   const dis = props.status ? 0 : "calc(-1 * var(--menu-width))";
-  const { setRefresh } = useContext(RefreshContext);
   const { behind, setTheme, Icon } = useContext(ThemeContext);
   const handleLang = useContext(LangContext);
   const { t, i18n } = useTranslation("menu");
@@ -146,19 +144,6 @@ export default function Menu(props) {
           >
             <bs.BsGithub />
           </a>
-
-          {pathname.match(/(table|atom)/gi) && !pathname.includes("find") && (
-            <button
-              type="button"
-              title={t("icons.refresh")}
-              onClick={() => {
-                if (typeof props.function === "function") props.function();
-                setRefresh(true);
-              }}
-            >
-              <bs.BsCapslockFill />
-            </button>
-          )}
 
           <button
             type="button"

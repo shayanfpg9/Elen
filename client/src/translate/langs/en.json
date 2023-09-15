@@ -9,7 +9,6 @@
     "document": "document",
     "icons": {
       "github": "github",
-      "refresh": "refresh the datas",
       "theme": "change color theme",
       "lang": "change the language",
       "share": "share this page"
@@ -58,6 +57,7 @@
     "search": "search it"
   },
   "info": {
+    "refresh": "refresh the datas",
     "wikipedia": "in wikipedia",
     "discovered-by": "discovered by",
     "number": "atomic number",

@@ -4,7 +4,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { json, Link, useLoaderData, useParams } from "react-router-dom";
 
 //contexts
-import { RefreshContext } from "../../Context/Refresh";
 import { LoaderContext } from "../../Context/loader";
 
 //hooks
@@ -14,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { BiX } from "react-icons/bi";
 import { GiSpeaker } from "react-icons/gi";
 import i18n from "../../../translate/i18n";
-import { BsWikipedia } from "react-icons/bs";
+import { BsCapslockFill, BsWikipedia } from "react-icons/bs";
 import { DB, message } from "../../funcs/funcs";
 
 export const InfoLoader = async ({ params, refresh }) => {
@@ -34,7 +33,7 @@ export const InfoLoader = async ({ params, refresh }) => {
 
       const data = (
         await axios.get(
-          `/api/atoms/${params.atom}?translate=${i18n.language}&refresh=${refresh}`,
+          `/api/atoms/${params.atom}?translate=${i18n.language}`,
           {
             headers: {
               Authorization: import.meta.env.VITE_API_KEY,
@@ -57,7 +56,7 @@ export const InfoLoader = async ({ params, refresh }) => {
 export default function Info() {
   const { atom } = useParams();
   const [info, setInfo] = useState(useLoaderData());
-  const { refresh, setRefresh } = useContext(RefreshContext);
+  const [refresh, setRefresh] = useState(false);
   const loaded = useContext(LoaderContext);
   const { t, i18n } = useTranslation("info");
   const [translate, setTranslate] = useState({ ...info });
@@ -126,9 +125,20 @@ export default function Info() {
   if (Object.keys(info).length > 0) {
     return (
       <section className="info">
-        <Link to="/table" className="info__close" title={t("close")}>
+        <Link to="/table" className="info__icon" title={t("close")}>
           <BiX />
         </Link>
+
+        <button
+          type="button"
+          className="info__icon info__refresh"
+          title={t("refresh")}
+          onClick={() => {
+            setRefresh(true);
+          }}
+        >
+          <BsCapslockFill />
+        </button>
 
         <h2>
           <button

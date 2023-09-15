@@ -98,8 +98,7 @@ const GetSingle = async (req, res) => {
           Atom?.fa === undefined ||
           Object.values(Atom?.fa)
             .join("")
-            .match(/null|object/g) !== null ||
-          (query.refresh !== undefined && query.refresh == "true");
+            .match(/null|object/g) !== null;
       }
 
       if (ShouldTranslate) {

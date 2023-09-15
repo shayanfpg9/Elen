@@ -74,7 +74,7 @@
     }
 
     &read,
-    &close {
+    &icon {
       all: unset;
       display: inline-block;
       cursor: pointer;
@@ -88,11 +88,11 @@
       }
     }
 
-    &close {
+    &icon {
       width: var(--first-fibo);
       height: var(--first-fibo);
       position: absolute;
-      top: 0;
+      top: 2rem;
       margin: 1rem 1rem;
       z-index: 10;
       background-color: var(--color-bg);
@@ -100,10 +100,27 @@
 
       html.rtl & {
         left: 0;
+
+        &.info__refresh {
+          left: calc(var(--first-fibo) + 1rem);
+        }
       }
 
       html.ltr & {
         right: 0;
+
+        &.info__refresh {
+          right: calc(var(--first-fibo) + 1rem);
+        }
+      }
+    }
+
+    &refresh {
+      @include flex();
+
+      svg {
+        width: 75%;
+        height: 75%;
       }
     }
   }

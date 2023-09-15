@@ -21,7 +21,6 @@ import axios from "axios";
 import { media } from "../../CssComponents/Util";
 import { DB, message } from "../../funcs/funcs";
 import { LoaderContext } from "../../Context/loader";
-import { RefreshContext } from "../../Context/Refresh";
 import { ThemeContext } from "../../Context/Theme";
 import useSearch from "../../Hook/useSearch";
 
@@ -82,13 +81,13 @@ const FreeSpace = styled.div`
   )}
 `;
 
-export const TableLoader = async ({ refresh }) => {
+export const TableLoader = async () => {
   const db = new DB("Atoms");
 
   const saved = await db.getAll();
 
   try {
-    if (refresh || saved === undefined || saved.length === 0) {
+    if (saved === undefined || saved.length === 0) {
       const data = (
         await axios.get("/api/atoms/", {
           headers: {
@@ -146,17 +145,10 @@ export default function Table() {
   const [single, setSingle] = useState(false);
   const navigate = useNavigate();
 
-  const GetDatas = async (refresh = false) => {
+  const GetDatas = async () => {
     let data;
 
-    if (refresh) {
-      data = {
-        all: await TableLoader({ refresh: true }),
-        bold: params.query ? await SearchLoader() : undefined,
-      };
-    } else {
-      data = LoaderData;
-    }
+    data = LoaderData;
 
     if (
       data?.bold !== undefined &&
@@ -188,7 +180,6 @@ export default function Table() {
 
   const themeCon = useContext(ThemeContext);
 
-  const { refresh, setRefresh } = useContext(RefreshContext);
 
   useEffect(() => {
     if (!mount.current) {
@@ -197,13 +188,6 @@ export default function Table() {
       mount.current = true;
     }
   }, []);
-
-  useMemo(() => {
-    if (refresh) {
-      setRefresh(false);
-      GetDatas(true);
-    }
-  }, [refresh]);
 
   useMemo(() => {
     if (lastParams !== undefined && lastParams.query !== params.query) {

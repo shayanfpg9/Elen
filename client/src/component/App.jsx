@@ -13,7 +13,6 @@ import Header from "./Header/Header";
 
 //contexts
 import Loader from "./Loader/Loader";
-import { RefreshContext } from "./Context/Refresh";
 import { LoaderContext } from "./Context/loader";
 import { ThemeContext } from "./Context/Theme";
 import { LangContext } from "./Context/Lang";
@@ -127,8 +126,6 @@ export default function Elen(props) {
     }
   };
 
-  const [refresh, SetRefresh] = useState(undefined);
-
   const translate = useTranslation();
   const SetLang = (lang) => {
     if (["en", "fa"].includes(lang)) {
@@ -193,18 +190,11 @@ export default function Elen(props) {
       {!load.remove && <Loader />}
 
       <LoaderContext.Provider value={{ ...loader }}>
-        <RefreshContext.Provider
-          value={{
-            refresh,
-            setRefresh: SetRefresh,
-          }}
-        >
           <LangContext.Provider value={SetLang}>
             <Header></Header>
           </LangContext.Provider>
           <Content>{props.use ? props.use : <Outlet />}</Content>
           <Footer></Footer>
-        </RefreshContext.Provider>
       </LoaderContext.Provider>
     </ThemeContext.Provider>
   );
