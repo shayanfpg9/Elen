@@ -19,5 +19,3 @@ connect(process.env.MONGOURI)
     connection.close();
     process.exit(1);
   });
-
-app.enable("trust proxy");

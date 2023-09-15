@@ -1,4 +1,5 @@
 const response = require("./functions/response");
+const authorization = require("./middlewares/authorization");
 require("dotenv").config();
 const express = require("express"),
   app = express(),
@@ -24,6 +25,7 @@ app.use(limiter);
 app.use(helmet());
 app.use(cros());
 app.use(express.json());
+app.use(authorization);
 app.use("/atoms", AtomsRouter);
 app.use("/users", UsersRouter);
 
@@ -31,7 +33,7 @@ app.use("/users", UsersRouter);
 app.all("*", (req, res) => {
   response({
     req,
-    message: "page not defined",
+    message: "page not found",
     error: true,
   })(res);
 });

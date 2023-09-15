@@ -89,7 +89,13 @@ export const TableLoader = async ({ refresh }) => {
 
   try {
     if (refresh || saved === undefined || saved.length === 0) {
-      const data = (await axios.get("/api/atoms/")).data.data;
+      const data = (
+        await axios.get("/api/atoms/", {
+          headers: {
+            Authorization: import.meta.env.VITE_API_KEY,
+          },
+        })
+      ).data.data;
 
       await db.set(data);
 
@@ -103,9 +109,17 @@ export const TableLoader = async ({ refresh }) => {
 export const SearchLoader = async ({ params }) => {
   try {
     const data = (
-      await axios.post("/api/atoms/search/", {
-        query: Number.isNaN(+params.query) ? params.query : +params.query,
-      })
+      await axios.post(
+        "/api/atoms/search/",
+        {
+          query: Number.isNaN(+params.query) ? params.query : +params.query,
+        },
+        {
+          headers: {
+            Authorization: import.meta.env.VITE_API_KEY,
+          },
+        }
+      )
     ).data.data.results;
 
     return data.map((info) => info.name);

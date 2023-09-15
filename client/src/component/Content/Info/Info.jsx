@@ -34,7 +34,12 @@ export const InfoLoader = async ({ params, refresh }) => {
 
       const data = (
         await axios.get(
-          `/api/atoms/${params.atom}?translate=${i18n.language}&refresh=${refresh}`
+          `/api/atoms/${params.atom}?translate=${i18n.language}&refresh=${refresh}`,
+          {
+            headers: {
+              Authorization: import.meta.env.VITE_API_KEY,
+            },
+          }
         )
       ).data.data;
 
@@ -203,7 +208,10 @@ export default function Info() {
           </div>
 
           <figure className="info__image" title={t("image")}>
-            <img src={info.image.url + `?i=${Date.now()}`} alt={translate["image.title"]} />
+            <img
+              src={info.image.url + `?i=${Date.now()}`}
+              alt={translate["image.title"]}
+            />
             <figcaption>
               <em>{translate["image.title"] || translate.image.title}</em>
             </figcaption>
@@ -212,7 +220,9 @@ export default function Info() {
           {info.bohr_model_image !== null && (
             <figure className="info__model" title={t("electron-configuration")}>
               <img
-                src={info.bohr_model_image + `?i=${Date.now()}&t=${Math.random()}`}
+                src={
+                  info.bohr_model_image + `?i=${Date.now()}&t=${Math.random()}`
+                }
                 alt={`bohr model of ${info.name}`}
               />
 
