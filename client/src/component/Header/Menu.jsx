@@ -76,10 +76,15 @@ export default function Menu(props) {
     }
 
     blur.current.onclick = () => {
-      window.onkeyup = undefined;
       blur.current.onclick = undefined;
       props.function();
     };
+
+    document.querySelectorAll("menu button").forEach((btn) => {
+      btn.onclick = () => {
+        props?.function();
+      };
+    });
   }, [props]);
 
   const { pathname } = useLocation();
