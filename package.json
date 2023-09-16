@@ -3,7 +3,7 @@
     "mongoose": "^6.10.0"
   },
   "scripts": {
-    "init": "node init"
+    "db:init": "node init"
   },
   "name": "chemistry-app",
   "version": "1.0.0",
