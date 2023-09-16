@@ -104,6 +104,8 @@ connect(process.env.MONGOURI).then(() => {
       await AtomsModel.create(AllAtoms);
 
       log("Images links are saved...", "success");
+    } else {
+      log("Datas are up-to-date", "info");
     }
 
     await browser.close();
