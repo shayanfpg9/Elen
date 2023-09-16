@@ -2,6 +2,7 @@
 const logger = require("node-color-log");
 const fs = require("fs");
 const path = require("path");
+const md5 = require("./md5");
 
 function set_setting(props) {
   console.setting = {
@@ -34,7 +35,7 @@ function log_action(data, status = "success", props) {
 
     const LogFileName = console.setting.file;
     const logFile = path.join(console.setting.root, LogFileName);
-    const code = Date.now();
+    const code = md5(String(Date.now())).slice(0, 5);
 
     if (typeof msg == "string") {
       msg = msg.replace(/%FILE%/gim, logFile);
