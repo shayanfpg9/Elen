@@ -1,3 +1,5 @@
 /node_modules
 .env
 /client
+**/*.log
+**/*.pem
