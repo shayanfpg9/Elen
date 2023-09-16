@@ -37,7 +37,7 @@ export default function Error(props) {
     <section className="error" style={props.style}>
       <div className="error__box">
         <h2>
-          {t("error")} {errorProps?.status}:
+          {t("error")} {errorProps?.status || 500}:
         </h2>
         <h3>{errorProps?.data}</h3>
         <Link to="/">{t("back")}</Link>
@@ -45,6 +45,10 @@ export default function Error(props) {
         {t("or")}
         <br />
         <Link to="/table/find">{t("search")}</Link>
+        <br />
+        {t("or")}
+        <br />
+        <a href={"?i=" + Date.now()}>{t("refresh")}</a>
       </div>
     </section>
   );
