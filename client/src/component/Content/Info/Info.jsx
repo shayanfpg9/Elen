@@ -1,6 +1,6 @@
 //deps
 import axios from "axios";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { json, Link, useLoaderData, useParams } from "react-router-dom";
 
 //contexts
@@ -15,6 +15,7 @@ import { GiSpeaker } from "react-icons/gi";
 import i18n from "../../../translate/i18n";
 import { BsCapslockFill, BsWikipedia } from "react-icons/bs";
 import { DB, message } from "../../funcs/funcs";
+import Error from "../../Error/Error";
 
 export const InfoLoader = async ({ params, refresh }) => {
   const db = new DB("Single");
@@ -27,10 +28,6 @@ export const InfoLoader = async ({ params, refresh }) => {
       (!saved?.fa && i18n.language === "fa") ||
       Boolean(refresh)
     ) {
-      if (i18n.language === "fa" && !saved) {
-        message("translating", "", "info");
-      }
-
       const data = (
         await axios.get(
           `/api/atoms/${params.atom}?translate=${i18n.language}`,
@@ -59,24 +56,33 @@ export default function Info() {
   const [refresh, setRefresh] = useState(false);
   const loaded = useContext(LoaderContext);
   const { t, i18n } = useTranslation("info");
+  const error = useTranslation("info.error");
   const [translate, setTranslate] = useState({ ...info });
   const [lang, setLang] = useState(null);
 
   let unMount = useRef(true);
   const ReadingBtn = useRef();
-
   useEffect(() => {
     const ShouldRefresh = async () => {
       loaded.show();
 
-      setRefresh(false);
+      try {
+        setRefresh(false);
 
-      const data = await InfoLoader({
-        params: { atom },
-        refresh: true,
-      });
+        const data = await InfoLoader({
+          params: { atom },
+          refresh: true,
+        });
 
-      setInfo(data);
+        setInfo(data);
+      } catch (e) {
+        setInfo({
+          error: true,
+          status: e.status || 500,
+          message:
+            e.status === 404 ? undefined : e.message || "Refresh the page",
+        });
+      }
 
       loaded.hide();
     };
@@ -91,38 +97,34 @@ export default function Info() {
       });
     }
 
-    if (lang !== i18n.language) {
-      try {
-        if (i18n.language === "fa") {
-          if (!info.fa) throw new Error("should translate");
-          setTranslate({ ...info.fa });
-        } else {
-          setTranslate({ ...info });
-        }
-      } catch (e) {
-        ShouldRefresh();
-      }
-
-      setLang(i18n.language);
-    }
-
     if (refresh) {
       ShouldRefresh();
     }
-  }, [
-    loaded,
-    i18n.language,
-    setTranslate,
-    info,
-    lang,
-    setLang,
-    refresh,
-    setInfo,
-    atom,
-    setRefresh,
-  ]);
+  }, [loaded, refresh, setInfo, atom, setRefresh]);
 
-  if (Object.keys(info).length > 0) {
+  useMemo(() => {
+    if (lang !== i18n.language || info.fa) {
+      try {
+        const check = () => {
+          if (i18n.language === "fa") {
+            if (!info.fa) throw "should translate";
+            setTranslate({ ...info.fa });
+          } else {
+            setTranslate({ ...info });
+          }
+        };
+
+        check();
+        setLang(i18n.language);
+      } catch (e) {
+        message("translat ing", "", "info");
+        setRefresh(true);
+        setLang(i18n.language);
+      }
+    }
+  }, [info, i18n.language, lang]);
+
+  if (Object.keys(info).length > 0 && !Object.keys(info).includes("error")) {
     return (
       <section className="info">
         <Link to="/table" className="info__icon" title={t("close")}>
@@ -244,6 +246,13 @@ export default function Info() {
           )}
         </section>
       </section>
+    );
+  } else {
+    return (
+      <Error
+        code={info.status || "404"}
+        msg={info.message || error.t("find")}
+      />
     );
   }
 }

@@ -129,7 +129,7 @@
     }
   }
 
-  @include media("xs", 660) {
+  @include media("xs", "md") {
     section {
       grid-template: {
         columns: auto;
