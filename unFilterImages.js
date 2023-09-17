@@ -75,10 +75,12 @@ connect(process.env.MONGOURI).then(() => {
 
       // Get the value of the text area
       const textAreaValue = await page.evaluate(() => {
+        /* eslint-disable no-undef */
         const textArea =
-          document.querySelector("textarea#code_box") ||
-          document.querySelector("input#code_direct");
+          document?.querySelector("textarea#code_box") ||
+          document?.querySelector("input#code_direct");
         return textArea.value.split(/\n/gim);
+        /* eslint-enable no-undef */
       });
 
       textAreaValue.pop();

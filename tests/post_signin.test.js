@@ -1,4 +1,4 @@
-const { test, beforeAll, afterAll } = require("@jest/globals");
+const { test, beforeAll, afterAll, expect } = require("@jest/globals");
 const app = require("../app");
 const { faker } = require("@faker-js/faker");
 const UsersModel = require("../model/Users.model");
