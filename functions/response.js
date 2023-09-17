@@ -1,9 +1,13 @@
+const { encrypt } = require("../encryption/aes");
+
 function response({ req, error, ...props }) {
   if (req === undefined) {
     req = {};
   }
 
   props.status = props.status || req.statusCode || 404;
+
+  const key = req?.key;
 
   const result = {
     method: req?.method,
@@ -26,6 +30,11 @@ function response({ req, error, ...props }) {
     };
   } else {
     result.data = props.data;
+
+    if (key) {
+      result.data =
+        encrypt(result.data, Buffer.from(key, "base64")) + "%" + key;
+    }
   }
 
   const print = (res) => {

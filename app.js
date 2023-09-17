@@ -23,14 +23,13 @@ const limiter = rateLimit({
 app.use(limiter);
 
 app.use(helmet());
-app.use(cros());
 app.use(express.json());
 app.use(authorization);
-app.use("/atoms", AtomsRouter);
+app.use("/atoms", cros(), AtomsRouter);
 app.use("/users", UsersRouter);
 
 //404 error
-app.all("*", (req, res) => {
+app.all("*", cros(), (req, res) => {
   response({
     req,
     message: "page not found",

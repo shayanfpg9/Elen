@@ -6,7 +6,9 @@ const request = require("supertest")(app);
 const bcrypt = require("bcryptjs");
 const key = require("../functions/key");
 const jwt = require("jsonwebtoken");
+const { encrypt } = require("../encryption/aes");
 const password = faker.internet.password();
+const AESKey = require("crypto").randomBytes(32);
 let user = {};
 
 beforeAll(async () => {
@@ -40,34 +42,47 @@ beforeAll(async () => {
 test("Missing fields /users/delete [DELETE]", async () => {
   await request
     .delete(`/users/delete/${user.username}`)
-    .send({})
+    .send({
+      data_enc: encrypt({}, AESKey) + "%" + AESKey.toString("base64"),
+    })
     .expect(401)
     .expect("Content-Type", /json/);
 
   await request
     .delete(`/users/delete/${user.username}`)
     .set("Authorization", user.token)
-    .send({})
+    .send({
+      data_enc: encrypt({}, AESKey) + "%" + AESKey.toString("base64"),
+    })
     .expect(400)
     .expect("Content-Type", /json/);
 
   await request
     .delete(`/users/delete/${user.username}`)
     .set("Authorization", user.token)
-    .send({ password: faker.internet.password() })
+    .send({
+      data_enc:
+        encrypt({ password: faker.internet.password() }, AESKey) +
+        "%" +
+        AESKey.toString("base64"),
+    })
     .expect(403)
     .expect("Content-Type", /json/);
 
   await request
     .delete(`/users/delete/${user.username}`)
-    .send({ password })
+    .send({
+      data_enc: encrypt({ password }, AESKey) + "%" + AESKey.toString("base64"),
+    })
     .expect(401)
     .expect("Content-Type", /json/);
 
   await request
     .delete(`/users/delete/123`)
     .set("Authorization", user.token)
-    .send({ password })
+    .send({
+      data_enc: encrypt({ password }, AESKey) + "%" + AESKey.toString("base64"),
+    })
     .expect(404)
     .expect("Content-Type", /json/);
 });
@@ -77,7 +92,7 @@ test("Delete user /users/delete [DELETE]", async () => {
     .delete(`/users/delete/${user.username}`)
     .set("Authorization", user.token)
     .send({
-      password,
+      data_enc: encrypt({ password }, AESKey) + "%" + AESKey.toString("base64"),
     })
     .expect(200)
     .expect("Content-Type", /json/);
@@ -88,7 +103,7 @@ test("User not found /users/delete [DELETE]", async () => {
     .delete(`/users/delete/${user.username}`)
     .set("Authorization", user.token)
     .send({
-      password,
+      data_enc: encrypt({ password }, AESKey) + "%" + AESKey.toString("base64"),
     })
     .expect(404)
     .expect("Content-Type", /json/);
