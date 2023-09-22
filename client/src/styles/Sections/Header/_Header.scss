@@ -27,11 +27,11 @@
   &__title {
     transition: font-size 0.5s var(--animation);
 
-    html.ltr & {
+    html & {
       margin-left: 2vh;
     }
 
-    html.rtl & {
+    html[lang="fa"] & {
       margin-right: 2vh;
     }
 

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
+    "@sweetalert2/theme-wordpress-admin": "^5.0.15",
     "axios": "^1.5.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -14,11 +15,14 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^6.11.3",
     "morgan": "^1.10.0",
+    "next-intl": "3.0.0-beta.18",
     "node-color-log": "^10.0.2",
     "nodemon": "^2.0.20",
     "prop-types": "^15.8.1",
     "puppeteer-core": "^21.2.1",
     "supertest": "^6.3.3",
+    "sweetalert2": "^11.7.28",
+    "sweetalert2-react-content": "^5.0.7",
     "yarn": "^1.22.19"
   },
   "scripts": {
@@ -28,13 +32,16 @@
     "front": "cd client && yarn",
     "build": "yarn front build && yarn back:build",
     "back:lint": "eslint . --ext js,cjs --report-unused-disable-directives --max-warnings 0",
-    "image:unfilter": "node unFilterImages.js"
+    "image:unfilter": "node unFilterImages.js",
+    "prepare": "husky install"
   },
   "name": "chemistry-app",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.35.0"
   }

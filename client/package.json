@@ -1,46 +1,25 @@
 {
   "name": "client",
+  "version": "0.1.0",
   "private": true,
-  "version": "2.1.0",
-  "proxy": "http://localhost:4000/",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "i18next": "^22.4.15",
-    "idb": "^7.1.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-i18next": "^12.2.2",
-    "react-scripts": "5.0.1",
-    "react-spinners": "^0.13.8",
-    "sweetalert2": "^11.7.3",
-    "sweetalert2-react-content": "^5.0.7",
-    "vite-plugin-svgr": "^3.2.0",
-    "web-vitals": "^2.1.0"
-  },
-  "devDependencies": {
-    "@sweetalert2/theme-wordpress-admin": "^5.0.15",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@vitejs/plugin-react": "^4.0.3",
     "chroma-js": "^2.4.2",
-    "eslint": "^8.45.0",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
-    "react-icons": "^4.8.0",
-    "react-router-dom": "^6.8.2",
-    "sass": "^1.58.3",
-    "styled-components": "^5.3.8",
-    "vazirmatn": "^33.0.3",
-    "vite": "^4.4.5"
-  }
+    "eslint": "8.49.0",
+    "eslint-config-next": "13.4.19",
+    "next": "13.4.19",
+    "next-intl": "3.0.0-beta.17",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.11.0",
+    "react-spinners": "^0.13.8",
+    "sass": "^1.67.0",
+    "styled-components": "^6.0.8"
+  },
+  "devDependencies": {}
 }

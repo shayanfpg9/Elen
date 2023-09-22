@@ -102,7 +102,7 @@
         top: 1rem;
       }
 
-      html.rtl & {
+      html[lang="fa"] & {
         left: 0;
 
         &.info__refresh {
@@ -110,7 +110,7 @@
         }
       }
 
-      html.ltr & {
+      html & {
         right: 0;
 
         &.info__refresh {

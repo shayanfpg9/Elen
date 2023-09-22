@@ -42,11 +42,11 @@
         }
 
         & > svg {
-          html.rtl & {
+          html[lang="fa"] & {
             margin-left: 0.5rem;
           }
 
-          html.ltr & {
+          html & {
             margin-right: 0.5rem;
           }
         }
@@ -76,7 +76,7 @@
   @include media("xl") {
     &__menu {
       list-style-type: none;
-      width: 67%;
+      width: 60%;
 
       position: absolute;
 
@@ -86,20 +86,21 @@
         display: none;
       }
 
-      html.rtl & {
+      html[lang="fa"] & {
         padding-right: 2vh;
-        left: 50%;
-        transform: translateX(-45%);
+        left: 40%;
+        transform: translateX(-40%);
 
         & > * {
           float: left;
         }
       }
 
-      html.ltr & {
+      html & {
         padding-left: 6vh;
-        right: 50%;
-        transform: translateX(45%);
+
+        right: 10% !important;
+        transform: translateX(10%);
 
         & > * {
           float: right;
@@ -135,14 +136,14 @@
       background-color: rgba(var(--color-fg-rgb), 0.8);
       box-shadow: 5px 0px 20px 9px var(--color-bg);
 
-      html.rtl & {
+      html:lang(fa) & {
         border: {
           bottom-right-radius: 2rem;
           top-right-radius: 2rem;
         }
       }
 
-      html.ltr & {
+      html:not(:lang(fa)) & {
         border: {
           bottom-left-radius: 2rem;
           top-left-radius: 2rem;
@@ -150,10 +151,10 @@
       }
 
       transition: 0.5s ease-in-out {
-        property: width, left, right;
+        property: left, right;
       }
 
-      html.rtl & {
+      html:lang(fa) & {
         left: 0;
 
         &-icon {
@@ -161,7 +162,7 @@
         }
       }
 
-      html.ltr & {
+      html:not(:lang(fa)) & {
         right: 0;
 
         &-icon {
@@ -172,20 +173,20 @@
       @include flex();
 
       @include media("md", "xl") {
-        --menu-width: calc(5 * var(--first-fibo) + 2rem);
+        --menu-width: calc(5 * var(--first-fibo) + 6rem);
       }
 
       @include media("xs", "md") {
-        --menu-width: 99vw;
+        --menu-width: 98vw;
       }
 
       width: var(--menu-width);
 
       & > * {
         min-width: 100%;
-        text-align: center;
         height: auto;
         font-size: 2rem;
+        text-align: center;
 
         a {
           text-decoration: none;
@@ -217,11 +218,11 @@
           top: 3vh;
           color: var(--color-bg);
 
-          html.rtl & {
+          html:lang(fa) & {
             left: calc(5vw + 1vh);
           }
 
-          html.ltr & {
+          html:not(:lang(fa)) & {
             right: calc(5vw + 1vh);
           }
         }

@@ -3,6 +3,7 @@
     color: var(--color-text);
     overflow: hidden;
     box-sizing: border-box;
+    font-family: var(--font);
   }
 }
 
@@ -17,14 +18,12 @@ html {
     #fffa
   );
 
-  &.rtl * {
+  &[lang="fa"] * {
     direction: rtl;
-    font-family: vazirmatn, 'Roboto';
   }
 
-  &.ltr * {
+  &:not(:lang(fa)) * {
     direction: ltr;
-    font-family: 'Roboto';
   }
 }
 
@@ -71,5 +70,23 @@ body {
   @supports (backdrop-filter: blur(20px)) {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+.loading {
+  animation: loading linear infinite 1s;
+}
+
+@keyframes loading {
+  0% {
+    background: rgb(var(--color-fg-rgb), 1);
+  }
+
+  50% {
+    background: rgb(var(--color-fg-rgb), 0.8);
+  }
+
+  100% {
+    background: rgb(var(--color-fg-rgb), 1);
   }
 }

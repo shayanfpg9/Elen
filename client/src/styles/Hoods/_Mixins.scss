@@ -45,7 +45,8 @@
 }
 
 @mixin scroller($size, $bgColor, $sColor) {
-  @supports (scrollbar-width: thin) { //firefox familly
+  @supports (scrollbar-width: thin) {
+    //firefox familly
     scrollbar-width: thin;
     scrollbar-color: $sColor $bgColor;
   }
